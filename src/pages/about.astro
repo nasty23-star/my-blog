@@ -1,15 +1,35 @@
 ---
 import Layout from '../layouts/BlogPost.astro';
+
+const pageTitle = "Обо мне";
+const pageDescription = "Страница обо мне"
+const identity = {
+  firstName: "Настя",
+  country: "Россия",
+  occupation: "Фронтенд",
+  hobbies: ["фотография", "кино", "комиксы"],
+};
+
+const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Написание документации"];
 ---
 
 <Layout
-	title="About Me"
-	description="Page about me"
+	title={pageTitle}
+	description={pageDescription}
 	pubDate={new Date('May 16 2025')}
 	heroImage="/blog-placeholder-about.jpg"
 >
 	<p>
 		Фронтенд-разработчица, контрибьюторка Доки. Люблю смешные носки и мемы (.❛ ᴗ ❛.).
 	</p>
+
+	<p>Несколько фактов обо мне:</p>
+    <ul>
+   		<li>Меня зовут {identity.firstName}.</li>
+    	<li>Моя страна — {identity.country}, а род занятий — {identity.occupation}.</li>
+  			{identity.hobbies.length >= 2 &&
+    			<li>Мои увлечения: {identity.hobbies[0]}, {identity.hobbies[1]} и {identity.hobbies[2]}</li>
+  			}
+	</ul>
 
 </Layout>
