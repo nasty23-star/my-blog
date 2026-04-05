@@ -6,7 +6,7 @@ const pageDescription = "Страница обо мне"
 const identity = {
   firstName: "Настя",
   country: "Россия",
-  occupation: "Фронтенд",
+  occupation: "фронтенд",
   hobbies: ["фотография", "кино", "комиксы"],
 };
 const myImage = "photo.jpg";
@@ -20,6 +20,22 @@ const dokaLink = "https://doka.guide/people/anastasiayarosh/";
 const vueDocsLink = "https://ru.vuejs.org/guide/introduction.html?ysclid=mnlkuyqajl710887367";
 
 const eslintRuleLink = "https://github.com/eslint/css/issues/73?ysclid=mnlkx7rhyz524963373"
+
+const minskCss = "https://www.youtube.com/watch?v=6wK9z7zahPw"
+
+const moscowCss = "https://it-event-hub.ru/events/moscowcss-24-2024-02-15"
+
+const qaSisConf = "http://qa-sisters.com/conf-3-talks"
+
+const qaSis = "https://www.youtube.com/watch?v=_zYpsPak_Qw"
+
+const vkInclusion = "https://vkvideo.ru/playlist/-147415323_22/video-147415323_456240586?linked=1"
+
+const qaPermGuild = "https://morion.digital/news/na-vstreche-soobshhestva-testirovshhikov-qa-guild-perm-vystupit-eshhe-odin-spiker/"
+
+const dokaDvizh = "https://www.youtube.com/watch?v=ZGfQj17utIk"
+
+const codeSisters ="https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s"
 ---
 
 <Layout
@@ -30,13 +46,13 @@ const eslintRuleLink = "https://github.com/eslint/css/issues/73?ysclid=mnlkx7rhy
 >
 <div class='image'><img src={myImage} alt="A photo of me" class="hero-image" width='250px' height='auto'/>
 	<p>
-		Фронтенд-разработчица, контрибьюторка Доки. Люблю смешные носки и мемы <span class='no-wrap'>(.❛ ᴗ ❛.).</span>
+		{identity.occupation}-разработчица, контрибьючу в Доку. Люблю смешные носки и мемы <span class='no-wrap'>(.❛ ᴗ ❛.).</span>
 	</p>
 </div>
 	<p>Несколько фактов обо мне:</p>
     <ul>
    		<li>Меня зовут {identity.firstName}.</li>
-    	<li>Моя страна — {identity.country}, а род занятий — {identity.occupation}.</li>
+    	<li>Я {identity.occupation}-разработчица.</li>
   			{identity.hobbies.length >= 2 &&
     			<li>Мои увлечения: {identity.hobbies[0]}, {identity.hobbies[1]} и {identity.hobbies[2]}.</li>
   			}
@@ -48,6 +64,26 @@ const eslintRuleLink = "https://github.com/eslint/css/issues/73?ysclid=mnlkx7rhy
 <p>Мой профиль на Доке: <span class='no-wrap'><a href={dokaLink} target="_blank">Doka Profile</a></span></p>
 <p>Участвовала в переводе официальной документации Vue.js на русский язык: <span class='no-wrap'><a href={vueDocsLink} target="_blank">Vue Docs</a></span></p>
 <p>Правило ESLint, которое я предложила, и его приняли: <span class='no-wrap'><a href={eslintRuleLink} target="_blank">ESLint Rule</a></span></p>
+<h2>Участвовала в международном хакатоне, организованном VueSchool</h2>
+<img src='vue-forge.png' alt="Vue Forge" class="image" width='250px' height='auto'/>
+<h2>Участвовала в международной менторской программе Mentor in Tech #6 как ментор</h2>
+<img src="mit-ru.png" alt="Mentor in Tech Ru" class="image" width='350px' height='auto'/>
+<img src="mit-en.png" alt="Mentor in Tech En" class="image" width='350px' height='auto'/>
+<h2>Была в составе Программного Комитета онлайн конференции сообщества тестировщиц QA Sis Conf #3</h2>
+<img src="qa-sis-pc.webp" alt="QA Sis Conf" class="image" width='350px' height='auto'/>
+<h3>Мои выступления</h3>
+<ul>
+	<li><a href={vkInclusion} target="_blank">VK Inclusion</a></li>
+	<li><a href={minskCss} target="_blank">MinskCSS</a></li>
+	<li><a href={moscowCss} target="_blank">MoscowCSS</a></li>
+	<li><a href={qaSisConf} target="_blank">QA Sisters Conference</a></li>
+	<li><a href={qaSis} target="_blank">QA Sisters</a></li>
+	<li><a href={qaPermGuild} target="_blank">QA Guild Perm</a></li>
+	<li><a href={dokaDvizh} target="_blank">Doka Dvizh</a></li>
+	<li><a href={codeSisters} target="_blank">Code Sisters</a></li>
+</ul>
+<h3>Участвовала во Всероссийском диктанте о культуре глухих "Услышать тишину"</h3>
+<img src='culture-inclusion.jpg' alt="Услышать тишину" class="image" width='350px' height='auto'/>
 </Layout>
 <style>
 	.image {
