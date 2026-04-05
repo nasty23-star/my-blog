@@ -10,13 +10,13 @@ import { SITE_TITLE } from '../consts';
 			<HeaderLink href="/about">Обо мне / About me</HeaderLink>
 			<HeaderLink href="/blog">Блог / Blog</HeaderLink>			
 		</div>
-		<div class="social-links">
-			<!-- Переключатель языка -->
+		<!-- Переключатель языка -->
 			<div class="language-switcher">
 				<a href="/about" class="lang-link {Astro.url.pathname === '/about' ? 'active' : ''}">RU</a>
 				<span class="lang-separator">|</span>
 				<a href="/en/about" class="lang-link {Astro.url.pathname === '/en/about' ? 'active' : ''}">EN</a>
 			</div>
+		<div class="social-links">
 			<a href="https://t.me/Okotw" target="_blank">
 				<span class="sr-only">Find me in Telegram</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
