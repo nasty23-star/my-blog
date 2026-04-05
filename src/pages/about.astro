@@ -180,9 +180,7 @@ const codeSisters ="https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s"
 		text-shadow: 0 0 3px #3b82f6;
 	}
 
-	/* специальный класс для изображений в строку */
 	.image {
-		display: flex;
 		gap: 1.5rem;
 		margin: 1.5rem 0;
 	}
@@ -311,5 +309,11 @@ const codeSisters ="https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s"
 	.image img:hover {
 		transform: scale(1.05);
 	}
+}
+
+@media (min-width: 840px) {
+	.image {
+		display: flex;
+    }
 }
 </style>
