@@ -10,7 +10,7 @@
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
 	--black: 15, 18, 25;
-	--gray: 96, 115, 159;
+	--gray: #819ebf;
 	--gray-light: 229, 233, 240;
 	--gray-dark: 34, 41, 57;
 	--gray-gradient: rgba(var(--gray-light), 50%), #fff;
@@ -44,7 +44,7 @@ body {
             font-family: 'Courier Prime', 'Fira Mono', monospace;
             color: #c0e0ff;
             line-height: 1.4;
-            padding: 2rem 1.5rem;
+            /* padding: 2rem 1.5rem; */
             min-height: 100vh;
 }
 main {
