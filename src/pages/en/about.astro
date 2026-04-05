@@ -78,7 +78,7 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 </Layout>
 
 <style>
-	/* те же самые стили, что и в русской версии */
+	
 	* {
 		margin: 0;
 		padding: 0;
@@ -87,7 +87,7 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 
 	body {
 		margin: 0;
-		padding: 2rem 1.5rem;
+		/* padding: 2rem 1.5rem; */
 		text-align: left;
 		word-wrap: break-word;
 		overflow-wrap: break-word;
@@ -193,7 +193,7 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 
 	.no-wrap {
 		white-space: nowrap;
-        display: inline-block;
+		display: inline-block;
 	}
 
 	strong, b {
@@ -202,6 +202,7 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 		text-shadow: 0 0 2px #2563eb;
 	}
 
+	/* кастомный скроллбар */
 	::-webkit-scrollbar {
 		width: 8px;
 		height: 8px;
@@ -218,6 +219,7 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 		background: #3b82f6;
 	}
 
+	/* медиа-запросы для адаптивности */
 	@media (max-width: 720px) {
 		body {
 			/* padding: 1rem; */
@@ -262,6 +264,7 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 		}
 	}
 
+	/* эффект "экрана" — лёгкое мерцание фона */
 	body::before {
 		content: "";
 		position: fixed;
@@ -281,27 +284,28 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 		opacity: 0.3;
 	}
 
-	@media (min-width: 749px) {
-		img {
-			transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1), border-color 0.2s, box-shadow 0.2s;
-			transform: scale(1);
-			will-change: transform;
-		}
-
-		img:hover {
-			transform: scale(1.5);
-			z-index: 10;
-			position: relative;
-		}
-
-		.image img:hover {
-			transform: scale(1.05);
-		}
+@media (min-width: 749px) {
+	img {
+		transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1), border-color 0.2s, box-shadow 0.2s;
+		transform: scale(1);
+		will-change: transform;
 	}
 
-	@media (min-width: 840px) {
-		.image {
-			display: flex;
-		}
+	img:hover {
+		transform: scale(1.5);
+		z-index: 10;
+		position: relative;
 	}
+
+	/* Для изображений в классе .image — чтобы не наезжали друг на друга */
+	.image img:hover {
+		transform: scale(1.05);
+	}
+}
+
+@media (min-width: 840px) {
+	.image {
+		display: flex;
+    }
+}
 </style>
