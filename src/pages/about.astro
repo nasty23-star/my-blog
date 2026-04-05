@@ -9,27 +9,58 @@ const identity = {
   occupation: "Фронтенд",
   hobbies: ["фотография", "кино", "комиксы"],
 };
+const myImage = "photo.jpg";
 
-const skills = ["HTML", "CSS", "JavaScript", "React", "Astro", "Написание документации"];
+const skills = ["HTML", "CSS", "JavaScript", "Vue", "TypeScript", "Astro", "Git", "Vite"];
+
+const professionalInterests = ["оптимизация производительности", "UX/UI", "внедрение новых технологий"];
+
+const dokaLink = "https://doka.guide/people/anastasiayarosh/";
+
+const vueDocsLink = "https://ru.vuejs.org/guide/introduction.html?ysclid=mnlkuyqajl710887367";
+
+const eslintRuleLink = "https://github.com/eslint/css/issues/73?ysclid=mnlkx7rhyz524963373"
 ---
 
 <Layout
 	title={pageTitle}
 	description={pageDescription}
 	pubDate={new Date('May 16 2025')}
-	heroImage="/asia.jpg"
+	heroImage=""
 >
+<div class='image'><img src={myImage} alt="A photo of me" class="hero-image" width='250px' height='auto'/>
 	<p>
-		Фронтенд-разработчица, контрибьюторка Доки. Люблю смешные носки и мемы (.❛ ᴗ ❛.).
+		Фронтенд-разработчица, контрибьюторка Доки. Люблю смешные носки и мемы <span class='no-wrap'>(.❛ ᴗ ❛.).</span>
 	</p>
-
+</div>
 	<p>Несколько фактов обо мне:</p>
     <ul>
    		<li>Меня зовут {identity.firstName}.</li>
     	<li>Моя страна — {identity.country}, а род занятий — {identity.occupation}.</li>
   			{identity.hobbies.length >= 2 &&
-    			<li>Мои увлечения: {identity.hobbies[0]}, {identity.hobbies[1]} и {identity.hobbies[2]}</li>
+    			<li>Мои увлечения: {identity.hobbies[0]}, {identity.hobbies[1]} и {identity.hobbies[2]}.</li>
   			}
+			<li>Мои навыки: <strong>{skills.join(', ')}</strong>.</li>
+			<li>
+				Мои профессиональные интересы: <strong>{professionalInterests.join(', ')}</strong>.
+			</li>
 	</ul>
-
+<p>Мой профиль на Доке: <span class='no-wrap'><a href={dokaLink} target="_blank">Doka Profile</a></span></p>
+<p>Участвовала в переводе официальной документации Vue.js на русский язык: <span class='no-wrap'><a href={vueDocsLink} target="_blank">Vue Docs</a></span></p>
+<p>Правило ESLint, которое я предложила, и его приняли: <span class='no-wrap'><a href={eslintRuleLink} target="_blank">ESLint Rule</a></span></p>
 </Layout>
+<style>
+	.image {
+		display: flex;
+		align-items: center;
+		gap: 1em;
+	}
+
+	.no-wrap {
+		white-space: nowrap;
+		
+	}
+
+	p {
+		margin-bottom: 0.5em;
+	}

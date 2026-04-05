@@ -4,6 +4,8 @@
   License MIT: https://github.com/HermanMartinus/bearblog/blob/master/LICENSE.md
  */
 
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Fira+Mono:wght@400;500;700&display=swap');
+
 :root {
 	--accent: #2337ff;
 	--accent-dark: #000d8a;
@@ -31,17 +33,19 @@
 	font-display: swap;
 }
 body {
-	font-family: 'Atkinson', sans-serif;
+	
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: linear-gradient(var(--gray-gradient)) no-repeat;
-	background-size: 100% 600px;
+	/* background-size: 100% 600px; */
 	word-wrap: break-word;
 	overflow-wrap: break-word;
-	color: rgb(var(--gray-dark));
-	font-size: 20px;
-	line-height: 1.7;
+	 background: radial-gradient(circle at 20% 30%, #0a0f2a, #030617);
+            font-family: 'Courier Prime', 'Fira Mono', monospace;
+            color: #c0e0ff;
+            line-height: 1.4;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
 }
 main {
 	width: 720px;
@@ -56,7 +60,7 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
+	color: #c0e0ff;
 	line-height: 1.2;
 }
 h1 {
@@ -85,11 +89,9 @@ a:hover {
 	color: var(--accent);
 }
 p {
-	margin-bottom: 1em;
+	color: #c0e0ff;
 }
-.prose p {
-	margin-bottom: 2em;
-}
+
 textarea {
 	width: 100%;
 	font-size: 16px;
