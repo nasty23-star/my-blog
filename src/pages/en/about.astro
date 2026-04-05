@@ -1,0 +1,306 @@
+---
+import Layout from '../../layouts/BlogPost.astro';
+
+const pageTitle = "About Me";
+const pageDescription = "About me page"
+const identity = {
+  firstName: "Nastya",
+  country: "Russia",
+  occupation: "frontend",
+  hobbies: ["photography", "cinema", "comics"],
+};
+const myImage = "/photo.jpg";
+
+const skills = ["HTML", "CSS", "JavaScript", "Vue", "TypeScript", "Astro", "Git", "Vite"];
+
+const professionalInterests = ["performance optimization", "UX/UI", "new technologies implementation"];
+
+const dokaLink = "https://doka.guide/people/anastasiayarosh/";
+const vueDocsLink = "https://vuejs.org/guide/introduction.html";
+const eslintRuleLink = "https://github.com/eslint/css/issues/73";
+
+const minskCss = "https://www.youtube.com/watch?v=6wK9z7zahPw";
+const moscowCss = "https://it-event-hub.ru/events/moscowcss-24-2024-02-15";
+const qaSisConf = "http://qa-sisters.com/conf-3-talks";
+const qaSis = "https://www.youtube.com/watch?v=_zYpsPak_Qw";
+const vkInclusion = "https://vkvideo.ru/playlist/-147415323_22/video-147415323_456240586?linked=1";
+const qaPermGuild = "https://morion.digital/news/na-vstreche-soobshhestva-testirovshhikov-qa-guild-perm-vystupit-eshhe-odin-spiker/";
+const dokaDvizh = "https://www.youtube.com/watch?v=ZGfQj17utIk";
+const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
+---
+
+<Layout
+	title={pageTitle}
+	description={pageDescription}
+	pubDate={new Date('May 16 2025')}
+	heroImage=""
+>
+<div class='image'><img src={myImage} alt="A photo of me" class="hero-image" width='350px' height='auto'/>
+	<div class='facts'>
+	<p>My name is {identity.firstName}.</p>
+    	<p>I'm a {identity.occupation} developer.</p>
+  			{identity.hobbies.length >= 2 &&
+    			<p>My hobbies: {identity.hobbies[0]}, {identity.hobbies[1]} and {identity.hobbies[2]}.</p>
+  			}
+			<p>My skills: <strong>{skills.join(', ')}</strong>.</p>
+			<p>
+				My professional interests: <strong>{professionalInterests.join(', ')}</strong>.
+			</p>
+	<p>
+		Contributing to Doka. Love funny socks and memes.
+	</p>
+	</div>
+</div>
+
+<p>My profile on Doka: <span class='no-wrap'><a href={dokaLink} target="_blank">Doka Profile</a></span></p>
+<p>Participated in translating Vue.js official documentation into Russian: <span class='no-wrap'><a href={vueDocsLink} target="_blank">Vue Docs</a></span></p>
+<p>An ESLint rule I proposed and was accepted: <span class='no-wrap'><a href={eslintRuleLink} target="_blank">ESLint Rule</a></span></p>
+<h2>Participated in an international hackathon organized by VueSchool</h2>
+<img src='/vue-forge.png' alt="Vue Forge" class="hero-image" width='350px' height='auto'/>
+<h2>Participated in the international mentoring program Mentor in Tech #6 as a mentor</h2>
+<img src="/mit-ru.png" alt="Mentor in Tech Ru" class="hero-image" width='350px' height='auto'/>
+<img src="/mit-en.png" alt="Mentor in Tech En" class="hero-image" width='350px' height='auto'/>
+<h2>Was a member of the Program Committee of the online conference of the QA Sisters community QA Sis Conf #3</h2>
+<img src="/qa-sis-pc.webp" alt="QA Sis Conf" class="hero-image" width='350px' height='auto'/>
+<h3>My talks</h3>
+<ul>
+	<li><a href={vkInclusion} target="_blank">VK Inclusion</a></li>
+	<li><a href={minskCss} target="_blank">MinskCSS</a></li>
+	<li><a href={moscowCss} target="_blank">MoscowCSS</a></li>
+	<li><a href={qaSisConf} target="_blank">QA Sisters Conference</a></li>
+	<li><a href={qaSis} target="_blank">QA Sisters</a></li>
+	<li><a href={qaPermGuild} target="_blank">QA Guild Perm</a></li>
+	<li><a href={dokaDvizh} target="_blank">Doka Dvizh</a></li>
+	<li><a href={codeSisters} target="_blank">Code Sisters</a></li>
+</ul>
+<h3>Participated in the All-Russian dictation on the culture of the deaf "Hear the silence"</h3>
+<img src='/culture-inclusion.jpg' alt="Hear the silence" class="hero-image" width='350px' height='auto'/>
+</Layout>
+
+<style>
+	/* те же самые стили, что и в русской версии */
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+
+	body {
+		margin: 0;
+		padding: 2rem 1.5rem;
+		text-align: left;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		background: radial-gradient(circle at 20% 30%, #0a0f2a, #030617);
+		font-family: 'Courier Prime', 'Fira Mono', 'Courier New', monospace;
+		color: #b0e0ff;
+		line-height: 1.5;
+		min-height: 100vh;
+	}
+
+	main {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 0;
+	}
+
+	h1, h2, h3, h4, h5, h6 {
+		margin: 1.5rem 0 1rem 0;
+		color: #7bc5ff;
+		line-height: 1.3;
+		font-weight: 500;
+		letter-spacing: -0.3px;
+		text-shadow: 0 0 5px rgba(59, 130, 246, 0.4);
+	}
+
+	h1 {
+		font-size: 2.5rem;
+		padding-left: 1rem;
+	}
+	
+	h2 {
+		font-size: 1.8rem;
+		padding-left: 0.9rem;
+		margin-top: 2rem;
+	}
+	
+	h3 {
+		font-size: 1.4rem;
+		padding-left: 0.8rem;
+		margin-top: 1.5rem;
+	}
+
+	p {
+		color: #c8e4ff;
+		margin-bottom: 1rem;
+		line-height: 1.6;
+	}
+
+	a {
+		color: #60a5fa;
+		text-decoration: none;
+		border-bottom: 1px dashed #3b82f6;
+		transition: all 0.2s ease;
+	}
+
+	a:hover {
+		color: #93c5fd;
+		border-bottom-color: #60a5fa;
+		text-shadow: 0 0 4px #3b82f6;
+	}
+
+	ul {
+		list-style: none;
+		padding-left: 0;
+		margin: 1rem 0;
+	}
+
+	ul li {
+		margin-bottom: 0.6rem;
+		padding-left: 1.2rem;
+		position: relative;
+		color: #bfdbff;
+	}
+
+	ul li::before {
+		content: ">";
+		position: absolute;
+		left: 0;
+		color: #3b82f6;
+		font-weight: bold;
+		text-shadow: 0 0 3px #3b82f6;
+	}
+
+	.image {
+		gap: 1.5rem;
+		margin: 1.5rem 0;
+	}
+
+	img {
+		max-width: 100%;
+		height: auto;
+		border-radius: 12px;
+		border: 1px solid #1e3a5f;
+		box-shadow: 0 0 15px rgba(37, 99, 235, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.2);
+		transition: all 0.2s;
+		background: #0a0f1a;
+	}
+
+	img:hover {
+		border-color: #3b82f6;
+		box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+	}
+
+	.no-wrap {
+		white-space: nowrap;
+	}
+
+	strong, b {
+		color: #93c5fd;
+		font-weight: 700;
+		text-shadow: 0 0 2px #2563eb;
+	}
+
+	::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+	::-webkit-scrollbar-track {
+		background: #0a0f1a;
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #1e3a5f;
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #3b82f6;
+	}
+
+	@media (max-width: 720px) {
+		body {
+			padding: 1rem;
+			font-size: 16px;
+		}
+		
+		h1 {
+			font-size: 2rem;
+		}
+		
+		h2 {
+			font-size: 1.5rem;
+		}
+		
+		h3 {
+			font-size: 1.2rem;
+		}
+		
+		.no-wrap {
+			white-space: normal;
+		}
+		
+		.image {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 0.8rem;
+		}
+	}
+
+	.image, p, ul, h2, h3 {
+		animation: fadeInUp 0.4s ease-out forwards;
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	body::before {
+		content: "";
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+		background: repeating-linear-gradient(
+			0deg,
+			rgba(0, 20, 60, 0.1) 0px,
+			rgba(0, 20, 60, 0.1) 1px,
+			transparent 1px,
+			transparent 4px
+		);
+		z-index: 9999;
+		opacity: 0.3;
+	}
+
+	@media (min-width: 749px) {
+		img {
+			transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1), border-color 0.2s, box-shadow 0.2s;
+			transform: scale(1);
+			will-change: transform;
+		}
+
+		img:hover {
+			transform: scale(1.5);
+			z-index: 10;
+			position: relative;
+		}
+
+		.image img:hover {
+			transform: scale(1.05);
+		}
+	}
+
+	@media (min-width: 840px) {
+		.image {
+			display: flex;
+		}
+	}
+</style>

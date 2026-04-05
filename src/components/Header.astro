@@ -7,11 +7,17 @@ import { SITE_TITLE } from '../consts';
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
 		<div class="internal-links">
-			<HeaderLink href="/">Обо мне</HeaderLink>
-			<HeaderLink href="/blog">Блог</HeaderLink>		
+			<HeaderLink href="/about">Обо мне</HeaderLink>
+			<HeaderLink href="/blog">Блог</HeaderLink>			
 		</div>
 		<div class="social-links">
-			<a href="t.me/Okotw" target="_blank">
+			<!-- Переключатель языка -->
+			<div class="language-switcher">
+				<a href="/about" class="lang-link {Astro.url.pathname === '/about' ? 'active' : ''}">RU</a>
+				<span class="lang-separator">|</span>
+				<a href="/en/about" class="lang-link {Astro.url.pathname === '/en/about' ? 'active' : ''}">EN</a>
+			</div>
+			<a href="https://t.me/Okotw" target="_blank">
 				<span class="sr-only">Find me in Telegram</span>
 				<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32"
   ><path
@@ -31,11 +37,11 @@ import { SITE_TITLE } from '../consts';
 		</div>
 	</nav>
 </header>
+
 <style>
 	header {
 		margin: 0;
 		padding: 0 1em;
-		/* background: white; */
 		box-shadow: 0 2px 8px rgba(var(--black), 5%);
 	}
 	h2 {
@@ -51,6 +57,8 @@ import { SITE_TITLE } from '../consts';
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: 1rem;
 	}
 	nav a {
 		padding: 1em 0.5em;
@@ -65,10 +73,51 @@ import { SITE_TITLE } from '../consts';
 	.social-links,
 	.social-links a {
 		display: flex;
+		align-items: center;
+		gap: 0.5rem;
 	}
+	
+	/* Стили для переключателя языка */
+	.language-switcher {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+		margin-right: 1rem;
+		font-family: monospace;
+		font-weight: bold;
+	}
+	
+	.lang-link {
+		color: #60a5fa;
+		text-decoration: none;
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+		transition: all 0.2s;
+		font-size: 0.9rem;
+	}
+	
+	.lang-link:hover {
+		color: #93c5fd;
+		background: rgba(59, 130, 246, 0.2);
+	}
+	
+	.lang-link.active {
+		color: #ffffff;
+		background: #3b82f6;
+		text-shadow: none;
+	}
+	
+	.lang-separator {
+		color: #3b82f6;
+		opacity: 0.5;
+	}
+	
 	@media (max-width: 720px) {
 		.social-links {
-			display: none;
+			gap: 0.25rem;
+		}
+		.language-switcher {
+			margin-right: 0.5rem;
 		}
 	}
 </style>
