@@ -2,6 +2,9 @@
 
 ```sh
 npm create astro@latest -- --template blog
+
+
+кешировать фото, картинки сжать, заглушка для блога на англ или авто перевод
 ```
 
 [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
