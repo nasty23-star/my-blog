@@ -58,15 +58,8 @@ const isNavActive = (path: string): boolean => {
 
     <!-- Переключатель языка -->
     <div class="language-switcher">
-      <a
-        href={getLocalizedPath("ru")}
-        class="lang-link {!isEnglish ? 'active' : ''}">RU</a
-      >
-      <span class="lang-separator">|</span>
-      <a
-        href={getLocalizedPath("en")}
-        class="lang-link {isEnglish ? 'active' : ''}">EN</a
-      >
+      <a href={getLocalizedPath("ru")} class={`lang-link ${!isEnglish ? 'active' : ''}`}>RU</a>
+<a href={getLocalizedPath("en")} class={`lang-link ${isEnglish ? 'active' : ''}`}>EN</a>
     </div>
 
     <div class="social-links">
@@ -156,7 +149,7 @@ const isNavActive = (path: string): boolean => {
 
   .lang-link.active {
     color: #ffffff;
-    background: #3b82f6;
+    /* background: #3b82f6; */
     text-shadow: none;
   }
 
