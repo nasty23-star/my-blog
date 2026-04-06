@@ -1,176 +1,617 @@
 ---
-import HeaderLink from "../../components/HeaderLink.astro";
-import { SITE_TITLE } from "../../consts";
-
-// Определяем текущий путь
-const currentPath = Astro.url.pathname;
-// Проверяем, находимся ли мы на английской версии
-const isEnglish = currentPath.startsWith("/en/") || currentPath === "/en";
-
-// Функция для получения пути на нужном языке
-const getLocalizedPath = (targetLang: "ru" | "en"): string => {
-  // Получаем текущий путь без префикса /en
-  let pathWithoutLang = currentPath;
-  if (currentPath === "/en") {
-    pathWithoutLang = "/";
-  } else if (currentPath.startsWith("/en/")) {
-    pathWithoutLang = currentPath.replace("/en", "");
-  }
-
-  // Обрабатываем корневой путь
-  if (pathWithoutLang === "") {
-    pathWithoutLang = "/";
-  }
-
-  if (targetLang === "ru") {
-    return pathWithoutLang;
-  } else {
-    // Для английской версии
-    if (pathWithoutLang === "/") {
-      return "/en";
-    }
-    return `/en${pathWithoutLang}`;
-  }
-};
-
-// Функция для проверки активной ссылки в навигации
-const isNavActive = (path: string): boolean => {
-  if (isEnglish) {
-    return (
-      currentPath === `/en${path}` || (path === "/" && currentPath === "/en")
-    );
-  }
-  return currentPath === path;
-};
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import { Image } from "astro:assets";
 ---
 
-<header>
-  <nav>
-    <h2><a href={isEnglish ? "/en" : "/"}>{SITE_TITLE}</a></h2>
-    <div class="internal-links">
-      <HeaderLink href={isEnglish ? "/en/about" : "/about"}>
-        {isEnglish ? "About me" : "Обо мне"}
-      </HeaderLink>
-      <HeaderLink href={isEnglish ? "/en/blog" : "/blog"}>
-        {isEnglish ? "Blog" : "Блог"}
-      </HeaderLink>
+<!doctype html>
+<html lang="ru">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <!-- Космический фон -->
+    <div class="space-bg">
+      <div class="stars"></div>
+      <div class="twinkling-stars"></div>
+      <div class="nebula"></div>
     </div>
 
-    <!-- Переключатель языка -->
-    <div class="language-switcher">
-      <a
-        href={getLocalizedPath("ru")}
-        class="lang-link {!isEnglish ? 'active' : ''}">RU</a
-      >
-      <span class="lang-separator">|</span>
-      <a
-        href={getLocalizedPath("en")}
-        class="lang-link {isEnglish ? 'active' : ''}">EN</a
-      >
-    </div>
-
-    <div class="social-links">
-      <a href="https://t.me/Okotw" target="_blank">
-        <span class="sr-only">Find me in Telegram</span>
-        <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
-          <path
-            fill="currentColor"
-            d="M13.5 2.5L1.5 6.5L5.5 9L12 4L7 10L10.5 13.5L13.5 2.5Z"></path>
-        </svg>
-      </a>
-      <a href="https://github.com/nasty23-star" target="_blank">
-        <span class="sr-only">Go to my GitHub repo</span>
-        <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
-          <path
-            fill="currentColor"
-            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-          ></path>
-        </svg>
-      </a>
-    </div>
-  </nav>
-</header>
+    <Header />
+    <main>
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-text">
+            <span class="greeting">✨ Hello, my name is ✨</span>
+            <h1>Anastasia</h1>
+            <p class="description">
+              frontend developer, contributor,<br />
+              open-source enthusiast
+            </p>
+          </div>
+          <div class="hero-image">
+            <Image
+              src="/photo.jpg"
+              alt="Anastasia - frontend developer"
+              width={300}
+              height={300}
+              format="jpg"
+              loading="eager"
+            />
+          </div>
+        </div>
+      </section>
+      <section class="terminal-section">
+        <div class="terminal-header">
+          <div class="terminal-controls">
+            <span class="control red"></span>
+            <span class="control yellow"></span>
+            <span class="control green"></span>
+          </div>
+          <span class="terminal-title">>_ SPACECRAFT_TECH_STACK.astro</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">npm list --skills --depth=0</span>
+          </div>
+          <div class="terminal-output">
+            <div class="tech-grid">
+              <!-- JavaScript -->
+              <div class="tech-item">
+                <span class="tech-name">JavaScript</span>
+              </div>
+              <!-- Vue.js -->
+              <div class="tech-item">
+                <span class="tech-name">Vue.js</span>
+              </div>
+              <div class="tech-item">
+                <span class="tech-name">Pinia</span>
+              </div>
+              <!-- TypeScript -->
+              <div class="tech-item">
+                <span class="tech-name">TypeScript</span>
+              </div>
+              <!-- HTML -->
+              <div class="tech-item">
+                <span class="tech-name">CSS</span>
+              </div>
+              <!-- Git -->
+              <div class="tech-item">
+                <span class="tech-name">Git</span>
+              </div>
+              <!-- Vite -->
+              <div class="tech-item">
+                <span class="tech-name">Vite</span>
+              </div>
+              <!-- Astro -->
+              <div class="tech-item">
+                <span class="tech-name">Astro</span>
+              </div>
+            </div>
+          </div>
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command blink">_</span>
+          </div>
+        </div>
+        <div class="terminal-footer">
+          <span class="status">
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 6L9 17L4 12"
+                stroke="#27c93f"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="#27c93f"
+                stroke-width="1.5"
+                stroke-opacity="0.3"></circle>
+            </svg>
+            SYSTEM READY
+          </span>
+          <span class="status">
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="3"
+                y="4"
+                width="18"
+                height="16"
+                rx="2"
+                stroke="#60a5fa"
+                stroke-width="1.8"></rect>
+              <path
+                d="M8 2v4M16 2v4"
+                stroke="#60a5fa"
+                stroke-width="1.8"
+                stroke-linecap="round"></path>
+              <circle
+                cx="12"
+                cy="12"
+                r="2"
+                fill="#60a5fa"
+                stroke="#60a5fa"
+                stroke-width="1.5"></circle>
+              <path
+                d="M12 14v4"
+                stroke="#60a5fa"
+                stroke-width="1.8"
+                stroke-linecap="round"></path>
+            </svg>
+            6 MODULES LOADED
+          </span>
+          <span class="status">
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                stroke="#60a5fa"
+                stroke-width="1.8"
+                stroke-linecap="round"></path>
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+                fill="#27c93f"
+                stroke="#27c93f"
+                stroke-width="1.5"></circle>
+              <circle
+                cx="12"
+                cy="12"
+                r="3"
+                fill="#27c93f"
+                stroke="#27c93f"
+                stroke-width="1.5"
+              >
+                <animate
+                  attributeName="opacity"
+                  values="1;0.3;1"
+                  dur="2s"
+                  repeatCount="indefinite"></animate>
+              </circle>
+            </svg>
+            SIGNAL: STABLE
+          </span>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
 
 <style>
-  header {
-    margin: 0;
-    padding: 0 1em;
-    box-shadow: 0 2px 8px rgba(var(--black), 5%);
-  }
-  h2 {
-    margin: 0;
-    font-size: 1em;
+  /* === КОСМИЧЕСКИЙ ФОН === */
+  .space-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    overflow: hidden;
+    background: radial-gradient(ellipse at bottom, #0a0f2a 0%, #030617 100%);
   }
 
-  h2 a,
-  h2 a.active {
-    text-decoration: none;
+  .stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(2px 2px at 10px 30px, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 80px 200px, #f8f9fa, rgba(0, 0, 0, 0)),
+      radial-gradient(3px 3px at 250px 150px, #e0e7ff, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 400px 80px, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 550px 320px, #bae6fd, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 700px 120px, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 850px 450px, #e0e7ff, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 1000px 250px, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(3px 3px at 1150px 600px, #bae6fd, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 1300px 100px, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 200px 500px, #e0e7ff, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 600px 700px, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 900px 800px, #bae6fd, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 1100px 550px, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(3px 3px at 1450px 350px, #e0e7ff, rgba(0, 0, 0, 0));
+    background-repeat: no-repeat;
+    background-size: 1500px 1000px;
+    opacity: 0.9;
+    animation: starDrift 120s linear infinite;
   }
-  nav {
+
+  .twinkling-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      radial-gradient(1px 1px at 15% 25%, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 45% 65%, #f0f9ff, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 75% 15%, #fff, rgba(0, 0, 0, 0)),
+      radial-gradient(1px 1px at 25% 80%, #bae6fd, rgba(0, 0, 0, 0)),
+      radial-gradient(2px 2px at 60% 40%, #fff, rgba(0, 0, 0, 0));
+    background-repeat: no-repeat;
+    animation: twinkle 3s ease-in-out infinite alternate;
+  }
+
+  .nebula {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+      radial-gradient(
+        circle at 30% 40%,
+        rgba(59, 130, 246, 0.08) 0%,
+        transparent 50%
+      ),
+      radial-gradient(
+        circle at 70% 60%,
+        rgba(139, 92, 246, 0.06) 0%,
+        transparent 50%
+      );
+    animation: nebulaDrift 40s ease-in-out infinite alternate;
+  }
+
+  @keyframes starDrift {
+    0% {
+      transform: translateX(0) translateY(0);
+    }
+    100% {
+      transform: translateX(-50px) translateY(-30px);
+    }
+  }
+
+  @keyframes twinkle {
+    0% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes nebulaDrift {
+    0% {
+      transform: scale(1) translateX(0);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1.05) translateX(2%);
+      opacity: 0.7;
+    }
+  }
+
+  /* === СТИЛИ ТЕРМИНАЛА === */
+  .terminal-section {
+    max-width: 900px;
+    margin: 0.5rem auto;
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: "Courier New", "Fira Code", monospace;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+  }
+
+  .terminal-header {
+    background: #0a0f1a;
+    padding: 0.8rem 1rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
     gap: 1rem;
+    border-bottom: 1px solid #1e3a5f;
   }
-  nav a {
-    padding: 1em 0.5em;
-    color: var(--black);
-    border-bottom: 4px solid transparent;
-    text-decoration: none;
-  }
-  nav a.active {
-    text-decoration: none;
-    border-bottom-color: var(--accent);
-  }
-  .social-links,
-  .social-links a {
+
+  .terminal-controls {
     display: flex;
-    align-items: center;
     gap: 0.5rem;
   }
 
-  /* Стили для переключателя языка */
-  .language-switcher {
+  .control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .control.red {
+    background: #ff5f56;
+  }
+  .control.yellow {
+    background: #ffbd2e;
+  }
+  .control.green {
+    background: #27c93f;
+  }
+
+  .terminal-title {
+    color: #60a5fa;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+  }
+
+  .terminal-body {
+    background: rgba(2, 8, 20, 0.85);
+    backdrop-filter: blur(4px);
+    padding: 1.5rem;
+    border-bottom: 1px solid #1e3a5f;
+  }
+
+  .terminal-line {
+    margin-bottom: 0.8rem;
+  }
+
+  .prompt {
+    color: #3b82f6;
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+
+  .command {
+    color: #7bc5ff;
+  }
+
+  .terminal-output {
+    margin: 0 0 0 0;
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.8rem;
+  }
+
+  .tech-item {
     display: flex;
     align-items: center;
-    gap: 0.25rem;
-    margin-right: 1rem;
+    gap: 0.8rem;
+    padding: 0.6rem 0.8rem;
+    background: rgba(59, 130, 246, 0.05);
+    border: 1px solid #1e3a5f;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .tech-item:hover {
+    border-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    transform: translateX(5px);
+  }
+
+  .tech-icon {
+    font-size: 1.2rem;
+  }
+
+  .tech-name {
+    flex: 1;
+    color: #c8e4ff;
+    font-weight: 500;
+  }
+
+  .tech-version {
+    color: #60a5fa;
+    font-size: 0.75rem;
     font-family: monospace;
-    font-weight: bold;
   }
 
-  .lang-link {
-    /* color: #60a5fa; */
-    text-decoration: none;
-    padding: 0.25rem 0.5rem;
-    border-radius: 4px;
-    transition: all 0.2s;
-    font-size: 0.9rem;
+  .blink {
+    animation: blink 1s step-end infinite;
   }
 
-  .lang-link:hover {
-    color: #93c5fd;
-    background: rgba(59, 130, 246, 0.2);
-  }
-
-  .lang-link.active {
-    /* color: #ffffff; */
-    background: #d9dee6;
-    text-shadow: none;
-  }
-
-  .lang-separator {
-    /* color: #3b82f6; */
-    opacity: 0.5;
-  }
-
-  @media (max-width: 720px) {
-    .social-links {
-      gap: 0.25rem;
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
     }
-    .language-switcher {
-      margin-right: 0.5rem;
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .terminal-footer {
+    background: #0a0f1a;
+    padding: 0.6rem 1rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.7rem;
+  }
+
+  .status {
+    color: #c8e4ff;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: "Courier New", monospace;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .status-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  .hero {
+    padding: 1rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .hero-text {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .hero-image {
+    flex-shrink: 0;
+  }
+
+  .hero-image img {
+    border-radius: 50%;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+    object-fit: cover;
+  }
+
+  .greeting {
+    display: inline-block;
+    font-size: 1rem;
+    color: #60a5fa;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+  }
+
+  h1 {
+    font-size: 4rem;
+    margin: 0 0 0.5rem 0;
+    background: linear-gradient(135deg, #7bc5ff, #3b82f6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    line-height: 1.2;
+  }
+
+  .description {
+    font-size: 1.2rem;
+    color: #a1c2e8;
+    line-height: 1.6;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: #3b82f6;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .button:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+  }
+
+  .button.secondary {
+    background: transparent;
+    border: 1px solid #3b82f6;
+    color: #60a5fa;
+  }
+
+  .button.secondary:hover {
+    background: rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1rem;
+  }
+
+  .highlight-card {
+    text-align: center;
+    padding: 2rem;
+    background: rgba(2, 8, 20, 0.5);
+    border: 1px solid #1e3a5f;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+  }
+
+  .highlight-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .emoji {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .highlight-card h3 {
+    font-size: 1.3rem;
+    margin: 0 0 0.5rem 0;
+    color: #7bc5ff;
+  }
+
+  .highlight-card p {
+    color: #a1c2e8;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 1rem 1rem;
+    }
+
+    .hero-content {
+      flex-direction: column-reverse;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .description {
+      font-size: 1rem;
+    }
+
+    .cta {
+      justify-content: center;
+    }
+
+    .hero-image img {
+      width: 200px;
+      height: 200px;
+    }
+
+    .highlights {
+      gap: 1rem;
+    }
+
+    .highlight-card {
+      padding: 1.5rem;
+    }
+
+    .tech-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
