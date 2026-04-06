@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/BlogPost.astro";
+import { Image } from "astro:assets";
 
 const pageTitle = "Обо мне";
 const pageDescription = "Страница обо мне";
@@ -92,52 +93,63 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 
   <p>
     Мой профиль на Доке: <span class="no-wrap"
-      ><a href={dokaLink} target="_blank">Doka Profile</a></span>
+      ><a href={dokaLink} target="_blank">Doka Profile</a></span
+    >
   </p>
   <p>
     Участвовала в переводе официальной документации Vue.js на русский язык: <span
-      class="no-wrap"><a href={vueDocsLink} target="_blank">Vue Docs</a></span>
+      class="no-wrap"><a href={vueDocsLink} target="_blank">Vue Docs</a></span
+    >
   </p>
   <p>
     Правило ESLint, которое я предложила, и его приняли: <span class="no-wrap"
-      ><a href={eslintRuleLink} target="_blank">ESLint Rule</a></span>
+      ><a href={eslintRuleLink} target="_blank">ESLint Rule</a></span
+    >
   </p>
   <h2>Участвовала в международном хакатоне, организованном VueSchool</h2>
-  <img
+  <Image
     src="/vue-forge.png"
-    alt="Vue Forge"
+    alt="Vue Forge cert"
     class="hero-image"
-    width="350px"
-    height="auto"
+    width={350}
+    height={200}
+    format="png"
+    loading="eager"
   />
   <h2>
     Участвовала в международной менторской программе Mentor in Tech #6 как
     ментор
   </h2>
-  <img
+  <Image
     src="/mit-ru.png"
     alt="Mentor in Tech Ru"
     class="hero-image"
-    width="350px"
-    height="auto"
+    width={350}
+    height={200}
+    format="png"
+    loading="eager"
   />
-  <img
+  <Image
     src="/mit-en.png"
     alt="Mentor in Tech En"
     class="hero-image"
-    width="350px"
-    height="auto"
+    width={350}
+    height={200}
+    format="png"
+    loading="eager"
   />
   <h2>
     Была в составе Программного Комитета онлайн конференции сообщества
     тестировщиц QA Sis Conf #3
   </h2>
-  <img
+  <Image
     src="/qa-sis-pc.webp"
     alt="QA Sis Conf"
     class="hero-image"
-    width="350px"
-    height="auto"
+    width={350}
+    height={200}
+    format="png"
+    loading="eager"
   />
   <h3>Мои выступления</h3>
   <ul>
@@ -150,16 +162,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     <li><a href={dokaDvizh} target="_blank">Doka Dvizh</a></li>
     <li><a href={codeSisters} target="_blank">Code Sisters</a></li>
   </ul>
-  <h3>
-    Участвовала во Всероссийском диктанте о культуре глухих "Услышать тишину"
-  </h3>
-  <img
-    src="/culture-inclusion.jpg"
-    alt="Услышать тишину"
-    class="hero-image"
-    width="350px"
-    height="auto"
-  />
 </Layout>
 
 <style>
