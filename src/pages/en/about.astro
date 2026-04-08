@@ -142,6 +142,64 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     <li><a href={dokaDvizh} target="_blank">Doka Dvizh</a></li>
     <li><a href={codeSisters} target="_blank">Code Sisters</a></li>
   </ul>
+
+  <section class="terminal-section">
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <span class="terminal-dots">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+        </span>
+        <span class="terminal-title">developer@nastya:~</span>
+        <span class="terminal-status">ZSH</span>
+      </div>
+
+      <div class="terminal-content">
+        <div class="command-line">
+          <span class="prompt">$</span>
+          <span class="command">npm run expertise -- --details</span>
+        </div>
+
+        <div class="output-block">
+          <div class="expertise-details">
+            <div class="detail-item">
+              <span class="detail-label">Primary stack:</span>
+              <span class="detail-value">Vue + TypeScript + Astro</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Build tools:</span>
+              <span class="detail-value">Vite, Webpack, Rollup</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Package managers:</span>
+              <span class="detail-value">npm, pnpm, yarn</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Version control:</span>
+              <span class="detail-value">Git (rebase, cherry-pick, bisect)</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="command-line interactive">
+          <span class="prompt">$</span>
+          <span
+            class="command-input"
+            contenteditable="true"
+            data-placeholder="type 'help skills' to explore..."></span>
+          <span class="blinking-cursor">█</span>
+        </div>
+
+        <div class="terminal-footer">
+          <span class="footer-text"
+            >📎 [навыки: 8 активных модулей] — ready for next task</span
+          >
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
@@ -386,6 +444,233 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   @media (min-width: 840px) {
     .image {
       display: flex;
+    }
+  }
+
+  .terminal-section {
+    margin: 2rem 0;
+    width: 100%;
+  }
+
+  .terminal-window {
+    background: #0c0f1c;
+    border-radius: 12px;
+    border: 1px solid #1e3a5f;
+    box-shadow:
+      0 8px 20px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(59, 130, 246, 0.1) inset;
+    overflow: hidden;
+    backdrop-filter: blur(2px);
+  }
+
+  .terminal-bar {
+    background: #0a0e1a;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #1e3a5f;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .dot.red {
+    background: #ff5f56;
+  }
+  .dot.yellow {
+    background: #ffbd2e;
+  }
+  .dot.green {
+    background: #27c93f;
+  }
+
+  .terminal-title {
+    color: #7bc5ff;
+    font-family: "Courier Prime", "Fira Mono", monospace;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+
+  .terminal-status {
+    color: #3b82f6;
+    font-size: 11px;
+    font-family: monospace;
+    background: #1e293b;
+    padding: 2px 8px;
+    border-radius: 12px;
+  }
+
+  .terminal-content {
+    padding: 20px;
+    font-family: "Courier Prime", "Fira Mono", "Courier New", monospace;
+  }
+
+  .command-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .prompt {
+    color: #a1c2e8;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .command {
+    color: #7bc5ff;
+    font-size: 14px;
+  }
+
+  .command-input {
+    background: transparent;
+    border: none;
+    color: #c8e4ff;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .command-input[contenteditable="true"]:empty:before {
+    content: attr(data-placeholder);
+    color: #4b5563;
+    font-style: italic;
+  }
+
+  .blinking-cursor {
+    color: #a1c2e8;
+    animation: blink 1s step-end infinite;
+    font-weight: normal;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .output-block {
+    margin: 8px 0 20px 20px;
+    padding-left: 12px;
+    border-left: 2px solid #3b82f6;
+  }
+
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 8px 0;
+  }
+
+  .skill-tag {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid #3b82f6;
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: #93c5fd;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .skill-tag:hover {
+    background: rgba(59, 130, 246, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  }
+
+  .skill-bullet {
+    color: #a1c2e8;
+    font-weight: bold;
+  }
+
+  .expertise-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+
+  .detail-emoji {
+    font-size: 14px;
+    min-width: 24px;
+  }
+
+  .detail-label {
+    color: #7bc5ff;
+    font-weight: 600;
+    min-width: 140px;
+  }
+
+  .detail-value {
+    color: #c8e4ff;
+    font-family: monospace;
+  }
+
+  .interactive {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px dashed #1e3a5f;
+  }
+
+  .terminal-footer {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #1e3a5f;
+    font-size: 11px;
+    color: #4b5563;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .footer-text {
+    color: #5b6e8c;
+  }
+
+  /* Адаптивность */
+  @media (max-width: 640px) {
+    .terminal-content {
+      padding: 16px;
+    }
+
+    .detail-label {
+      min-width: 100px;
+    }
+
+    .skills-grid {
+      gap: 8px;
+    }
+
+    .skill-tag {
+      font-size: 11px;
+      padding: 3px 10px;
     }
   }
 </style>
