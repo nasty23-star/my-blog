@@ -34,7 +34,9 @@ const eslintRuleLink = "https://github.com/eslint/css/issues/73";
 
 const minskCss = "https://www.youtube.com/watch?v=6wK9z7zahPw";
 const moscowCss = "https://it-event-hub.ru/events/moscowcss-24-2024-02-15";
-const qaSisConf = "http://qa-sisters.com/conf-3-talks";
+const qaSisConfThree = "http://qa-sisters.com/conf-3-talks";
+const quaSisConfFour = "https://qa-sisters.com/conf-4-speakers"
+const qaSisConfPC = "https://qa-sisters.com/conf-4-pk"
 const qaSis = "https://www.youtube.com/watch?v=_zYpsPak_Qw";
 const vkInclusion =
   "https://vkvideo.ru/playlist/-147415323_22/video-147415323_456240586?linked=1";
@@ -122,8 +124,13 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   />
   <h2>
     Was a member of the Program Committee of the online conference of the QA
-    Sisters community QA Sis Conf #3
+    Sisters community QA Sis Conf #3 and QA Sis Conf #4
   </h2>
+  <div class="pc">
+  <a href={qaSisConfPC} target="_blank">
+    Qa Sis Conf #4 Program Committee page
+  </a>
+  </div>
   <img
     src="/qa-conf-pc.png"
     alt="QA Sis Conf"
@@ -136,7 +143,8 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     <li><a href={vkInclusion} target="_blank">VK Inclusion</a></li>
     <li><a href={minskCss} target="_blank">MinskCSS</a></li>
     <li><a href={moscowCss} target="_blank">MoscowCSS</a></li>
-    <li><a href={qaSisConf} target="_blank">QA Sisters Conference</a></li>
+    <li><a href={qaSisConfThree} target="_blank">QA Sisters Conference #3</a></li>
+    <li><a href={quaSisConfFour} target="_blank">QA Sisters Conference #4</a></li>
     <li><a href={qaSis} target="_blank">QA Sisters</a></li>
     <li><a href={qaPermGuild} target="_blank">QA Guild Perm</a></li>
     <li><a href={dokaDvizh} target="_blank">Doka Dvizh</a></li>
@@ -261,6 +269,18 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   img:hover {
     border-color: #3b82f6;
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+
+    .pc {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pc a {
+    border-bottom: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 18px;
   }
 
   .no-wrap {
