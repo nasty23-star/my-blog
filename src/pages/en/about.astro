@@ -12,11 +12,13 @@ const identity = {
 const myImage = "/photo-compressed.jpg";
 
 const skills = [
+  "Vue",
+  "React",
+  "Next",
+  "TypeScript",
+  "JavaScript",
   "HTML",
   "CSS",
-  "JavaScript",
-  "Vue",
-  "TypeScript",
   "Astro",
   "Git",
   "Vite",
@@ -125,8 +127,15 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     Sisters community QA Sis Conf #3
   </h2>
   <img
-    src="/qa-conf-pc.png"
+    src="/qa-conf-pc2025.png"
     alt="QA Sis Conf"
+    class="hero-image"
+    width="350px"
+    height="auto"
+  />
+  <img
+    src="/qa-conf-pc2026.jpg"
+    alt="QA Sis Conf #4"
     class="hero-image"
     width="350px"
     height="auto"
@@ -306,7 +315,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 
   img {
     max-width: 100%;
-    height: auto;
     border-radius: 12px;
     border: 1px solid #1e3a5f;
     box-shadow:
@@ -319,6 +327,11 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   img:hover {
     border-color: #3b82f6;
     box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+  }
+
+  .facts {
+    flex: 1;
+    min-width: 0;
   }
 
   .no-wrap {
