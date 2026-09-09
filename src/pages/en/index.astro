@@ -4,6 +4,7 @@ import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { Image } from "astro:assets";
+import "@styles/global.css"
 ---
 
 <!doctype html>
@@ -209,7 +210,7 @@ import { Image } from "astro:assets";
     height: 100%;
     z-index: -2;
     overflow: hidden;
-    background: radial-gradient(ellipse at bottom, #0a0f2a 0%, #030617 100%);
+    //  background: radial-gradient(ellipse at bottom, #0a0f2a 0%, #030617 100%);
   }
 
   .stars {
@@ -316,7 +317,7 @@ import { Image } from "astro:assets";
   }
 
   .terminal-header {
-    background: #0a0f1a;
+    // background: #0a0f1a;
     padding: 0.8rem 1rem;
     display: flex;
     gap: 1rem;
@@ -351,7 +352,7 @@ import { Image } from "astro:assets";
   }
 
   .terminal-body {
-    background: rgba(2, 8, 20, 0.85);
+    // background: rgba(2, 8, 20, 0.85);
     backdrop-filter: blur(4px);
     padding: 1.5rem;
     border-bottom: 1px solid #1e3a5f;
@@ -368,7 +369,7 @@ import { Image } from "astro:assets";
   }
 
   .command {
-    color: #7bc5ff;
+    color: #3b82f6;
   }
 
   .terminal-output {
@@ -398,12 +399,12 @@ import { Image } from "astro:assets";
 
   .tech-name {
     flex: 1;
-    color: #c8e4ff;
+    color: #3b82f6;
     font-weight: 500;
   }
 
   .tech-version {
-    color: #60a5fa;
+    color: #3b82f6;
     font-size: 0.75rem;
     font-family: monospace;
   }
@@ -423,7 +424,7 @@ import { Image } from "astro:assets";
   }
 
   .terminal-footer {
-    background: #0a0f1a;
+    // background: #0a0f1a;
     padding: 0.6rem 1rem;
     display: flex;
     gap: 1.5rem;
@@ -432,7 +433,7 @@ import { Image } from "astro:assets";
   }
 
   .status {
-    color: #c8e4ff;
+    color: #3b82f6;
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -496,7 +497,7 @@ import { Image } from "astro:assets";
 
   .description {
     font-size: 1.2rem;
-    color: #a1c2e8;
+    color: #3b82f6;
     line-height: 1.6;
     height: 94px;
   }
