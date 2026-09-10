@@ -160,30 +160,88 @@ a:hover {
   nav a {
     padding: 1em 0.5em;
     color: var(--black);
-    border-bottom: 4px solid transparent;
     text-decoration: none;
   }
   nav a.active {
     text-decoration: none;
     border-bottom-color: var(--accent);
   }
-  .social-links,
-  .social-links a {
+
+  .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative; /* Важно для позиционирования выпадашки */
+}
+
+/* Кнопка настроек (шестеренка) — по умолчанию скрыта на десктопе */
+.settings-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 8px;
+}
+
+/* Блок настроек (язык + тема) — на десктопе просто флекс */
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
+@media (max-width: 768px) {
+  /* Показываем шестеренку */
+  .settings-toggle {
+    display: block;
+    color: var(--text-primary);
+  }
+
+    .switcher {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: var(--bg-body);  
+    color: var(--text-primary);            
+    border: 1px solid var(--border-color); 
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    flex-direction: column;
+    gap: 12px;
+    z-index: 100;
+    min-width: 120px;
+  }
+
+  .switcher.is-open {
+    display: flex;
+  }
+
+  .switcher .lang-link {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+}
+  
+  .left-side {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
   }
 
   /* Стили для переключателя языка */
-  .language-switcher {
+  @media (min-width: 769px) {
+  .switcher {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    margin-right: 1rem;
     font-family: monospace;
     font-weight: bold;
   }
-
+}
   .lang-link {
     color: #60a5fa;
     text-decoration: none;
@@ -237,10 +295,11 @@ a:hover {
 }
 
   @media (max-width: 720px) {
-    .social-links {
-      gap: 0.25rem;
+    .left-side {
+      gap: 0.5rem;
     }
-    .language-switcher {
+
+    .switcher {
       margin-right: 0.5rem;
     }
   }

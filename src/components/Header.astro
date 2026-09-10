@@ -37,8 +37,8 @@ const isNavActive = (path: string): boolean => {
 
 <header>
   <nav>
+  <div class="left-side">
     <h2><a href={isEnglish ? "/en" : "/"}>{SITE_TITLE}</a></h2>
-    <div class="internal-links">
       <HeaderLink href={isEnglish ? "/en/about" : "/about"}>
         {isEnglish ? "About me" : "Обо мне"}
       </HeaderLink>
@@ -47,29 +47,26 @@ const isNavActive = (path: string): boolean => {
       </HeaderLink>
     </div>
 
-    <div class="language-switcher">
-      <a href={getLocalizedPath("ru")} class={`lang-link ${!isEnglish ? "active" : ""}`}>RU</a>
-      <a href={getLocalizedPath("en")} class={`lang-link ${isEnglish ? "active" : ""}`}>EN</a>
-    </div>
+    <div class="header-actions">
+  <!-- Кнопка настроек (видна только на мобильных) -->
+  <button id="settings-toggle" class="settings-toggle" aria-label="Настройки" aria-expanded="false">
+    <!-- Иконка шестеренки (SVG) -->
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </svg>
+  </button>
 
+  <!-- Блок настроек -->
+  <div class="switcher" id="settings-menu">
+    <a href={getLocalizedPath("ru")} class={`lang-link ${!isEnglish ? "active" : ""}`}>RU</a>
+    <a href={getLocalizedPath("en")} class={`lang-link ${isEnglish ? "active" : ""}`}>EN</a>
     <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
       <span id="theme-icon" class="theme-icon" aria-hidden="true"></span>
     </button>
+  </div>
+</div>
 
-    <div class="social-links">
-      <a href="https://t.me/Okotw" target="_blank">
-        <span class="sr-only">Find me in Telegram</span>
-        <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
-          <path fill="currentColor" d="M13.5 2.5L1.5 6.5L5.5 9L12 4L7 10L10.5 13.5L13.5 2.5Z"></path>
-        </svg>
-      </a>
-      <a href="https://github.com/nasty23-star" target="_blank">
-        <span class="sr-only">Go to my GitHub repo</span>
-        <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32">
-          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
-        </svg>
-      </a>
-    </div>
   </nav>
 </header>
 
@@ -126,4 +123,36 @@ const isNavActive = (path: string): boolean => {
       setTheme(e.newValue);
     }
   });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const settingsToggle = document.getElementById('settings-toggle');
+  const settingsMenu = document.getElementById('settings-menu');
+
+  if (settingsToggle && settingsMenu) {
+    // Открытие/закрытие по клику на шестеренку
+    settingsToggle.addEventListener('click', (e) => {
+      e.stopPropagation(); // Чтобы клик не закрывал меню сразу
+      const isOpen = settingsMenu.classList.toggle('is-open');
+      settingsToggle.setAttribute('aria-expanded', isOpen);
+    });
+
+    // Закрытие при клике вне меню
+    document.addEventListener('click', (e) => {
+      if (!settingsMenu.contains(e.target) && !settingsToggle.contains(e.target)) {
+        settingsMenu.classList.remove('is-open');
+        settingsToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Закрытие по Escape (для доступности)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && settingsMenu.classList.contains('is-open')) {
+        settingsMenu.classList.remove('is-open');
+        settingsToggle.setAttribute('aria-expanded', 'false');
+        settingsToggle.focus();
+      }
+    });
+  }
+});
 </script>
