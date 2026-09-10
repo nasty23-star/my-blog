@@ -24,6 +24,10 @@
 </div>
 
 <style>
+  /* ============================================================
+     VS Code Night Owl — dark
+     ============================================================ */
+
   .terminal-wrapper {
     width: 100%;
     display: flex;
@@ -35,31 +39,27 @@
     width: 100%;
     max-width: 850px;
     height: 300px;
-    background: #0c0c0c;
+    background: #011627;
     border-radius: 10px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.75);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid #2a2a2a;
+    border: 1px solid #1d3b53;
   }
 
   .titlebar {
     height: 32px;
-    background: #1c1c1c;
+    background: #0b2942;
     display: flex;
     align-items: center;
     padding: 0 12px;
     gap: 8px;
-    border-bottom: 1px solid #2a2a2a;
+    border-bottom: 1px solid #1d3b53;
     flex-shrink: 0;
   }
 
-  .dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
   .dot.red    { background: #ff5f56; }
   .dot.yellow { background: #ffbd2e; }
   .dot.green  { background: #27c93f; }
@@ -67,9 +67,9 @@
   .title {
     flex: 1;
     text-align: center;
-    color: #888;
+    color: #b0b9b9;
     font-size: 12px;
-    font-family: -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
   .screen {
@@ -78,31 +78,33 @@
     padding: 15px;
     font-size: 14px;
     line-height: 1.5;
-    color: #d4d4d4;
+    color: #d6deeb;
     white-space: pre-wrap;
     word-break: break-word;
     scrollbar-width: thin;
-    scrollbar-color: #333 #0c0c0c;
-    font-family: "Courier Prime", "Fira Mono", "Courier New", monospace;
+    scrollbar-color: #1d3b53 #011627;
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas, "Courier New", monospace;
   }
 
   .screen::-webkit-scrollbar { width: 8px; }
-  .screen::-webkit-scrollbar-track { background: #0c0c0c; }
-  .screen::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  .screen::-webkit-scrollbar-track { background: #011627; }
+  .screen::-webkit-scrollbar-thumb { background: #1d3b53; border-radius: 4px; }
+  .screen::-webkit-scrollbar-thumb:hover { background: #2a4f6e; }
 
   .line { margin: 0; }
-  .prompt-user { color: #27c93f; }
-  .prompt-path { color: #58a6ff; }
-  .prompt-symbol { color: #d4d4d4; }
-  .cmd-text { color: #ffffff; }
 
-  .dir { color: #58a6ff; font-weight: bold; }
-  .file-js { color: #f1e05a; }
-  .file-vue { color: #41b883; font-weight: bold; }
-  .file-json { color: #f0db4f; }
-  .file-md { color: #b0b0b0; }
-  .file-config { color: #ff6b6b; }
-  .file-lock { color: #8b949e; }
+  .prompt-user   { color: #addb67; }
+  .prompt-path   { color: #82aaff; }
+  .prompt-symbol { color: #d6deeb; }
+  .cmd-text      { color: #d6deeb; }
+
+  .dir         { color: #82aaff; font-weight: 600; }
+  .file-js     { color: #ecc48d; }
+  .file-vue    { color: #addb67; font-weight: 600; }
+  .file-json   { color: #ecc48d; }
+  .file-md     { color: #d6deeb; }
+  .file-config { color: #f78c6c; }
+  .file-lock   { color: #637777; }
 
   .input-line {
     display: flex;
@@ -110,7 +112,7 @@
     padding: 0 15px 12px;
     font-size: 14px;
     flex-shrink: 0;
-    font-family: "Courier Prime", "Fira Mono", "Courier New", monospace;
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas, "Courier New", monospace;
   }
 
   .input-line .prompt {
@@ -125,27 +127,38 @@
     background: transparent;
     border: none;
     outline: none;
-    color: #ffffff;
-    font-family: 'Courier New', monospace;
+    color: #d6deeb;
+    font-family: inherit;
     font-size: 14px;
-    caret-color: #27c93f;
+    caret-color: #7fdbca;
   }
 
   .cursor {
     width: 8px;
     height: 16px;
-    background: #27c93f;
+    background: #7fdbca;
     animation: blink 1s step-end infinite;
     display: none;
   }
 
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
+  @keyframes blink { 50% { opacity: 0; } }
 
-  .error { color: #ff6b6b; }
-  .info  { color: #8b949e; font-style: italic; }
-  .success { color: #27c93f; }
+  /* ---------- Semantic ---------- */
+  .error   { color: #ef5350; }
+  .info    { color: #637777; font-style: italic; }
+  .success { color: #addb67; }
+
+  /* ---------- Git colors (Night Owl) ---------- */
+  .git-branch   { color: #c792ea; font-weight: 600; }   /* фиолетовый — текущая ветка */
+  .git-branch-o { color: #82aaff; }                     /* голубой — другие ветки */
+  .git-modified { color: #ecc48d; }                     /* жёлтый — modified */
+  .git-staged   { color: #addb67; }                     /* зелёный — staged */
+  .git-untracked{ color: #f78c6c; }                     /* оранжевый — untracked */
+  .git-deleted  { color: #ef5350; }                     /* красный — deleted */
+  .git-hash     { color: #ecc48d; }                     /* жёлтый — хеш коммита */
+  .git-author   { color: #7fdbca; }                     /* cyan — автор */
+  .git-date     { color: #637777; }                     /* серый — дата */
+  .git-msg      { color: #d6deeb; }                     /* основной — сообщение */
 </style>
 
 <script>
@@ -235,6 +248,56 @@
           'index.js':         { type: 'file', color: 'file-js' },
         }
       },
+    };
+
+    // === Виртуальный git-репозиторий ===
+    const git = {
+      branch: 'main',
+      branches: ['main', 'feature/auth', 'feature/terminal', 'fix/styles'],
+      staged: [
+        { status: 'new',      file: 'src/components/Terminal.vue' },
+        { status: 'modified', file: 'src/main.js' },
+      ],
+      modified: [
+        { status: 'modified', file: 'src/App.vue' },
+        { status: 'modified', file: 'package.json' },
+        { status: 'deleted',  file: 'src/style.css' },
+      ],
+      untracked: [
+        'src/composables/useGit.js',
+        'src/stores/git.js',
+        '.env.local',
+      ],
+      remote: {
+        name: 'origin',
+        url:  'git@github.com:user/my-app.git',
+      },
+      log: [
+        {
+          hash: 'a1b2c3d',
+          author: 'Anastasia Yarosh',
+          date: '2 hours ago',
+          msg: 'feat: add git commands to dev terminal',
+        },
+        {
+          hash: 'e4f5g6h',
+          author: 'Leela Turanga',
+          date: 'yesterday',
+          msg: 'fix: correct prompt path resolution',
+        },
+        {
+          hash: 'i7j8k9l',
+          author: 'Bender Rodriguez',
+          date: '3 days ago',
+          msg: 'refactor: extract FS into separate module',
+        },
+        {
+          hash: 'm0n1o2p',
+          author: 'Amy Wang',
+          date: '5 days ago',
+          msg: 'chore: initial project setup with Vite + Vue 3',
+        },
+      ],
     };
 
     let cwd = '~/my-app';
@@ -438,16 +501,143 @@ npm run dev
       });
     }
 
+    // ============================================================
+    // GIT — status / log / branch
+    // ============================================================
+    function cmdGit(args) {
+      const sub = args[0];
+
+      if (!sub) {
+        writeLine(`usage: git <command> [<args>]`, 'line error');
+        writeLine(`Доступные подкоманды: <span class="success">status</span>, <span class="success">log</span>, <span class="success">branch</span>`);
+        return;
+      }
+
+      switch (sub) {
+        case 'status': gitStatus(args.slice(1)); break;
+        case 'log':    gitLog(args.slice(1));    break;
+        case 'branch': gitBranch(args.slice(1)); break;
+        default:
+          writeLine(`git: '${esc(sub)}' is not a git command. See 'git --help'.`, 'line error');
+          writeLine(`Доступно: <span class="success">status</span>, <span class="success">log</span>, <span class="success">branch</span>`);
+      }
+    }
+
+    function gitStatus(args) {
+      const short = args.includes('-s') || args.includes('--short');
+
+      writeLine(`On branch <span class="git-branch">${esc(git.branch)}</span>`);
+
+      // Ahead / behind
+      writeLine(`Your branch is up to date with <span class="git-branch-o">'${esc(git.remote.name)}/${esc(git.branch)}'</span>.`);
+      writeLine('');
+
+      if (git.staged.length) {
+        writeLine(`Changes to be committed:`);
+        writeLine(`  (use "git restore --staged &lt;file&gt;..." to unstage)`);
+        git.staged.forEach(({ status, file }) => {
+          const label = status === 'new' ? 'new file' : 'modified';
+          const cls   = status === 'new' ? 'git-staged' : 'git-staged';
+          writeLine(`        <span class="${cls}">${label}:   ${esc(file)}</span>`);
+        });
+        writeLine('');
+      }
+
+      if (git.modified.length) {
+        writeLine(`Changes not staged for commit:`);
+        writeLine(`  (use "git add &lt;file&gt;..." to update what will be committed)`);
+        writeLine(`  (use "git restore &lt;file&gt;..." to discard changes in working directory)`);
+        git.modified.forEach(({ status, file }) => {
+          const label = status === 'deleted' ? 'deleted' : 'modified';
+          const cls   = status === 'deleted' ? 'git-deleted' : 'git-modified';
+          writeLine(`        <span class="${cls}">${label}:   ${esc(file)}</span>`);
+        });
+        writeLine('');
+      }
+
+      if (git.untracked.length) {
+        writeLine(`Untracked files:`);
+        writeLine(`  (use "git add &lt;file&gt;..." to include in what will be committed)`);
+        git.untracked.forEach(file => {
+          writeLine(`        <span class="git-untracked">${esc(file)}</span>`);
+        });
+        writeLine('');
+      }
+
+      if (!git.staged.length && !git.modified.length && !git.untracked.length) {
+        writeLine(`nothing to commit, working tree clean`);
+      } else {
+        writeLine(`no changes added to commit (use "git add" and/or "git commit -a")`);
+      }
+    }
+
+    function gitLog(args) {
+      // Поддержка: git log, git log --oneline, git log -n <N>
+      const oneline = args.includes('--oneline');
+      let limit = git.log.length;
+
+      const nIdx = args.findIndex(a => a === '-n' || a === '-<number>');
+      if (nIdx !== -1 && args[nIdx + 1]) {
+        const parsed = parseInt(args[nIdx + 1], 10);
+        if (!isNaN(parsed) && parsed > 0) limit = parsed;
+      }
+      const dashN = args.find(a => /^-\d+$/.test(a));
+      if (dashN) {
+        const parsed = parseInt(dashN.slice(1), 10);
+        if (!isNaN(parsed) && parsed > 0) limit = parsed;
+      }
+
+      const entries = git.log.slice(0, limit);
+
+      if (oneline) {
+        entries.forEach(c => {
+          writeLine(`<span class="git-hash">${esc(c.hash)}</span> <span class="git-msg">${esc(c.msg)}</span>`);
+        });
+        return;
+      }
+
+      entries.forEach((c, i) => {
+        writeLine(`<span class="git-hash">commit ${esc(c.hash)}</span>`);
+        writeLine(`Author: <span class="git-author">${esc(c.author)}</span>`);
+        writeLine(`Date:   <span class="git-date">${esc(c.date)}</span>`);
+        writeLine('');
+        writeLine(`    <span class="git-msg">${esc(c.msg)}</span>`);
+        if (i < entries.length - 1) writeLine('');
+      });
+    }
+
+    function gitBranch(args) {
+      // Поддержка: git branch, git branch -a, git branch -v
+      const showAll    = args.includes('-a') || args.includes('--all');
+      const verbose    = args.includes('-v') || args.includes('--verbose');
+      const remote     = args.includes('-r') || args.includes('--remotes');
+
+      const list = showAll || remote
+        ? [...git.branches, `remotes/${git.remote.name}/${git.branch}`]
+        : git.branches;
+
+      list.forEach(name => {
+        const isCurrent = name === git.branch;
+        const prefix    = isCurrent ? '* ' : '  ';
+        const cls       = isCurrent ? 'git-branch' : 'git-branch-o';
+        const suffix    = verbose && isCurrent ? `  <span class="git-hash">${esc(git.log[0].hash)}</span> <span class="git-msg">${esc(git.log[0].msg)}</span>` : '';
+        writeLine(`${prefix}<span class="${cls}">${esc(name)}</span>${suffix}`);
+      });
+    }
+
     function cmdHelp() {
       writeLine(`<span class="success">Доступные команды:</span>`);
-      writeLine(`  <span class="dir">ls</span> [path]      — список файлов в директории`);
-      writeLine(`  <span class="dir">ls -la</span>         — подробный список, включая скрытые`);
-      writeLine(`  <span class="dir">cd</span> &lt;dir&gt;        — перейти в директорию`);
-      writeLine(`  <span class="dir">pwd</span>             — текущая директория`);
-      writeLine(`  <span class="dir">cat</span> &lt;file&gt;      — показать содержимое файла`);
-      writeLine(`  <span class="dir">tree</span>            — дерево проекта`);
-      writeLine(`  <span class="dir">clear</span>           — очистить экран`);
-      writeLine(`  <span class="dir">help</span>            — эта справка`);
+      writeLine(`  <span class="dir">ls</span> [path]        — список файлов в директории`);
+      writeLine(`  <span class="dir">ls -la</span>           — подробный список, включая скрытые`);
+      writeLine(`  <span class="dir">cd</span> &lt;dir&gt;          — перейти в директорию`);
+      writeLine(`  <span class="dir">pwd</span>               — текущая директория`);
+      writeLine(`  <span class="dir">cat</span> &lt;file&gt;        — показать содержимое файла`);
+      writeLine(`  <span class="dir">tree</span>              — дерево проекта`);
+      writeLine(`  <span class="dir">git status</span>        — состояние рабочей директории`);
+      writeLine(`  <span class="dir">git log</span>           — история коммитов`);
+      writeLine(`  <span class="dir">git branch</span>        — список веток`);
+      writeLine(`  <span class="dir">clear</span>             — очистить экран`);
+      writeLine(`  <span class="dir">help</span>              — эта справка`);
       writeLine('');
     }
 
@@ -469,6 +659,7 @@ npm run dev
         case 'pwd':     cmdPwd();    break;
         case 'cat':     cmdCat(args);break;
         case 'tree':    cmdTree(args);break;
+        case 'git':     cmdGit(args);break;
         case 'help':    cmdHelp();   break;
         case 'clear':   cmdClear();  break;
         case 'echo':    writeLine(esc(args.join(' '))); break;
@@ -510,10 +701,11 @@ npm run dev
       }
     });
 
+    // Фокус на input только при клике по терминалу
     terminal.addEventListener('click', () => input.focus());
 
     showWelcome();
-    input.focus();
+    // Убрано: input.focus();
   }
 
   // Запуск после загрузки DOM и при переходах в Astro (View Transitions)
@@ -525,3 +717,4 @@ npm run dev
   document.addEventListener('astro:after-swap', initTerminal);
   document.addEventListener('astro:page-load', initTerminal);
 </script>
+
