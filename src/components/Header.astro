@@ -53,7 +53,7 @@ const isNavActive = (path: string): boolean => {
     </div>
 
     <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
-      <span id="theme-icon">🌙</span>
+      <span id="theme-icon" class="theme-icon" aria-hidden="true"></span>
     </button>
 
     <div class="social-links">
@@ -94,15 +94,6 @@ const isNavActive = (path: string): boolean => {
 </script>
 
 <script>
-  // Обновление иконки + обработчик клика
-  function updateThemeIcon() {
-    const themeIcon = document.getElementById('theme-icon');
-    if (!themeIcon) return;
-    const isDark =
-      document.documentElement.classList.contains('dark') ||
-      document.documentElement.classList.contains('dark-theme');
-    themeIcon.textContent = isDark ? '☀️' : '🌙';
-  }
 
   function setTheme(theme) {
     const html = document.documentElement;
@@ -116,11 +107,7 @@ const isNavActive = (path: string): boolean => {
       html.setAttribute('data-theme', 'light');
     }
     localStorage.setItem('theme', theme);
-    updateThemeIcon();
   }
-
-  // Инициализация иконки
-  updateThemeIcon();
 
   // Обработчик клика
   const themeToggle = document.getElementById('theme-toggle');
@@ -138,10 +125,5 @@ const isNavActive = (path: string): boolean => {
     if (e.key === 'theme' && e.newValue) {
       setTheme(e.newValue);
     }
-  });
-
-  // Для Astro View Transitions: переинициализация после навигации
-  document.addEventListener('astro:after-swap', () => {
-    updateThemeIcon();
   });
 </script>
