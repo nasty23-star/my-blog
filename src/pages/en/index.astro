@@ -2,6 +2,7 @@
 import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
+import Sparkle from "../../components/Sparkle.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { Image } from "astro:assets";
 import "@styles/global.css"
@@ -25,7 +26,7 @@ import "@styles/global.css"
       <section class="hero">
         <div class="hero-content">
           <div class="hero-text">
-            <span class="greeting">✨ Hello, my name is ✨</span>
+            <span class="greeting"><Sparkle /> Hello, my name is <Sparkle /></span>
             <h1>Anastasia</h1>
             <p class="description">
               frontend developer, contributor,<br />

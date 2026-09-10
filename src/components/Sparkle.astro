@@ -1,0 +1,21 @@
+---
+interface Props {
+  size?: number | string;
+}
+const { size = "1em" } = Astro.props;
+---
+
+<svg
+  class="sparkle"
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <path d="M12 3l1.8 4.6L18.4 9.4 13.8 11.2 12 15.8 10.2 11.2 5.6 9.4 10.2 7.6z" />
+</svg>
