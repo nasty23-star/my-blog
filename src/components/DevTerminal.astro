@@ -1,0 +1,527 @@
+---
+// DevTerminal.astro — интерактивный терминал с виртуальной FS проекта
+---
+
+<div class="terminal-wrapper" id="terminal-wrapper">
+  <div class="terminal" id="terminal">
+    <div class="titlebar">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="title">user@dev: ~/my-app</span>
+    </div>
+
+    <div class="screen" id="screen"></div>
+
+    <div class="input-line" id="input-line">
+      <span class="prompt">
+        <span class="prompt-user">user@dev</span><span class="prompt-symbol">:</span><span class="prompt-path" id="prompt-path">~/my-app</span><span class="prompt-symbol">$</span>
+      </span>
+      <input type="text" id="cmd" autocomplete="off" spellcheck="false" />
+      <span class="cursor" id="cursor"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .terminal-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+  }
+
+  .terminal {
+    width: 100%;
+    max-width: 850px;
+    height: 300px;
+    background: #0c0c0c;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
+  }
+
+  .titlebar {
+    height: 32px;
+    background: #1c1c1c;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 8px;
+    border-bottom: 1px solid #2a2a2a;
+    flex-shrink: 0;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .dot.red    { background: #ff5f56; }
+  .dot.yellow { background: #ffbd2e; }
+  .dot.green  { background: #27c93f; }
+
+  .title {
+    flex: 1;
+    text-align: center;
+    color: #888;
+    font-size: 12px;
+    font-family: -apple-system, sans-serif;
+  }
+
+  .screen {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #d4d4d4;
+    white-space: pre-wrap;
+    word-break: break-word;
+    scrollbar-width: thin;
+    scrollbar-color: #333 #0c0c0c;
+    font-family: "Courier Prime", "Fira Mono", "Courier New", monospace;
+  }
+
+  .screen::-webkit-scrollbar { width: 8px; }
+  .screen::-webkit-scrollbar-track { background: #0c0c0c; }
+  .screen::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+  .line { margin: 0; }
+  .prompt-user { color: #27c93f; }
+  .prompt-path { color: #58a6ff; }
+  .prompt-symbol { color: #d4d4d4; }
+  .cmd-text { color: #ffffff; }
+
+  .dir { color: #58a6ff; font-weight: bold; }
+  .file-js { color: #f1e05a; }
+  .file-vue { color: #41b883; font-weight: bold; }
+  .file-json { color: #f0db4f; }
+  .file-md { color: #b0b0b0; }
+  .file-config { color: #ff6b6b; }
+  .file-lock { color: #8b949e; }
+
+  .input-line {
+    display: flex;
+    align-items: center;
+    padding: 0 15px 12px;
+    font-size: 14px;
+    flex-shrink: 0;
+    font-family: "Courier Prime", "Fira Mono", "Courier New", monospace;
+  }
+
+  .input-line .prompt {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+    margin-right: 6px;
+  }
+
+  #cmd {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    caret-color: #27c93f;
+  }
+
+  .cursor {
+    width: 8px;
+    height: 16px;
+    background: #27c93f;
+    animation: blink 1s step-end infinite;
+    display: none;
+  }
+
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
+  .error { color: #ff6b6b; }
+  .info  { color: #8b949e; font-style: italic; }
+  .success { color: #27c93f; }
+</style>
+
+<script>
+  // === Инициализация терминала ===
+  function initTerminal() {
+    const wrapper = document.getElementById('terminal-wrapper');
+    if (!wrapper || wrapper.dataset.initialized === 'true') return;
+    wrapper.dataset.initialized = 'true';
+
+    const screen = document.getElementById('screen');
+    const input = document.getElementById('cmd');
+    const terminal = document.getElementById('terminal');
+    const promptPath = document.getElementById('prompt-path');
+
+    // === Виртуальная файловая система проекта ===
+    const fs = {
+      '~/my-app': {
+        type: 'dir',
+        children: {
+          'node_modules':     { type: 'dir', color: 'dir' },
+          'public':           { type: 'dir', color: 'dir' },
+          'src':              { type: 'dir', color: 'dir' },
+          '.gitignore':       { type: 'file', color: 'file-md' },
+          'index.html':       { type: 'file', color: 'file-md' },
+          'package.json':     { type: 'file', color: 'file-json' },
+          'package-lock.json':{ type: 'file', color: 'file-lock' },
+          'README.md':        { type: 'file', color: 'file-md' },
+          'vite.config.js':   { type: 'file', color: 'file-config' },
+          'tailwind.config.js': { type: 'file', color: 'file-config' },
+          '.env':             { type: 'file', color: 'file-config' },
+        }
+      },
+      '~/my-app/src': {
+        type: 'dir',
+        children: {
+          'assets':           { type: 'dir', color: 'dir' },
+          'components':       { type: 'dir', color: 'dir' },
+          'composables':      { type: 'dir', color: 'dir' },
+          'router':           { type: 'dir', color: 'dir' },
+          'stores':           { type: 'dir', color: 'dir' },
+          'views':            { type: 'dir', color: 'dir' },
+          'App.vue':          { type: 'file', color: 'file-vue' },
+          'main.js':          { type: 'file', color: 'file-js' },
+          'style.css':        { type: 'file', color: 'file-md' },
+        }
+      },
+      '~/my-app/src/components': {
+        type: 'dir',
+        children: {
+          'Header.vue':       { type: 'file', color: 'file-vue' },
+          'Footer.vue':       { type: 'file', color: 'file-vue' },
+          'Sidebar.vue':      { type: 'file', color: 'file-vue' },
+          'UserCard.vue':     { type: 'file', color: 'file-vue' },
+          'TodoList.vue':     { type: 'file', color: 'file-vue' },
+          'ModalDialog.vue':  { type: 'file', color: 'file-vue' },
+        }
+      },
+      '~/my-app/src/views': {
+        type: 'dir',
+        children: {
+          'HomeView.vue':     { type: 'file', color: 'file-vue' },
+          'AboutView.vue':    { type: 'file', color: 'file-vue' },
+          'LoginView.vue':    { type: 'file', color: 'file-vue' },
+          'DashboardView.vue':{ type: 'file', color: 'file-vue' },
+          'NotFound.vue':     { type: 'file', color: 'file-vue' },
+        }
+      },
+      '~/my-app/src/composables': {
+        type: 'dir',
+        children: {
+          'useAuth.js':       { type: 'file', color: 'file-js' },
+          'useFetch.js':      { type: 'file', color: 'file-js' },
+          'useLocalStorage.js':{ type: 'file', color: 'file-js' },
+        }
+      },
+      '~/my-app/src/stores': {
+        type: 'dir',
+        children: {
+          'user.js':          { type: 'file', color: 'file-js' },
+          'cart.js':          { type: 'file', color: 'file-js' },
+          'theme.js':         { type: 'file', color: 'file-js' },
+        }
+      },
+      '~/my-app/src/router': {
+        type: 'dir',
+        children: {
+          'index.js':         { type: 'file', color: 'file-js' },
+        }
+      },
+    };
+
+    let cwd = '~/my-app';
+
+    function writeLine(html, className = 'line') {
+      const div = document.createElement('div');
+      div.className = className;
+      div.innerHTML = html;
+      screen.appendChild(div);
+      screen.scrollTop = screen.scrollHeight;
+    }
+
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function promptHtml() {
+      return `<span class="prompt-user">user@dev</span><span class="prompt-symbol">:</span><span class="prompt-path">${esc(cwd)}</span><span class="prompt-symbol">$</span>`;
+    }
+
+    function showWelcome() {
+      writeLine(`<span class="info">dev terminal — v1.0.0</span>`);
+      writeLine(`<span class="info">Введите <span class="success">help</span> для списка команд, <span class="success">ls</span> — для просмотра файлов.</span>`);
+      writeLine('');
+    }
+
+    function resolvePath(p) {
+      if (p.startsWith('~/') || p.startsWith('/')) return p === '/' ? '~/my-app' : p;
+      if (p === '..') {
+        const parts = cwd.split('/');
+        parts.pop();
+        return parts.length === 1 ? parts[0] : parts.join('/');
+      }
+      if (p === '.') return cwd;
+      const candidate = cwd === '~' ? `~/${p}` : `${cwd}/${p}`;
+      return candidate;
+    }
+
+    function cmdLs(args) {
+      const target = (args[0] === '-la' || args[0] === '-l' || args[0] === '-a') ? null : args[0];
+      const path = target ? resolvePath(target) : cwd;
+
+      if (!fs[path]) {
+        writeLine(`ls: cannot access '${esc(target)}': No such file or directory`, 'line error');
+        return;
+      }
+
+      const entries = fs[path].children;
+      const showAll = args.includes('-a') || args.includes('-la') || args.includes('-al');
+      const detailed = args.includes('-l') || args.includes('-la') || args.includes('-al');
+
+      let items = Object.entries(entries);
+
+      if (!showAll) items = items.filter(([name]) => !name.startsWith('.'));
+      else items.unshift(['.', { type: 'dir', color: 'dir' }], ['..', { type: 'dir', color: 'dir' }]);
+
+      if (items.length === 0) return;
+
+      if (detailed) {
+        items.forEach(([name, info]) => {
+          const perms = info.type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--';
+          const size  = info.type === 'dir' ? '4096' : String(1024 + (name.length * 137) % 8192);
+          const date  = 'Sep 10 12:34';
+          const cls   = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
+          const suffix = info.type === 'dir' ? '/' : '';
+          writeLine(
+            `${perms}  user user ${size.padStart(5)} ${date} <span class="${cls}">${esc(name)}${suffix}</span>`
+          );
+        });
+      } else {
+        const names = items.map(([name, info]) => {
+          const cls = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
+          const suffix = info.type === 'dir' ? '/' : '';
+          return `<span class="${cls}">${esc(name)}${suffix}</span>`;
+        });
+        writeLine(names.join('   '));
+      }
+    }
+
+    function cmdCd(args) {
+      const target = args[0];
+      if (!target || target === '~') {
+        cwd = '~/my-app';
+      } else if (target === '..') {
+        const parts = cwd.split('/');
+        if (parts.length > 1) {
+          parts.pop();
+          cwd = parts.length === 1 ? parts[0] : parts.join('/');
+        }
+        if (!fs[cwd]) cwd = '~/my-app';
+      } else {
+        const path = resolvePath(target);
+        if (fs[path] && fs[path].type === 'dir') {
+          cwd = path;
+        } else {
+          writeLine(`cd: no such file or directory: ${esc(target)}`, 'line error');
+          return;
+        }
+      }
+      promptPath.textContent = cwd;
+    }
+
+    function cmdPwd() {
+      writeLine(esc(cwd.replace('~', '/home/user')));
+    }
+
+    function cmdCat(args) {
+      if (!args[0]) {
+        writeLine('cat: missing file operand', 'line error');
+        return;
+      }
+      const name = args[0];
+      if (name === 'package.json') {
+        writeLine(`{
+  "name": "my-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.3.0",
+    "pinia": "^2.1.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0",
+    "tailwindcss": "^3.4.0"
+  }
+}`);
+        return;
+      }
+      if (name === 'vite.config.js') {
+        writeLine(`import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import path from 'path'
+
+export default defineConfig({
+  plugins: [vue()],
+  resolve: {
+    alias: { '@': path.resolve(__dirname, './src') }
+  },
+  server: { port: 5173, open: true }
+})`);
+        return;
+      }
+      if (name === 'README.md') {
+        writeLine(`# My App
+
+## Установка
+\`\`\`
+npm install
+\`\`\`
+
+## Запуск dev-сервера
+\`\`\`
+npm run dev
+\`\`\`
+`);
+        return;
+      }
+      const path = resolvePath(name);
+      if (fs[path] && fs[path].type === 'file') {
+        writeLine(`<span class="info">(содержимое файла ${esc(name)} не отображается в демо)</span>`);
+      } else {
+        writeLine(`cat: ${esc(name)}: No such file or directory`, 'line error');
+      }
+    }
+
+    function cmdTree(args) {
+      const path = args[0] ? resolvePath(args[0]) : cwd;
+      if (!fs[path]) {
+        writeLine(`tree: ${esc(args[0])}: No such file or directory`, 'line error');
+        return;
+      }
+      writeLine(`<span class="dir">${esc(path.replace('~', '.'))}</span>`);
+      printTree(path, '');
+    }
+
+    function printTree(path, prefix) {
+      const entries = Object.entries(fs[path]?.children || {}).filter(([n]) => !n.startsWith('.'));
+      entries.forEach(([name, info], i) => {
+        const last = i === entries.length - 1;
+        const branch = last ? '└── ' : '├── ';
+        const cls = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
+        const suffix = info.type === 'dir' ? '/' : '';
+        writeLine(`${prefix}${branch}<span class="${cls}">${esc(name)}${suffix}</span>`);
+        if (info.type === 'dir') {
+          const newPath = path + '/' + name;
+          if (fs[newPath]) {
+            printTree(newPath, prefix + (last ? '    ' : '│   '));
+          }
+        }
+      });
+    }
+
+    function cmdHelp() {
+      writeLine(`<span class="success">Доступные команды:</span>`);
+      writeLine(`  <span class="dir">ls</span> [path]      — список файлов в директории`);
+      writeLine(`  <span class="dir">ls -la</span>         — подробный список, включая скрытые`);
+      writeLine(`  <span class="dir">cd</span> &lt;dir&gt;        — перейти в директорию`);
+      writeLine(`  <span class="dir">pwd</span>             — текущая директория`);
+      writeLine(`  <span class="dir">cat</span> &lt;file&gt;      — показать содержимое файла`);
+      writeLine(`  <span class="dir">tree</span>            — дерево проекта`);
+      writeLine(`  <span class="dir">clear</span>           — очистить экран`);
+      writeLine(`  <span class="dir">help</span>            — эта справка`);
+      writeLine('');
+    }
+
+    function cmdClear() {
+      screen.innerHTML = '';
+    }
+
+    function runCommand(raw) {
+      writeLine(`${promptHtml()} <span class="cmd-text">${esc(raw)}</span>`);
+
+      const parts = raw.trim().split(/\s+/);
+      const cmd = parts[0];
+      const args = parts.slice(1);
+
+      switch (cmd) {
+        case '':        break;
+        case 'ls':      cmdLs(args); break;
+        case 'cd':      cmdCd(args); break;
+        case 'pwd':     cmdPwd();    break;
+        case 'cat':     cmdCat(args);break;
+        case 'tree':    cmdTree(args);break;
+        case 'help':    cmdHelp();   break;
+        case 'clear':   cmdClear();  break;
+        case 'echo':    writeLine(esc(args.join(' '))); break;
+        default:
+          writeLine(`command not found: ${esc(cmd)}. Введите <span class="success">help</span> для списка команд.`, 'line error');
+      }
+    }
+
+    const history = [];
+    let histIndex = -1;
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const value = input.value;
+        if (value.trim()) {
+          history.push(value);
+          histIndex = history.length;
+        }
+        runCommand(value);
+        input.value = '';
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (histIndex > 0) {
+          histIndex--;
+          input.value = history[histIndex] || '';
+        }
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        if (histIndex < history.length - 1) {
+          histIndex++;
+          input.value = history[histIndex];
+        } else {
+          histIndex = history.length;
+          input.value = '';
+        }
+      } else if (e.key === 'l' && e.ctrlKey) {
+        e.preventDefault();
+        cmdClear();
+      }
+    });
+
+    terminal.addEventListener('click', () => input.focus());
+
+    showWelcome();
+    input.focus();
+  }
+
+  // Запуск после загрузки DOM и при переходах в Astro (View Transitions)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTerminal);
+  } else {
+    initTerminal();
+  }
+  document.addEventListener('astro:after-swap', initTerminal);
+  document.addEventListener('astro:page-load', initTerminal);
+</script>

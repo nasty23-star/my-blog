@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/BlogPost.astro";
+import DevTerminal from "../../components/DevTerminal.astro";
 import "@styles/global.css"
 
 const pageTitle = "About Me";
@@ -153,63 +154,7 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     <li><a href={codeSisters} target="_blank">Code Sisters</a></li>
   </ul>
 
-  <section class="terminal-section">
-    <div class="terminal-window">
-      <div class="terminal-bar">
-        <span class="terminal-dots">
-          <span class="dot red"></span>
-          <span class="dot yellow"></span>
-          <span class="dot green"></span>
-        </span>
-        <span class="terminal-title">developer@nastya:~</span>
-        <span class="terminal-status">ZSH</span>
-      </div>
-
-      <div class="terminal-content">
-        <div class="command-line">
-          <span class="prompt">$</span>
-          <span class="command">npm run expertise -- --details</span>
-        </div>
-
-        <div class="output-block">
-          <div class="expertise-details">
-            <div class="detail-item">
-              <span class="detail-label">Primary stack:</span>
-              <span class="detail-value">Vue + TypeScript + Astro</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">Build tools:</span>
-              <span class="detail-value">Vite, Webpack, Rollup</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">Package managers:</span>
-              <span class="detail-value">npm, pnpm, yarn</span>
-            </div>
-            <div class="detail-item">
-              <span class="detail-label">Version control:</span>
-              <span class="detail-value">Git (rebase, cherry-pick, bisect)</span
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="command-line interactive">
-          <span class="prompt">$</span>
-          <span
-            class="command-input"
-            contenteditable="true"
-            data-placeholder="type 'help skills' to explore..."></span>
-          <span class="blinking-cursor">█</span>
-        </div>
-
-        <div class="terminal-footer">
-          <span class="footer-text"
-            >📎 [навыки: 8 активных модулей] — ready for next task</span
-          >
-        </div>
-      </div>
-    </div>
-  </section>
+  <DevTerminal />
 </Layout>
  <style>
   * {
