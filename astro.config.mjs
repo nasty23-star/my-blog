@@ -28,6 +28,15 @@ export default defineConfig({
     inlineStylesheets: "auto",
   },
   vite: {
+    resolve: {
+      alias: {
+        '@components': '/src/components',
+        '@layouts': '/src/layouts',
+        '@assets': '/src/assets',
+        '@styles': '/src/styles',
+        '@pages': '/src/pages'
+      }
+    },
     build: {
       // Настройка кеширования для ассетов
       rollupOptions: {
