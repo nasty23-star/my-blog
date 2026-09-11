@@ -1,6 +1,6 @@
 ---
 import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE } from "../consts";
+import { SITE_TITLE } from "@consts";
 
 const currentPath = Astro.url.pathname;
 const isEnglish = currentPath.startsWith("/en/") || currentPath === "/en";
