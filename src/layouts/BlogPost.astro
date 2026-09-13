@@ -53,6 +53,13 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
       .last-updated-on {
         font-style: italic;
       }
+
+      @media (min-width: 900px) {
+        .prose {
+          width: 800px;
+          font-size: 20px;
+        }
+      }
     </style>
   </head>
 
