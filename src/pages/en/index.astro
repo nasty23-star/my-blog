@@ -45,6 +45,20 @@ import "@styles/global.css"
             <span class="control green"></span>
           </div>
           <span class="terminal-title">>_ SPACECRAFT_TECH_STACK.FRONTEND</span>
+
+          <!-- Переключатель тени терминала -->
+          <button
+            id="shadow-toggle"
+            class="shadow-toggle"
+            type="button"
+            aria-pressed="true"
+            title="Включить / отключить тень терминала"
+          >
+            <span class="toggle-track">
+              <span class="toggle-thumb"></span>
+            </span>
+            <span class="toggle-label">SHADOW: ON</span>
+          </button>
         </div>
         <div class="terminal-body">
           <div class="terminal-line">
@@ -203,6 +217,23 @@ import "@styles/global.css"
       </section>
     </main>
     <Footer />
+
+    <script>
+      const toggle = document.getElementById("shadow-toggle");
+      const terminal = document.querySelector(".terminal-section");
+      const label = toggle?.querySelector(".toggle-label");
+
+      if (toggle && terminal && label) {
+        toggle.addEventListener("click", () => {
+          const isOn = toggle.getAttribute("aria-pressed") === "true";
+          const next = !isOn;
+
+          toggle.setAttribute("aria-pressed", String(next));
+          terminal.classList.toggle("no-shadow", !next);
+          label.textContent = next ? "SHADOW: ON" : "SHADOW: OFF";
+        });
+      }
+    </script>
   </body>
 </html>
 
@@ -320,6 +351,19 @@ import "@styles/global.css"
     overflow: hidden;
     font-family: "Courier New", "Fira Code", monospace;
     box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+    border: 1px solid transparent;
+    transition:
+      box-shadow 0.25s ease,
+      border-color 0.25s ease,
+      outline-color 0.25s ease;
+  }
+
+  /* Отключение тени + тонкая обводка контура */
+  .terminal-section.no-shadow {
+    box-shadow: none !important;
+    border-color: #1e3a5f;
+    outline: 1px solid rgba(59, 130, 246, 0.25);
+    outline-offset: -1px;
   }
 
   .terminal-header {
@@ -327,6 +371,7 @@ import "@styles/global.css"
     padding: 0.8rem 1rem;
     display: flex;
     gap: 1rem;
+    align-items: center;
     border-bottom: 1px solid #1e3a5f;
   }
 
@@ -355,6 +400,69 @@ import "@styles/global.css"
     //color: #60a5fa;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
+  }
+
+  /* === ПЕРЕКЛЮЧАТЕЛЬ ТЕНИ === */
+  .shadow-toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-family: "Courier New", monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    color: #60a5fa;
+    transition: color 0.2s ease;
+  }
+
+  .shadow-toggle:hover {
+    color: #7bc5ff;
+  }
+
+  .toggle-track {
+    position: relative;
+    width: 34px;
+    height: 18px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.2);
+    border: 1px solid #1e3a5f;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 50%;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #60a5fa;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .shadow-toggle[aria-pressed="true"] .toggle-track {
+    background: rgba(39, 201, 63, 0.25);
+    border-color: #27c93f;
+  }
+
+  .shadow-toggle[aria-pressed="true"] .toggle-thumb {
+    transform: translate(16px, -50%);
+    background: #27c93f;
+  }
+
+  .shadow-toggle[aria-pressed="false"] .toggle-track {
+    background: rgba(255, 95, 86, 0.15);
+    border-color: #ff5f56;
+  }
+
+  .shadow-toggle[aria-pressed="false"] .toggle-thumb {
+    transform: translate(0, -50%);
+    background: #ff5f56;
   }
 
   .terminal-body {
@@ -614,6 +722,16 @@ import "@styles/global.css"
 
     .tech-grid {
       grid-template-columns: 1fr;
+    }
+
+    .terminal-header {
+      flex-wrap: wrap;
+    }
+
+    .shadow-toggle {
+      margin-left: 0;
+      width: 100%;
+      justify-content: flex-end;
     }
   }
 </style>
