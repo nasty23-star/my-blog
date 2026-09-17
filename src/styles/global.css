@@ -6,7 +6,7 @@
 
 /* Базовые переменные для темной темы (по умолчанию) */
 :root {
-  --accent: #2337ff;
+  --accent: #5badf0;
   --accent-dark: #000d8a;
   --black: 15, 18, 25;
   --gray: #819ebf;
@@ -28,7 +28,7 @@
 .dark-theme,
 [data-theme="dark"],
 .dark {
-  --accent: #2337ff;
+  --accent: #5badf0;
   --accent-dark: #000d8a;
   --black: 15, 18, 25;
   --gray: #819ebf;
