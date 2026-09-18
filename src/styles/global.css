@@ -29,7 +29,7 @@
 [data-theme="dark"],
 .dark {
   --accent: #5badf0;
-  --accent-dark: #000d8a;
+  --accent-dark: #2d82d7;
   --black: 15, 18, 25;
   --gray: #819ebf;
   --gray-light: 229, 233, 240;
@@ -155,13 +155,16 @@ a:hover {
   h2 a.active {
     text-decoration: none;
   }
+
   nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
+    max-width: 720px;
   }
+
   nav a {
     padding: 1em 0.5em;
     color: var(--black);
