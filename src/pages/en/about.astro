@@ -65,10 +65,10 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
           </p>
         )
       }
-      <p>My skills: <strong>{skills.join(", ")}</strong>.</p>
+      <p>My skills: <span>{skills.join(", ")}</span>.</p>
       <p>
-        My professional interests: <strong
-          >{professionalInterests.join(", ")}</strong
+        My professional interests: <span
+          >{professionalInterests.join(", ")}</span
         >.
       </p>
       <p>Contributing to Doka. Love funny socks and memes.</p>
@@ -206,6 +206,10 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     // color: #c8e4ff;
     margin-bottom: 1rem;
     line-height: 1.6;
+  }
+
+  p span {
+    font-style: italic;
   }
 
   a {

@@ -81,11 +81,9 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
           </p>
         )
       }
-      <p>Мои навыки: <strong>{skills.join(", ")}</strong>.</p>
+      <p>Мои навыки: <span>{skills.join(", ")}</span>.</p>
       <p>
-        Мои профессиональные интересы: <strong
-          >{professionalInterests.join(", ")}</strong
-        >.
+        Мои профессиональные интересы: <span>{professionalInterests.join(", ")}</span>.
       </p>
       <p>Контрибьючу в Доку. Люблю смешные носки и мемы.</p>
     </div>
@@ -235,6 +233,10 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     // color: #c8e4ff;
     margin-bottom: 1rem;
     line-height: 1.6;
+  }
+
+  p span {
+    font-style: italic;
   }
 
   a {
