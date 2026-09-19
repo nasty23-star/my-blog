@@ -144,6 +144,10 @@ a:hover {
     background: var(--bg-primary);
     width: stretch;
     z-index: 1000;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-evenly;
+    margin: auto;
   }
   
   h2 {
@@ -162,7 +166,7 @@ a:hover {
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1rem;
-    max-width: 720px;
+    width: 760px;
   }
 
   nav a {
@@ -199,8 +203,22 @@ a:hover {
   gap: 12px;
 }
 
+@media (min-width: 900px) {
+  nav {
+    width: 860px;
+  }
+}
+
 /* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
 @media (max-width: 768px) {
+  header {
+   padding: 0px;
+  }
+
+  nav {
+    width: calc(100% - 0.5em);;
+  }
+
   /* Показываем шестеренку */
   .settings-toggle {
     display: block;
