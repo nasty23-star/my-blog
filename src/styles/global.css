@@ -212,11 +212,7 @@ a:hover {
 /* --- МОБИЛЬНАЯ ВЕРСИЯ --- */
 @media (max-width: 768px) {
   header {
-   padding: 0px;
-  }
-
-  nav {
-    width: calc(100% - 0.5em);;
+   padding: 1em;
   }
 
   /* Показываем шестеренку */
@@ -260,6 +256,10 @@ a:hover {
 
   /* Стили для переключателя языка */
   @media (min-width: 769px) {
+   header {
+    font-size: 24px;
+   }
+
   .switcher {
     display: flex;
     align-items: center;
@@ -274,7 +274,7 @@ a:hover {
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
     transition: all 0.2s;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .lang-link:hover {
