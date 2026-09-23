@@ -2,8 +2,8 @@
 // DevTerminal.astro — интерактивный терминал с виртуальной FS проекта
 ---
 
-<div class="terminal-wrapper" id="terminal-wrapper">
-  <div class="terminal" id="terminal">
+<div class="terminal-wrapper" data-terminal>
+  <div class="terminal" data-terminal-root>
     <div class="titlebar">
       <span class="dot red"></span>
       <span class="dot yellow"></span>
@@ -11,14 +11,13 @@
       <span class="title">user@dev: ~/my-app</span>
     </div>
 
-    <div class="screen" id="screen"></div>
+    <div class="screen" data-terminal-screen></div>
 
-    <div class="input-line" id="input-line">
+    <div class="input-line">
       <span class="prompt">
-        <span class="prompt-user">user@dev</span><span class="prompt-symbol">:</span><span class="prompt-path" id="prompt-path">~/my-app</span><span class="prompt-symbol">$</span>
+        <span class="prompt-user">user@dev</span><span class="prompt-symbol">:</span><span class="prompt-path" data-terminal-path>~/my-app</span><span class="prompt-symbol">$</span>
       </span>
-      <input type="text" id="cmd" autocomplete="off" spellcheck="false" />
-      <span class="cursor" id="cursor"></span>
+      <input type="text" data-terminal-input autocomplete="off" spellcheck="false" />
     </div>
   </div>
 </div>
@@ -121,7 +120,7 @@
     margin-right: 6px;
   }
 
-  #cmd {
+  .input-line input {
     flex: 1;
     background: transparent;
     border: none;
@@ -132,588 +131,647 @@
     caret-color: #7fdbca;
   }
 
-  .cursor {
-    width: 8px;
-    height: 16px;
-    background: #7fdbca;
-    animation: blink 1s step-end infinite;
-    display: none;
-  }
-
-  @keyframes blink { 50% { opacity: 0; } }
-
   /* ---------- Semantic ---------- */
   .error   { color: #ef5350; }
   .info    { color: #637777; font-style: italic; }
   .success { color: #addb67; }
 
   /* ---------- Git colors (Night Owl) ---------- */
-  .git-branch   { color: #c792ea; font-weight: 600; }   /* фиолетовый — текущая ветка */
-  .git-branch-o { color: #82aaff; }                     /* голубой — другие ветки */
-  .git-modified { color: #ecc48d; }                     /* жёлтый — modified */
-  .git-staged   { color: #addb67; }                     /* зелёный — staged */
-  .git-untracked{ color: #f78c6c; }                     /* оранжевый — untracked */
-  .git-deleted  { color: #ef5350; }                     /* красный — deleted */
-  .git-hash     { color: #ecc48d; }                     /* жёлтый — хеш коммита */
-  .git-author   { color: #7fdbca; }                     /* cyan — автор */
-  .git-date     { color: #637777; }                     /* серый — дата */
-  .git-msg      { color: #d6deeb; }                     /* основной — сообщение */
+  .git-branch   { color: #c792ea; font-weight: 600; }
+  .git-branch-o { color: #82aaff; }
+  .git-modified { color: #ecc48d; }
+  .git-staged   { color: #addb67; }
+  .git-untracked{ color: #f78c6c; }
+  .git-deleted  { color: #ef5350; }
+  .git-hash     { color: #ecc48d; }
+  .git-author   { color: #7fdbca; }
+  .git-date     { color: #637777; }
+  .git-msg      { color: #d6deeb; }
 </style>
 
-<script>
-  // === Инициализация терминала ===
-  function initTerminal() {
-    const wrapper = document.getElementById('terminal-wrapper');
-    if (!wrapper || wrapper.dataset.initialized === 'true') return;
-    wrapper.dataset.initialized = 'true';
+<script is:inline>
+  (function () {
+    'use strict';
 
-    const screen = document.getElementById('screen');
-    const input = document.getElementById('cmd');
-    const terminal = document.getElementById('terminal');
-    const promptPath = document.getElementById('prompt-path');
-
-    // === Виртуальная файловая система проекта ===
-    const fs = {
-      '~/my-app': {
-        type: 'dir',
-        children: {
-          'node_modules':     { type: 'dir', color: 'dir' },
-          'public':           { type: 'dir', color: 'dir' },
-          'src':              { type: 'dir', color: 'dir' },
-          '.gitignore':       { type: 'file', color: 'file-md' },
-          'index.html':       { type: 'file', color: 'file-md' },
-          'package.json':     { type: 'file', color: 'file-json' },
-          'package-lock.json':{ type: 'file', color: 'file-lock' },
-          'README.md':        { type: 'file', color: 'file-md' },
-          'vite.config.js':   { type: 'file', color: 'file-config' },
-          'tailwind.config.js': { type: 'file', color: 'file-config' },
-          '.env':             { type: 'file', color: 'file-config' },
-        }
-      },
-      '~/my-app/src': {
-        type: 'dir',
-        children: {
-          'assets':           { type: 'dir', color: 'dir' },
-          'components':       { type: 'dir', color: 'dir' },
-          'composables':      { type: 'dir', color: 'dir' },
-          'router':           { type: 'dir', color: 'dir' },
-          'stores':           { type: 'dir', color: 'dir' },
-          'views':            { type: 'dir', color: 'dir' },
-          'App.vue':          { type: 'file', color: 'file-vue' },
-          'main.js':          { type: 'file', color: 'file-js' },
-          'style.css':        { type: 'file', color: 'file-md' },
-        }
-      },
-      '~/my-app/src/components': {
-        type: 'dir',
-        children: {
-          'Header.vue':       { type: 'file', color: 'file-vue' },
-          'Footer.vue':       { type: 'file', color: 'file-vue' },
-          'Sidebar.vue':      { type: 'file', color: 'file-vue' },
-          'UserCard.vue':     { type: 'file', color: 'file-vue' },
-          'TodoList.vue':     { type: 'file', color: 'file-vue' },
-          'ModalDialog.vue':  { type: 'file', color: 'file-vue' },
-        }
-      },
-      '~/my-app/src/views': {
-        type: 'dir',
-        children: {
-          'HomeView.vue':     { type: 'file', color: 'file-vue' },
-          'AboutView.vue':    { type: 'file', color: 'file-vue' },
-          'LoginView.vue':    { type: 'file', color: 'file-vue' },
-          'DashboardView.vue':{ type: 'file', color: 'file-vue' },
-          'NotFound.vue':     { type: 'file', color: 'file-vue' },
-        }
-      },
-      '~/my-app/src/composables': {
-        type: 'dir',
-        children: {
-          'useAuth.js':       { type: 'file', color: 'file-js' },
-          'useFetch.js':      { type: 'file', color: 'file-js' },
-          'useLocalStorage.js':{ type: 'file', color: 'file-js' },
-        }
-      },
-      '~/my-app/src/stores': {
-        type: 'dir',
-        children: {
-          'user.js':          { type: 'file', color: 'file-js' },
-          'cart.js':          { type: 'file', color: 'file-js' },
-          'theme.js':         { type: 'file', color: 'file-js' },
-        }
-      },
-      '~/my-app/src/router': {
-        type: 'dir',
-        children: {
-          'index.js':         { type: 'file', color: 'file-js' },
-        }
-      },
-    };
-
-    // === Виртуальный git-репозиторий ===
-    const git = {
-      branch: 'main',
-      branches: ['main', 'feature/auth', 'feature/terminal', 'fix/styles'],
-      staged: [
-        { status: 'new',      file: 'src/components/Terminal.vue' },
-        { status: 'modified', file: 'src/main.js' },
-      ],
-      modified: [
-        { status: 'modified', file: 'src/App.vue' },
-        { status: 'modified', file: 'package.json' },
-        { status: 'deleted',  file: 'src/style.css' },
-      ],
-      untracked: [
-        'src/composables/useGit.js',
-        'src/stores/git.js',
-        '.env.local',
-      ],
-      remote: {
-        name: 'origin',
-        url:  'git@github.com:user/my-app.git',
-      },
-      log: [
-        {
-          hash: 'a1b2c3d',
-          author: 'Anastasia Yarosh',
-          date: '2 hours ago',
-          msg: 'feat: add git commands to dev terminal',
+    // ============================================================
+    // Виртуальная файловая система проекта
+    // ============================================================
+    function createFS() {
+      return {
+        '~/my-app': {
+          type: 'dir',
+          children: {
+            'node_modules':      { type: 'dir',  color: 'dir' },
+            'public':            { type: 'dir',  color: 'dir' },
+            'src':               { type: 'dir',  color: 'dir' },
+            '.gitignore':        { type: 'file', color: 'file-md' },
+            'index.html':        { type: 'file', color: 'file-md' },
+            'package.json':      { type: 'file', color: 'file-json' },
+            'package-lock.json': { type: 'file', color: 'file-lock' },
+            'README.md':         { type: 'file', color: 'file-md' },
+            'vite.config.js':    { type: 'file', color: 'file-config' },
+            'tailwind.config.js':{ type: 'file', color: 'file-config' },
+            '.env':              { type: 'file', color: 'file-config' },
+          }
         },
-        {
-          hash: 'e4f5g6h',
-          author: 'Leela Turanga',
-          date: 'yesterday',
-          msg: 'fix: correct prompt path resolution',
+        '~/my-app/src': {
+          type: 'dir',
+          children: {
+            'assets':      { type: 'dir',  color: 'dir' },
+            'components':  { type: 'dir',  color: 'dir' },
+            'composables': { type: 'dir',  color: 'dir' },
+            'router':      { type: 'dir',  color: 'dir' },
+            'stores':      { type: 'dir',  color: 'dir' },
+            'views':       { type: 'dir',  color: 'dir' },
+            'App.vue':     { type: 'file', color: 'file-vue' },
+            'main.js':     { type: 'file', color: 'file-js' },
+            'style.css':   { type: 'file', color: 'file-md' },
+          }
         },
-        {
-          hash: 'i7j8k9l',
-          author: 'Bender Rodriguez',
-          date: '3 days ago',
-          msg: 'refactor: extract FS into separate module',
+        '~/my-app/src/components': {
+          type: 'dir',
+          children: {
+            'Header.vue':      { type: 'file', color: 'file-vue' },
+            'Footer.vue':      { type: 'file', color: 'file-vue' },
+            'Sidebar.vue':     { type: 'file', color: 'file-vue' },
+            'UserCard.vue':    { type: 'file', color: 'file-vue' },
+            'TodoList.vue':    { type: 'file', color: 'file-vue' },
+            'ModalDialog.vue': { type: 'file', color: 'file-vue' },
+          }
         },
-        {
-          hash: 'm0n1o2p',
-          author: 'Amy Wang',
-          date: '5 days ago',
-          msg: 'chore: initial project setup with Vite + Vue 3',
+        '~/my-app/src/views': {
+          type: 'dir',
+          children: {
+            'HomeView.vue':      { type: 'file', color: 'file-vue' },
+            'AboutView.vue':     { type: 'file', color: 'file-vue' },
+            'LoginView.vue':     { type: 'file', color: 'file-vue' },
+            'DashboardView.vue': { type: 'file', color: 'file-vue' },
+            'NotFound.vue':      { type: 'file', color: 'file-vue' },
+          }
         },
-      ],
-    };
-
-    let cwd = '~/my-app';
-
-    function writeLine(html, className = 'line') {
-      const div = document.createElement('div');
-      div.className = className;
-      div.innerHTML = html;
-      screen.appendChild(div);
-      screen.scrollTop = screen.scrollHeight;
+        '~/my-app/src/composables': {
+          type: 'dir',
+          children: {
+            'useAuth.js':         { type: 'file', color: 'file-js' },
+            'useFetch.js':        { type: 'file', color: 'file-js' },
+            'useLocalStorage.js': { type: 'file', color: 'file-js' },
+          }
+        },
+        '~/my-app/src/stores': {
+          type: 'dir',
+          children: {
+            'user.js':  { type: 'file', color: 'file-js' },
+            'cart.js':  { type: 'file', color: 'file-js' },
+            'theme.js': { type: 'file', color: 'file-js' },
+          }
+        },
+        '~/my-app/src/router': {
+          type: 'dir',
+          children: {
+            'index.js': { type: 'file', color: 'file-js' },
+          }
+        },
+      };
     }
 
+    // ============================================================
+    // Виртуальный git-репозиторий
+    // ============================================================
+    function createGit() {
+      return {
+        branch: 'main',
+        branches: ['main', 'feature/auth', 'feature/terminal', 'fix/styles'],
+        staged: [
+          { status: 'new',      file: 'src/components/Terminal.vue' },
+          { status: 'modified', file: 'src/main.js' },
+        ],
+        modified: [
+          { status: 'modified', file: 'src/App.vue' },
+          { status: 'modified', file: 'package.json' },
+          { status: 'deleted',  file: 'src/style.css' },
+        ],
+        untracked: [
+          'src/composables/useGit.js',
+          'src/stores/git.js',
+          '.env.local',
+        ],
+        remote: {
+          name: 'origin',
+          url:  'git@github.com:user/my-app.git',
+        },
+        log: [
+          { hash: 'a1b2c3d', author: 'Anastasia Yarosh', date: '2 hours ago', msg: 'feat: add git commands to dev terminal' },
+          { hash: 'e4f5g6h', author: 'Leela Turanga',    date: 'yesterday',   msg: 'fix: correct prompt path resolution' },
+          { hash: 'i7j8k9l', author: 'Bender Rodriguez', date: '3 days ago',  msg: 'refactor: extract FS into separate module' },
+          { hash: 'm0n1o2p', author: 'Amy Wang',         date: '5 days ago',  msg: 'chore: initial project setup with Vite + Vue 3' },
+        ],
+      };
+    }
+
+    // ============================================================
+    // Фейковые содержимые файлов (ВЫНЕСЕНЫ отдельно, чтобы
+    // esbuild-сканер Vite не принял их за реальные импорты)
+    // ============================================================
+    const FAKE_FILES = {
+      'package.json': [
+        '{',
+        '  "name": "my-app",',
+        '  "version": "0.1.0",',
+        '  "private": true,',
+        '  "scripts": {',
+        '    "dev": "vite",',
+        '    "build": "vite build",',
+        '    "preview": "vite preview"',
+        '  },',
+        '  "dependencies": {',
+        '    "vue": "^3.4.0",',
+        '    "vue-router": "^4.3.0",',
+        '    "pinia": "^2.1.0",',
+        '    "axios": "^1.6.0"',
+        '  },',
+        '  "devDependencies": {',
+        '    "@vitejs/plugin-vue": "^5.0.0",',
+        '    "vite": "^5.0.0",',
+        '    "tailwindcss": "^3.4.0"',
+        '  }',
+        '}',
+      ].join('\n'),
+
+      // Строки ниже разбиты, чтобы esbuild не распознал их как импорты.
+      // Символ '@' собран через конкатенацию, 'import' — тоже.
+      'vite.config.js': [
+        'imp' + 'ort { defineConfig } from "vite"',
+        'imp' + 'ort vue from "@vitejs/' + 'plugin-vue"',
+        'imp' + 'ort path from "path"',
+        '',
+        'export default defineConfig({',
+        '  plugins: [vue()],',
+        '  resolve: {',
+        '    alias: { "@": path.resolve(__dirname, "./src") }',
+        '  },',
+        '  server: { port: 5173, open: true }',
+        '})',
+      ].join('\n'),
+
+      'README.md': [
+        '# My App',
+        '',
+        '## Установка',
+        '```',
+        'npm install',
+        '```',
+        '',
+        '## Запуск dev-сервера',
+        '```',
+        'npm run dev',
+        '```',
+      ].join('\n'),
+    };
+
+    // ============================================================
+    // Утилиты
+    // ============================================================
     function esc(str) {
-      return String(str)
+      return String(str == null ? '' : str)
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
     }
 
-    function promptHtml() {
-      return `<span class="prompt-user">user@dev</span><span class="prompt-symbol">:</span><span class="prompt-path">${esc(cwd)}</span><span class="prompt-symbol">$</span>`;
-    }
+    // ============================================================
+    // Инициализация одного терминала
+    // ============================================================
+    function initTerminal(wrapper) {
+      if (!wrapper || wrapper.dataset.initialized === 'true') return;
+      wrapper.dataset.initialized = 'true';
 
-    function showWelcome() {
-      writeLine(`<span class="info">dev terminal — v1.0.0</span>`);
-      writeLine(`<span class="info">Введите <span class="success">help</span> для списка команд, <span class="success">ls</span> — для просмотра файлов.</span>`);
-      writeLine('');
-    }
+      const screen      = wrapper.querySelector('[data-terminal-screen]');
+      const input       = wrapper.querySelector('[data-terminal-input]');
+      const terminal    = wrapper.querySelector('[data-terminal-root]');
+      const promptPath  = wrapper.querySelector('[data-terminal-path]');
 
-    function resolvePath(p) {
-      if (p.startsWith('~/') || p.startsWith('/')) return p === '/' ? '~/my-app' : p;
-      if (p === '..') {
-        const parts = cwd.split('/');
-        parts.pop();
-        return parts.length === 1 ? parts[0] : parts.join('/');
+      if (!screen || !input || !terminal || !promptPath) return;
+
+      const fs  = createFS();
+      const git = createGit();
+
+      let cwd = '~/my-app';
+
+      // -------------------- вывод --------------------
+      function writeLine(html, className) {
+        const div = document.createElement('div');
+        div.className = className || 'line';
+        // html формируется только из наших строк + esc() для пользовательских данных
+        div.innerHTML = html;
+        screen.appendChild(div);
+        screen.scrollTop = screen.scrollHeight;
       }
-      if (p === '.') return cwd;
-      const candidate = cwd === '~' ? `~/${p}` : `${cwd}/${p}`;
-      return candidate;
-    }
 
-    function cmdLs(args) {
-      const target = (args[0] === '-la' || args[0] === '-l' || args[0] === '-a') ? null : args[0];
-      const path = target ? resolvePath(target) : cwd;
-
-      if (!fs[path]) {
-        writeLine(`ls: cannot access '${esc(target)}': No such file or directory`, 'line error');
-        return;
+      function promptHtml() {
+        return '<span class="prompt-user">user@dev</span>'
+             + '<span class="prompt-symbol">:</span>'
+             + '<span class="prompt-path">' + esc(cwd) + '</span>'
+             + '<span class="prompt-symbol">$</span>';
       }
 
-      const entries = fs[path].children;
-      const showAll = args.includes('-a') || args.includes('-la') || args.includes('-al');
-      const detailed = args.includes('-l') || args.includes('-la') || args.includes('-al');
-
-      let items = Object.entries(entries);
-
-      if (!showAll) items = items.filter(([name]) => !name.startsWith('.'));
-      else items.unshift(['.', { type: 'dir', color: 'dir' }], ['..', { type: 'dir', color: 'dir' }]);
-
-      if (items.length === 0) return;
-
-      if (detailed) {
-        items.forEach(([name, info]) => {
-          const perms = info.type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--';
-          const size  = info.type === 'dir' ? '4096' : String(1024 + (name.length * 137) % 8192);
-          const date  = 'Sep 10 12:34';
-          const cls   = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
-          const suffix = info.type === 'dir' ? '/' : '';
-          writeLine(
-            `${perms}  user user ${size.padStart(5)} ${date} <span class="${cls}">${esc(name)}${suffix}</span>`
-          );
-        });
-      } else {
-        const names = items.map(([name, info]) => {
-          const cls = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
-          const suffix = info.type === 'dir' ? '/' : '';
-          return `<span class="${cls}">${esc(name)}${suffix}</span>`;
-        });
-        writeLine(names.join('   '));
+      function showWelcome() {
+        writeLine('<span class="info">dev terminal — v1.0.0</span>');
+        writeLine('<span class="info">Введите <span class="success">help</span> для списка команд, <span class="success">ls</span> — для просмотра файлов.</span>');
+        writeLine('');
       }
-    }
 
-    function cmdCd(args) {
-      const target = args[0];
-      if (!target || target === '~') {
-        cwd = '~/my-app';
-      } else if (target === '..') {
-        const parts = cwd.split('/');
-        if (parts.length > 1) {
+      // -------------------- пути --------------------
+      function resolvePath(p) {
+        if (!p || p === '~') return '~/my-app';
+
+        // абсолютный: / или /src/... → ~/my-app[/...]
+        if (p === '/') return '~/my-app';
+        if (p.startsWith('/')) return '~/my-app' + p;
+
+        // домашний: ~/...
+        if (p.startsWith('~/')) return p;
+
+        if (p === '.') return cwd;
+
+        if (p === '..') {
+          const parts = cwd.split('/');
+          if (parts.length <= 1) return cwd;
           parts.pop();
-          cwd = parts.length === 1 ? parts[0] : parts.join('/');
+          return parts.length === 1 ? parts[0] : parts.join('/');
         }
-        if (!fs[cwd]) cwd = '~/my-app';
-      } else {
-        const path = resolvePath(target);
-        if (fs[path] && fs[path].type === 'dir') {
-          cwd = path;
-        } else {
-          writeLine(`cd: no such file or directory: ${esc(target)}`, 'line error');
+
+        // относительный
+        return cwd === '~' ? '~/' + p : cwd + '/' + p;
+      }
+
+      // -------------------- ls --------------------
+      function cmdLs(args) {
+        const flags = args.filter(a => a.startsWith('-'));
+        const paths = args.filter(a => !a.startsWith('-'));
+
+        const showAll  = flags.some(f => f.includes('a'));
+        const detailed = flags.some(f => f.includes('l'));
+
+        const target = paths[0];
+        const path   = target ? resolvePath(target) : cwd;
+
+        if (!fs[path] || fs[path].type !== 'dir') {
+          writeLine("ls: cannot access '" + esc(target || path) + "': No such file or directory", 'line error');
           return;
         }
-      }
-      promptPath.textContent = cwd;
-    }
 
-    function cmdPwd() {
-      writeLine(esc(cwd.replace('~', '/home/user')));
-    }
+        let items = Object.entries(fs[path].children || {});
 
-    function cmdCat(args) {
-      if (!args[0]) {
-        writeLine('cat: missing file operand', 'line error');
-        return;
-      }
-      const name = args[0];
-      if (name === 'package.json') {
-        writeLine(`{
-  "name": "my-app",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "vue": "^3.4.0",
-    "vue-router": "^4.3.0",
-    "pinia": "^2.1.0",
-    "axios": "^1.6.0"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.0",
-    "vite": "^5.0.0",
-    "tailwindcss": "^3.4.0"
-  }
-}`);
-        return;
-      }
-      if (name === 'vite.config.js') {
-        writeLine(`import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+        if (showAll) {
+          items = [
+            ['.',  { type: 'dir', color: 'dir' }],
+            ['..', { type: 'dir', color: 'dir' }],
+            ...items,
+          ];
+        } else {
+          items = items.filter(([name]) => !name.startsWith('.'));
+        }
 
-export default defineConfig({
-  plugins: [vue()],
-  resolve: {
-    alias: { '@': path.resolve(__dirname, './src') }
-  },
-  server: { port: 5173, open: true }
-})`);
-        return;
-      }
-      if (name === 'README.md') {
-        writeLine(`# My App
+        if (items.length === 0) return;
 
-## Установка
-\`\`\`
-npm install
-\`\`\`
-
-## Запуск dev-сервера
-\`\`\`
-npm run dev
-\`\`\`
-`);
-        return;
+        if (detailed) {
+          items.forEach(([name, info]) => {
+            const perms  = info.type === 'dir' ? 'drwxr-xr-x' : '-rw-r--r--';
+            const size   = info.type === 'dir' ? '4096' : String(1024 + (name.length * 137) % 8192);
+            const date   = 'Sep 10 12:34';
+            const cls    = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
+            const suffix = info.type === 'dir' ? '/' : '';
+            writeLine(
+              perms + '  user user ' + size.padStart(5) + ' ' + date + ' '
+              + '<span class="' + cls + '">' + esc(name) + suffix + '</span>'
+            );
+          });
+        } else {
+          const names = items.map(([name, info]) => {
+            const cls    = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
+            const suffix = info.type === 'dir' ? '/' : '';
+            return '<span class="' + cls + '">' + esc(name) + suffix + '</span>';
+          });
+          writeLine(names.join('   '));
+        }
       }
-      const path = resolvePath(name);
-      if (fs[path] && fs[path].type === 'file') {
-        writeLine(`<span class="info">(содержимое файла ${esc(name)} не отображается в демо)</span>`);
-      } else {
-        writeLine(`cat: ${esc(name)}: No such file or directory`, 'line error');
-      }
-    }
 
-    function cmdTree(args) {
-      const path = args[0] ? resolvePath(args[0]) : cwd;
-      if (!fs[path]) {
-        writeLine(`tree: ${esc(args[0])}: No such file or directory`, 'line error');
-        return;
-      }
-      writeLine(`<span class="dir">${esc(path.replace('~', '.'))}</span>`);
-      printTree(path, '');
-    }
+      // -------------------- cd --------------------
+      function cmdCd(args) {
+        const target = args[0];
 
-    function printTree(path, prefix) {
-      const entries = Object.entries(fs[path]?.children || {}).filter(([n]) => !n.startsWith('.'));
-      entries.forEach(([name, info], i) => {
-        const last = i === entries.length - 1;
-        const branch = last ? '└── ' : '├── ';
-        const cls = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
-        const suffix = info.type === 'dir' ? '/' : '';
-        writeLine(`${prefix}${branch}<span class="${cls}">${esc(name)}${suffix}</span>`);
-        if (info.type === 'dir') {
-          const newPath = path + '/' + name;
-          if (fs[newPath]) {
-            printTree(newPath, prefix + (last ? '    ' : '│   '));
+        if (!target || target === '~' || target === '/') {
+          cwd = '~/my-app';
+        } else {
+          const path = resolvePath(target);
+          if (fs[path] && fs[path].type === 'dir') {
+            cwd = path;
+          } else {
+            writeLine('cd: no such file or directory: ' + esc(target), 'line error');
+            return;
           }
         }
-      });
-    }
-
-    // ============================================================
-    // GIT — status / log / branch
-    // ============================================================
-    function cmdGit(args) {
-      const sub = args[0];
-
-      if (!sub) {
-        writeLine(`usage: git <command> [<args>]`, 'line error');
-        writeLine(`Доступные подкоманды: <span class="success">status</span>, <span class="success">log</span>, <span class="success">branch</span>`);
-        return;
+        promptPath.textContent = cwd;
       }
 
-      switch (sub) {
-        case 'status': gitStatus(args.slice(1)); break;
-        case 'log':    gitLog(args.slice(1));    break;
-        case 'branch': gitBranch(args.slice(1)); break;
-        default:
-          writeLine(`git: '${esc(sub)}' is not a git command. See 'git --help'.`, 'line error');
-          writeLine(`Доступно: <span class="success">status</span>, <span class="success">log</span>, <span class="success">branch</span>`);
-      }
-    }
-
-    function gitStatus(args) {
-      const short = args.includes('-s') || args.includes('--short');
-
-      writeLine(`On branch <span class="git-branch">${esc(git.branch)}</span>`);
-
-      // Ahead / behind
-      writeLine(`Your branch is up to date with <span class="git-branch-o">'${esc(git.remote.name)}/${esc(git.branch)}'</span>.`);
-      writeLine('');
-
-      if (git.staged.length) {
-        writeLine(`Changes to be committed:`);
-        writeLine(`  (use "git restore --staged &lt;file&gt;..." to unstage)`);
-        git.staged.forEach(({ status, file }) => {
-          const label = status === 'new' ? 'new file' : 'modified';
-          const cls   = status === 'new' ? 'git-staged' : 'git-staged';
-          writeLine(`        <span class="${cls}">${label}:   ${esc(file)}</span>`);
-        });
-        writeLine('');
+      // -------------------- pwd --------------------
+      function cmdPwd() {
+        writeLine(esc(cwd.replace(/^~/, '/home/user')));
       }
 
-      if (git.modified.length) {
-        writeLine(`Changes not staged for commit:`);
-        writeLine(`  (use "git add &lt;file&gt;..." to update what will be committed)`);
-        writeLine(`  (use "git restore &lt;file&gt;..." to discard changes in working directory)`);
-        git.modified.forEach(({ status, file }) => {
-          const label = status === 'deleted' ? 'deleted' : 'modified';
-          const cls   = status === 'deleted' ? 'git-deleted' : 'git-modified';
-          writeLine(`        <span class="${cls}">${label}:   ${esc(file)}</span>`);
-        });
-        writeLine('');
-      }
-
-      if (git.untracked.length) {
-        writeLine(`Untracked files:`);
-        writeLine(`  (use "git add &lt;file&gt;..." to include in what will be committed)`);
-        git.untracked.forEach(file => {
-          writeLine(`        <span class="git-untracked">${esc(file)}</span>`);
-        });
-        writeLine('');
-      }
-
-      if (!git.staged.length && !git.modified.length && !git.untracked.length) {
-        writeLine(`nothing to commit, working tree clean`);
-      } else {
-        writeLine(`no changes added to commit (use "git add" and/or "git commit -a")`);
-      }
-    }
-
-    function gitLog(args) {
-      // Поддержка: git log, git log --oneline, git log -n <N>
-      const oneline = args.includes('--oneline');
-      let limit = git.log.length;
-
-      const nIdx = args.findIndex(a => a === '-n' || a === '-<number>');
-      if (nIdx !== -1 && args[nIdx + 1]) {
-        const parsed = parseInt(args[nIdx + 1], 10);
-        if (!isNaN(parsed) && parsed > 0) limit = parsed;
-      }
-      const dashN = args.find(a => /^-\d+$/.test(a));
-      if (dashN) {
-        const parsed = parseInt(dashN.slice(1), 10);
-        if (!isNaN(parsed) && parsed > 0) limit = parsed;
-      }
-
-      const entries = git.log.slice(0, limit);
-
-      if (oneline) {
-        entries.forEach(c => {
-          writeLine(`<span class="git-hash">${esc(c.hash)}</span> <span class="git-msg">${esc(c.msg)}</span>`);
-        });
-        return;
-      }
-
-      entries.forEach((c, i) => {
-        writeLine(`<span class="git-hash">commit ${esc(c.hash)}</span>`);
-        writeLine(`Author: <span class="git-author">${esc(c.author)}</span>`);
-        writeLine(`Date:   <span class="git-date">${esc(c.date)}</span>`);
-        writeLine('');
-        writeLine(`    <span class="git-msg">${esc(c.msg)}</span>`);
-        if (i < entries.length - 1) writeLine('');
-      });
-    }
-
-    function gitBranch(args) {
-      // Поддержка: git branch, git branch -a, git branch -v
-      const showAll    = args.includes('-a') || args.includes('--all');
-      const verbose    = args.includes('-v') || args.includes('--verbose');
-      const remote     = args.includes('-r') || args.includes('--remotes');
-
-      const list = showAll || remote
-        ? [...git.branches, `remotes/${git.remote.name}/${git.branch}`]
-        : git.branches;
-
-      list.forEach(name => {
-        const isCurrent = name === git.branch;
-        const prefix    = isCurrent ? '* ' : '  ';
-        const cls       = isCurrent ? 'git-branch' : 'git-branch-o';
-        const suffix    = verbose && isCurrent ? `  <span class="git-hash">${esc(git.log[0].hash)}</span> <span class="git-msg">${esc(git.log[0].msg)}</span>` : '';
-        writeLine(`${prefix}<span class="${cls}">${esc(name)}</span>${suffix}`);
-      });
-    }
-
-    function cmdHelp() {
-      writeLine(`<span class="success">Доступные команды:</span>`);
-      writeLine(`  <span class="dir">ls</span> [path]        — список файлов в директории`);
-      writeLine(`  <span class="dir">ls -la</span>           — подробный список, включая скрытые`);
-      writeLine(`  <span class="dir">cd</span> &lt;dir&gt;          — перейти в директорию`);
-      writeLine(`  <span class="dir">pwd</span>               — текущая директория`);
-      writeLine(`  <span class="dir">cat</span> &lt;file&gt;        — показать содержимое файла`);
-      writeLine(`  <span class="dir">tree</span>              — дерево проекта`);
-      writeLine(`  <span class="dir">git status</span>        — состояние рабочей директории`);
-      writeLine(`  <span class="dir">git log</span>           — история коммитов`);
-      writeLine(`  <span class="dir">git branch</span>        — список веток`);
-      writeLine(`  <span class="dir">clear</span>             — очистить экран`);
-      writeLine(`  <span class="dir">help</span>              — эта справка`);
-      writeLine('');
-    }
-
-    function cmdClear() {
-      screen.innerHTML = '';
-    }
-
-    function runCommand(raw) {
-      writeLine(`${promptHtml()} <span class="cmd-text">${esc(raw)}</span>`);
-
-      const parts = raw.trim().split(/\s+/);
-      const cmd = parts[0];
-      const args = parts.slice(1);
-
-      switch (cmd) {
-        case '':        break;
-        case 'ls':      cmdLs(args); break;
-        case 'cd':      cmdCd(args); break;
-        case 'pwd':     cmdPwd();    break;
-        case 'cat':     cmdCat(args);break;
-        case 'tree':    cmdTree(args);break;
-        case 'git':     cmdGit(args);break;
-        case 'help':    cmdHelp();   break;
-        case 'clear':   cmdClear();  break;
-        case 'echo':    writeLine(esc(args.join(' '))); break;
-        default:
-          writeLine(`command not found: ${esc(cmd)}. Введите <span class="success">help</span> для списка команд.`, 'line error');
-      }
-    }
-
-    const history = [];
-    let histIndex = -1;
-
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const value = input.value;
-        if (value.trim()) {
-          history.push(value);
-          histIndex = history.length;
+      // -------------------- cat --------------------
+      function cmdCat(args) {
+        if (!args[0]) {
+          writeLine('cat: missing file operand', 'line error');
+          return;
         }
-        runCommand(value);
-        input.value = '';
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        if (histIndex > 0) {
-          histIndex--;
-          input.value = history[histIndex] || '';
+        const name = args[0];
+
+        if (FAKE_FILES[name]) {
+          // выводим как обычный текст, экранируя
+          writeLine('<span class="file-md">' + esc(FAKE_FILES[name]) + '</span>');
+          return;
         }
-      } else if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        if (histIndex < history.length - 1) {
-          histIndex++;
-          input.value = history[histIndex];
+
+        const path = resolvePath(name);
+        if (fs[path] && fs[path].type === 'file') {
+          writeLine('<span class="info">(содержимое файла ' + esc(name) + ' не отображается в демо)</span>');
         } else {
-          histIndex = history.length;
-          input.value = '';
+          writeLine('cat: ' + esc(name) + ': No such file or directory', 'line error');
         }
-      } else if (e.key === 'l' && e.ctrlKey) {
-        e.preventDefault();
-        cmdClear();
       }
-    });
 
-    // Фокус на input только при клике по терминалу
-    terminal.addEventListener('click', () => input.focus());
+      // -------------------- tree --------------------
+      function cmdTree(args) {
+        const target = args[0];
+        const path   = target ? resolvePath(target) : cwd;
 
-    showWelcome();
-    // Убрано: input.focus();
-  }
+        if (!fs[path] || fs[path].type !== 'dir') {
+          writeLine('tree: ' + esc(target || path) + ': No such file or directory', 'line error');
+          return;
+        }
 
-  // Запуск после загрузки DOM и при переходах в Astro (View Transitions)
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTerminal);
-  } else {
-    initTerminal();
-  }
-  document.addEventListener('astro:after-swap', initTerminal);
-  document.addEventListener('astro:page-load', initTerminal);
+        writeLine('<span class="dir">' + esc(path.replace(/^~/, '.')) + '</span>');
+        printTree(path, '', new Set());
+      }
+
+      function printTree(path, prefix, visited) {
+        if (visited.has(path)) return;
+        visited.add(path);
+
+        const entries = Object.entries(fs[path] && fs[path].children || {})
+          .filter(([n]) => !n.startsWith('.'));
+
+        entries.forEach(([name, info], i) => {
+          const last   = i === entries.length - 1;
+          const branch = last ? '└── ' : '├── ';
+          const cls    = info.color || (info.type === 'dir' ? 'dir' : 'file-js');
+          const suffix = info.type === 'dir' ? '/' : '';
+          writeLine(prefix + branch + '<span class="' + cls + '">' + esc(name) + suffix + '</span>');
+
+          if (info.type === 'dir') {
+            const newPath = path + '/' + name;
+            if (fs[newPath]) {
+              printTree(newPath, prefix + (last ? '    ' : '│   '), visited);
+            }
+          }
+        });
+      }
+
+      // -------------------- git --------------------
+      function cmdGit(args) {
+        const sub = args[0];
+
+        if (!sub) {
+          writeLine('usage: git <command> [<args>]', 'line error');
+          writeLine('Доступные подкоманды: <span class="success">status</span>, <span class="success">log</span>, <span class="success">branch</span>');
+          return;
+        }
+
+        switch (sub) {
+          case 'status': gitStatus(args.slice(1)); break;
+          case 'log':    gitLog(args.slice(1));    break;
+          case 'branch': gitBranch(args.slice(1)); break;
+          default:
+            writeLine("git: '" + esc(sub) + "' is not a git command. See 'git --help'.", 'line error');
+            writeLine('Доступно: <span class="success">status</span>, <span class="success">log</span>, <span class="success">branch</span>');
+        }
+      }
+
+      function gitStatus() {
+        writeLine('On branch <span class="git-branch">' + esc(git.branch) + '</span>');
+        writeLine("Your branch is up to date with <span class=\"git-branch-o\">'"
+          + esc(git.remote.name) + '/' + esc(git.branch) + "'</span>.");
+        writeLine('');
+
+        if (git.staged.length) {
+          writeLine('Changes to be committed:');
+          writeLine('  (use "git restore --staged &lt;file&gt;..." to unstage)');
+          git.staged.forEach(function (item) {
+            const label = item.status === 'new' ? 'new file' : 'modified';
+            writeLine('        <span class="git-staged">' + label + ':   ' + esc(item.file) + '</span>');
+          });
+          writeLine('');
+        }
+
+        if (git.modified.length) {
+          writeLine('Changes not staged for commit:');
+          writeLine('  (use "git add &lt;file&gt;..." to update what will be committed)');
+          writeLine('  (use "git restore &lt;file&gt;..." to discard changes in working directory)');
+          git.modified.forEach(function (item) {
+            const label = item.status === 'deleted' ? 'deleted' : 'modified';
+            const cls   = item.status === 'deleted' ? 'git-deleted' : 'git-modified';
+            writeLine('        <span class="' + cls + '">' + label + ':   ' + esc(item.file) + '</span>');
+          });
+          writeLine('');
+        }
+
+        if (git.untracked.length) {
+          writeLine('Untracked files:');
+          writeLine('  (use "git add &lt;file&gt;..." to include in what will be committed)');
+          git.untracked.forEach(function (file) {
+            writeLine('        <span class="git-untracked">' + esc(file) + '</span>');
+          });
+          writeLine('');
+        }
+
+        if (!git.staged.length && !git.modified.length && !git.untracked.length) {
+          writeLine('nothing to commit, working tree clean');
+        } else {
+          writeLine('no changes added to commit (use "git add" and/or "git commit -a")');
+        }
+      }
+
+      function gitLog(args) {
+        const oneline = args.includes('--oneline');
+        let limit = git.log.length;
+
+        // -n <N>
+        const nIdx = args.indexOf('-n');
+        if (nIdx !== -1 && args[nIdx + 1]) {
+          const parsed = parseInt(args[nIdx + 1], 10);
+          if (!isNaN(parsed) && parsed > 0) limit = parsed;
+        }
+
+        // -<N>
+        for (const a of args) {
+          if (/^-\d+$/.test(a)) {
+            const parsed = parseInt(a.slice(1), 10);
+            if (!isNaN(parsed) && parsed > 0) limit = parsed;
+            break;
+          }
+        }
+
+        const entries = git.log.slice(0, limit);
+
+        if (oneline) {
+          entries.forEach(function (c) {
+            writeLine('<span class="git-hash">' + esc(c.hash) + '</span> <span class="git-msg">' + esc(c.msg) + '</span>');
+          });
+          return;
+        }
+
+        entries.forEach(function (c, i) {
+          writeLine('<span class="git-hash">commit ' + esc(c.hash) + '</span>');
+          writeLine('Author: <span class="git-author">' + esc(c.author) + '</span>');
+          writeLine('Date:   <span class="git-date">' + esc(c.date) + '</span>');
+          writeLine('');
+          writeLine('    <span class="git-msg">' + esc(c.msg) + '</span>');
+          if (i < entries.length - 1) writeLine('');
+        });
+      }
+
+      function gitBranch(args) {
+        const showAll = args.includes('-a') || args.includes('--all');
+        const verbose = args.includes('-v') || args.includes('--verbose');
+        const remote  = args.includes('-r') || args.includes('--remotes');
+
+        let list = git.branches.slice();
+        if (showAll || remote) {
+          list.push('remotes/' + git.remote.name + '/' + git.branch);
+        }
+
+        list.forEach(function (name) {
+          const isCurrent = name === git.branch;
+          const prefix    = isCurrent ? '* ' : '  ';
+          const cls       = isCurrent ? 'git-branch' : 'git-branch-o';
+          let suffix = '';
+          if (verbose && isCurrent && git.log[0]) {
+            suffix = '  <span class="git-hash">' + esc(git.log[0].hash) + '</span> '
+                   + '<span class="git-msg">' + esc(git.log[0].msg) + '</span>';
+          }
+          writeLine(prefix + '<span class="' + cls + '">' + esc(name) + '</span>' + suffix);
+        });
+      }
+
+      // -------------------- help / clear --------------------
+      function cmdHelp() {
+        writeLine('<span class="success">Доступные команды:</span>');
+        writeLine('  <span class="dir">ls</span> [path]        — список файлов в директории');
+        writeLine('  <span class="dir">ls -la</span> [path]    — подробный список, включая скрытые');
+        writeLine('  <span class="dir">cd</span> &lt;dir&gt;          — перейти в директорию');
+        writeLine('  <span class="dir">pwd</span>               — текущая директория');
+        writeLine('  <span class="dir">cat</span> &lt;file&gt;        — показать содержимое файла');
+        writeLine('  <span class="dir">tree</span> [path]       — дерево проекта');
+        writeLine('  <span class="dir">git status</span>        — состояние рабочей директории');
+        writeLine('  <span class="dir">git log</span>           — история коммитов');
+        writeLine('  <span class="dir">git branch</span>        — список веток');
+        writeLine('  <span class="dir">clear</span>             — очистить экран');
+        writeLine('  <span class="dir">help</span>              — эта справка');
+        writeLine('');
+      }
+
+      function cmdClear() {
+        screen.innerHTML = '';
+      }
+
+      // -------------------- диспетчер --------------------
+      function runCommand(raw) {
+        writeLine(promptHtml() + ' <span class="cmd-text">' + esc(raw) + '</span>');
+
+        const parts = raw.trim().split(/\s+/);
+        const cmd   = parts[0];
+        const args  = parts.slice(1);
+
+        switch (cmd) {
+          case '':      break;
+          case 'ls':    cmdLs(args);   break;
+          case 'cd':    cmdCd(args);   break;
+          case 'pwd':   cmdPwd();      break;
+          case 'cat':   cmdCat(args);  break;
+          case 'tree':  cmdTree(args); break;
+          case 'git':   cmdGit(args);  break;
+          case 'help':  cmdHelp();     break;
+          case 'clear': cmdClear();    break;
+          case 'echo':  writeLine(esc(args.join(' '))); break;
+          default:
+            writeLine('command not found: ' + esc(cmd) + '. Введите <span class="success">help</span> для списка команд.', 'line error');
+        }
+      }
+
+      // -------------------- история команд --------------------
+      const history = [];
+      let histIndex = -1;
+
+      const controller = new AbortController();
+      const signal = controller.signal;
+
+      input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          const value = input.value;
+          if (value.trim()) {
+            history.push(value);
+            histIndex = history.length;
+          }
+          runCommand(value);
+          input.value = '';
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (histIndex > 0) {
+            histIndex--;
+            input.value = history[histIndex] || '';
+          }
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (histIndex < history.length - 1) {
+            histIndex++;
+            input.value = history[histIndex];
+          } else {
+            histIndex = history.length;
+            input.value = '';
+          }
+        } else if (e.key === 'l' && e.ctrlKey) {
+          e.preventDefault();
+          cmdClear();
+        }
+      }, { signal: signal });
+
+      terminal.addEventListener('click', function () {
+        input.focus();
+      }, { signal: signal });
+
+      // Сохраняем контроллер на элементе, чтобы можно было отменить при размонтировании
+      wrapper._terminalController = controller;
+
+      showWelcome();
+    }
+
+    // ============================================================
+    // Инициализация всех терминалов на странице
+    // ============================================================
+    function initAll() {
+      document.querySelectorAll('[data-terminal]').forEach(initTerminal);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initAll, { once: true });
+    } else {
+      initAll();
+    }
+
+    // Astro View Transitions: этот хук вызывается и при первой загрузке,
+    // и при каждом переходе. Дублирование не нужно.
+    document.addEventListener('astro:page-load', initAll);
+  })();
 </script>
-
