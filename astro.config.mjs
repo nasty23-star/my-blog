@@ -7,10 +7,23 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://example.com",
   integrations: [mdx(), sitemap()],
+
+  // Настройки dev-сервера Astro.
+  // host: '127.0.0.1' — слушать IPv4, чтобы http://localhost:4321
+  // и http://127.0.0.1:4321 работали предсказуемо (у вас сервер
+  // привязывался только к IPv6 [::1], из-за чего браузер не мог
+  // подключиться по IPv4).
+  server: {
+    host: "127.0.0.1",
+    port: 4321,
+    // open: true, // раскомментируйте, если хотите, чтобы браузер открывался автоматически
+  },
+
   prefetch: {
     prefetchAll: true, // предзагружать все ссылки на странице
     defaultStrategy: "hover", // загружать при наведении курсора
   },
+
   image: {
     service: {
       entrypoint: "astro/assets/services/sharp",
@@ -22,21 +35,23 @@ export default defineConfig({
       },
     },
   },
+
   build: {
     assets: "assets",
     // Настройки для продакшен-сборки
     inlineStylesheets: "auto",
   },
+
   vite: {
     resolve: {
       alias: {
-        '@components': '/src/components',
-        '@layouts': '/src/layouts',
-        '@assets': '/src/assets',
-        '@styles': '/src/styles',
-        '@pages': '/src/pages',
-        '@consts': '/src/consts',
-      }
+        "@components": "/src/components",
+        "@layouts": "/src/layouts",
+        "@assets": "/src/assets",
+        "@styles": "/src/styles",
+        "@pages": "/src/pages",
+        "@consts": "/src/consts",
+      },
     },
     build: {
       // Настройка кеширования для ассетов
