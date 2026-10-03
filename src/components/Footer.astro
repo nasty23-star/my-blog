@@ -3,6 +3,17 @@ const today = new Date();
 ---
 
 <footer>
+    <div class="ring-links">
+    <p class="ring"><span class="code-class">code_</span><span>sisters</span> ring</p><a href="https://ladykosha.ru">Agnessa's Blog
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width="2"
+     stroke-linecap="round" stroke-linejoin="round">
+  <line x1="5" y1="12" x2="19" y2="12"/>
+  <polyline points="12 5 19 12 12 19"/>
+</svg>
+</a>
+  </div>
+  <hr />
   &copy; {today.getFullYear()} Anastasia Yarosh. <span class="no-wrap"
     >All rights reserved.</span
   >
@@ -28,7 +39,7 @@ const today = new Date();
 </footer>
 <style>
   footer {
-    padding: 2em 1em 2em 1em;
+    padding: 1em 1em 1em 1em;
     border-top: 1px solid rgb(var(--gray));
     color: rgb(var(--gray));
     text-align: center;
@@ -37,7 +48,7 @@ const today = new Date();
     display: flex;
     justify-content: center;
     gap: 1em;
-    margin-top: 1em;
+    margin-top: 0.5em;
   }
   .social-links a {
     text-decoration: none;
@@ -46,5 +57,24 @@ const today = new Date();
   .no-wrap {
     white-space: nowrap;
     display: inline-block;
+  }
+
+  .ring-links {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-bottom: 1em;
+  }
+
+  .ring .code-class {
+    color: #1db131;;
+  }
+
+  .ring span {
+    color: rgb(131, 85, 223);
+  }
+
+  .ring-links svg {
+    top: 20px;
   }
 </style>
