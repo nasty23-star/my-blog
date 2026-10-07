@@ -89,7 +89,7 @@ const isNavActive = (path: string): boolean => {
 
 <script>
 
-  function setTheme(theme) {
+  function setTheme(theme: string) {
     const html = document.documentElement;
     if (theme === 'dark') {
       html.classList.remove('light-theme', 'light');
@@ -131,15 +131,17 @@ document.addEventListener('DOMContentLoaded', () => {
     settingsToggle.addEventListener('click', (e) => {
       e.stopPropagation(); // Чтобы клик не закрывал меню сразу
       const isOpen = settingsMenu.classList.toggle('is-open');
-      settingsToggle.setAttribute('aria-expanded', isOpen);
+      settingsToggle.setAttribute('aria-expanded', isOpen.toString());
     });
 
     // Закрытие при клике вне меню
     document.addEventListener('click', (e) => {
+      if (e.target instanceof  HTMLElement) {
       if (!settingsMenu.contains(e.target) && !settingsToggle.contains(e.target)) {
         settingsMenu.classList.remove('is-open');
         settingsToggle.setAttribute('aria-expanded', 'false');
       }
+    }
     });
 
     // Закрытие по Escape (для доступности)
