@@ -3,7 +3,7 @@ import BaseHead from "@components/BaseHead.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Sparkle from "@components/Sparkle.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "@consts";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { Image } from "astro:assets";
 ---
 
@@ -594,6 +594,12 @@ import { Image } from "astro:assets";
     color: #a1c2e8;
     margin: 0;
     font-size: 0.95rem;
+  }
+
+    @media (max-width: 420px) {
+    .terminal-title {
+      letter-spacing: 0.2px;
+    }
   }
 
   @media (max-width: 768px) {
