@@ -1,6 +1,8 @@
 ---
 import Layout from "@layouts/BlogPost.astro";
+import FactsCode from "@components/FactsCode.astro";
 import DevTerminal from "@components/DevTerminal.astro"
+import { ScrollTop } from "@components/ScrollTop.astro";
 import { Image } from "astro:assets";
 import "@styles/global.css"
 
@@ -9,7 +11,7 @@ const pageDescription = "Страница обо мне";
 const identity = {
   firstName: "Настя",
   country: "Россия",
-  occupation: "фронтенд",
+  occupation: "frontend",
   hobbies: ["фотография", "кино", "комиксы"],
 };
 const myImage = "/photo-compressed.jpg";
@@ -28,9 +30,9 @@ const skills = [
 ];
 
 const professionalInterests = [
-  "оптимизация производительности",
+  "оптимизация",
   "UX/UI",
-  "внедрение новых технологий",
+  "новые технологии",
 ];
 
 const dokaLink = "https://doka.guide/people/anastasiayarosh/";
@@ -76,46 +78,28 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   pubDate={new Date()}
   heroImage=""
 >
-    <div class="facts">
-      <p>Меня зовут {identity.firstName}.</p>
-      <p>Я {identity.occupation}-разработчица.</p>
-      {
-        identity.hobbies.length >= 2 && (
-          <p>
-            Мои увлечения: {identity.hobbies[0]}, {identity.hobbies[1]} и{" "}
-            {identity.hobbies[2]}.
-          </p>
-        )
-      }
-      <p>Мои навыки: <span>{skills.join(", ")}</span>.</p>
-      <p>
-        Мои профессиональные интересы: <span>{professionalInterests.join(", ")}</span>.
-      </p>
-      <p>Контрибьючу в Доку. Люблю смешные носки и мемы.</p>
-    </div>
-
-  <p>
-    Мой профиль на Доке: <span class="no-wrap"
-      ><a href={dokaLink} target="_blank">Doka Profile</a></span
-    >
-  </p>
-  <p>
-    Участвовала в переводе официальной документации Vue.js на русский язык: <span
-      class="no-wrap"><a href={vueDocsLink} target="_blank">Vue Docs</a></span
-    >
-  </p>
-  <p>
-    Предложила правило ESLint, его приняли: 
-    <span class="no-wrap"
-      ><a href={eslintRuleLink} target="_blank">ESLint Rule</a></span
-    >
-  </p>
-  <p>
-    Контрибьютор документации Astro: 
-    <span class="no-wrap">
-      <a href={astroDocsLink} target="_blank">Astro Docs</a>
-    </span>
-  </p>
+<FactsCode
+  data={{
+    name: identity.firstName,
+    role: identity.occupation,
+    hobbies: identity.hobbies,
+    skills,
+    interests: professionalInterests,
+    contributions: [
+      { name: "Doka" },
+      { name: "Vue Docs" },
+      { name: "ESLint CSS Rule" },
+      { name: "Astro Docs" },
+    ],
+  }}
+  format="json"
+/>
+<h2>Ссылки на мои контрибьюты</h2>
+<p>Контрибьюты в документацию Doka, Vue Docs, ESLint CSS Rule и Astro Docs</p>
+<p><a href={dokaLink} target="_blank">Doka</a></p>
+<p><a href={vueDocsLink} target="_blank">Vue.js Docs</a></p>
+  <p><a href={astroDocsLink} target="_blank">Astro Docs</a></p>
+  <p><a href={eslintRuleLink} target="_blank">Eslint</a></p>
   <h2>Участвовала в международном хакатоне, организованном VueSchool</h2>
   <Image
     src="/vue-forge.png"
@@ -192,6 +176,7 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   </ul>
 
   <DevTerminal />
+   <ScrollTop />
 </Layout>
 
 <style>

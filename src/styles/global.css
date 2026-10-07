@@ -375,7 +375,7 @@ code {
 pre {
   padding: 1.5em;
   border-radius: 8px;
-  background: var(--bg-body);
+  background: var(--);
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
 }

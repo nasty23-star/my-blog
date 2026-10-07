@@ -1,6 +1,7 @@
 ---
 import Layout from "@layouts/BlogPost.astro";
 import DevTerminal from "@components/DevTerminal.astro";
+import FactsCode from "@components/FactsCode.astro";
 import ScrollTop from '@components/ScrollTop.astro';
 import "@styles/global.css"
 
@@ -28,9 +29,9 @@ const skills = [
 ];
 
 const professionalInterests = [
-  "performance optimization",
+  "optimization",
   "UX/UI",
-  "new technologies implementation",
+  "new technologies",
 ];
 
 const dokaLink = "https://doka.guide/people/anastasiayarosh/";
@@ -60,46 +61,28 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   pubDate={new Date("May 16 2025")}
   heroImage=""
 >
-    <div class="facts">
-      <p>My name is {identity.firstName}.</p>
-      <p>I'm a {identity.occupation} developer.</p>
-      {
-        identity.hobbies.length >= 2 && (
-          <p>
-            My hobbies: {identity.hobbies[0]}, {identity.hobbies[1]} and{" "}
-            {identity.hobbies[2]}.
-          </p>
-        )
-      }
-      <p>My skills: <span>{skills.join(", ")}</span>.</p>
-      <p>
-        My professional interests: <span
-          >{professionalInterests.join(", ")}</span
-        >.
-      </p>
-      <p>Contributing to Doka. Love funny socks and memes.</p>
-    </div>
-
-  <p>
-    My profile on Doka: <span class="no-wrap"
-      ><a href={dokaLink} target="_blank">Doka Profile</a></span
-    >
-  </p>
-  <p>
-    Participated in translating Vue.js official documentation into Russian: <span
-      class="no-wrap"><a href={vueDocsLink} target="_blank">Vue Docs</a></span
-    >
-  </p>
-  <p>
-    An ESLint rule I proposed and was accepted: <span class="no-wrap"
-      ><a href={eslintRuleLink} target="_blank">ESLint Rule</a></span
-    >
-  </p>
-  <p>
-    Contributing to Astro documentation: <span class="no-wrap"
-      ><a href={astroDocsLink} target="_blank">Astro Docs</a></span
-    >
-  </p>
+  <FactsCode
+  data={{
+    name: identity.firstName,
+    role: identity.occupation,
+    hobbies: identity.hobbies,
+    skills,
+    interests: professionalInterests,
+    contributions: [
+      { name: "Doka" },
+      { name: "Vue Docs" },
+      { name: "ESLint Rule" },
+      { name: "Astro Docs" },
+    ],
+  }}
+  format="json"
+/>
+<h2>Links to my contributes</h2>
+<p>Contributes to Doka, Vue Docs, ESLint CSS Rule and Astro Docs</p>
+<p><a href={dokaLink} target="_blank">Doka</a></p>
+<p><a href={vueDocsLink} target="_blank">Vue.js Docs</a></p>
+  <p><a href={astroDocsLink} target="_blank">Astro Docs</a></p>
+  <p><a href={eslintRuleLink} target="_blank">Eslint</a></p>
   <h2>Participated in an international hackathon organized by VueSchool</h2>
   <img
     src="/vue-forge.png"
