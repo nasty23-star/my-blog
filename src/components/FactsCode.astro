@@ -96,10 +96,31 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
 
 <style is:global>
   /* ============================================================
-     FactsCode — палитра DevTerminal (Night Owl, dark)
+     FactsCode — две темы: Night Owl (dark) + Light Owl (light)
+     Переключение: <div data-theme="light"> … или на самом .code-lcd
      ============================================================ */
 
+  /* ---------- Тёмная тема (по умолчанию) ---------- */
+
   .code-lcd {
+    /* базовые переменные */
+    --fc-bg:      #011627;
+    --fc-border:  #1d3b53;
+    --fc-fg:      #d6deeb;
+
+    --fc-key:     #82aaff;
+    --fc-str:     #d6deeb;   /* было #ecc48d — заменено на основной текст */
+    --fc-num:     #addb67;
+    --fc-bool:    #c792ea;
+    --fc-null:    #c792ea;
+    --fc-br:      #d6deeb;
+    --fc-p:       #637777;
+    --fc-sel:     #c792ea;
+
+    --fc-scroll-track: #011627;
+    --fc-scroll-thumb: #1d3b53;
+    --fc-scroll-hover: #2a4f6e;
+
     margin: 0;
     padding: 15px;
     font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
@@ -107,14 +128,60 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     font-size: 14px;
     line-height: 1.5;
     overflow-x: auto;
-    color: #d6deeb;
-    background: #011627;
-    border: 1px solid #1d3b53;
+    color: var(--fc-fg);
+    background: var(--fc-bg);
+    border: 1px solid var(--fc-border);
     border-radius: 10px;
     font-variant-ligatures: contextual;
     tab-size: 2;
     scrollbar-width: thin;
-    scrollbar-color: #1d3b53 #011627;
+    scrollbar-color: var(--fc-scroll-thumb) var(--fc-scroll-track);
+  }
+
+  /* ---------- Светлая тема (Light Owl) ---------- */
+
+  .code-lcd[data-theme="light"],
+  [data-theme="light"] .code-lcd {
+    --fc-bg:      #fbfbfb;
+    --fc-border:  #d9d9d9;
+    --fc-fg:      #403f53;
+
+    --fc-key:     #4876d6;
+    --fc-str:     #3f577c;
+    --fc-num:     #2aa298;
+    --fc-bool:    #994cc3;
+    --fc-null:    #994cc3;
+    --fc-br:      #403f53;
+    --fc-p:       #989fb1;
+    --fc-sel:     #994cc3;
+
+    --fc-scroll-track: #f0f0f0;
+    --fc-scroll-thumb: #c7c7c7;
+    --fc-scroll-hover: #a9a9a9;
+  }
+
+  /* ---------- Авто-тема по системным настройкам ---------- */
+  /* Работает, если тема не задана явно ни на .code-lcd, ни на родителе */
+
+  @media (prefers-color-scheme: light) {
+    .code-lcd:not([data-theme]) {
+      --fc-bg:      #fbfbfb;
+      --fc-border:  #d9d9d9;
+      --fc-fg:      #403f53;
+
+      --fc-key:     #4876d6;
+      --fc-str:     #d6deeb;
+      --fc-num:     #2aa298;
+      --fc-bool:    #994cc3;
+      --fc-null:    #994cc3;
+      --fc-br:      #403f53;
+      --fc-p:       #989fb1;
+      --fc-sel:     #994cc3;
+
+      --fc-scroll-track: #f0f0f0;
+      --fc-scroll-thumb: #c7c7c7;
+      --fc-scroll-hover: #a9a9a9;
+    }
   }
 
   .code-lcd code {
@@ -122,63 +189,31 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     white-space: pre;
   }
 
-  /* --- Токены строго по палитре DevTerminal --- */
+  /* --- Токены (цвета берутся из переменных) --- */
 
-  /* Ключи JSON / свойства CSS — синий (.prompt-path, .dir, .git-branch-o) */
-  .key {
-    color: #82aaff;
-  }
+  .key  { color: var(--fc-key); }
+  .str  { color: var(--fc-str); }
+  .num  { color: var(--fc-num); }
+  .bool { color: var(--fc-bool); }
+  .null { color: var(--fc-null); font-style: italic; }
+  .br   { color: var(--fc-br); }
+  .p    { color: var(--fc-p); }
+  .sel  { color: var(--fc-sel); font-weight: 600; }
 
-  /* Строки — песочный (.file-js, .file-json, .git-modified, .git-hash) */
-  .str {
-    color: #d6deeb;;
-  }
+  /* --- Скроллбар --- */
 
-  /* Числа — зелёный (.prompt-user, .success, .git-staged, .file-vue) */
-  .num {
-    color: #addb67;
-  }
-
-  /* true / false — сиреневый (.git-branch) */
-  .bool {
-    color: #c792ea;
-  }
-
-  /* null — сиреневый курсив */
-  .null {
-    color: #c792ea;
-    font-style: italic;
-  }
-
-  /* Скобки [ ] { } — основной текст (.cmd-text, .git-msg) */
-  .br {
-    color: #d6deeb;
-  }
-
-  /* Двоеточия, запятые, точки с запятой — приглушённый (.info, .git-date, .file-lock) */
-  .p {
-    color: #637777;
-  }
-
-  /* CSS-селектор — сиреневый (.git-branch) */
-  .sel {
-    color: #c792ea;
-    font-weight: 600;
-  }
-
-  /* Скроллбар — как в .screen у DevTerminal */
   .code-lcd::-webkit-scrollbar {
     height: 8px;
   }
   .code-lcd::-webkit-scrollbar-track {
-    background: #011627;
+    background: var(--fc-scroll-track);
   }
   .code-lcd::-webkit-scrollbar-thumb {
-    background: #1d3b53;
+    background: var(--fc-scroll-thumb);
     border-radius: 4px;
   }
   .code-lcd::-webkit-scrollbar-thumb:hover {
-    background: #2a4f6e;
+    background: var(--fc-scroll-hover);
   }
 
   @media (max-width: 640px) {
