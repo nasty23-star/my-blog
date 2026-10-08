@@ -14,7 +14,7 @@ function escapeHtml(str: string): string {
     .replace(/"/g, '&quot;');
 }
 
-// --- Подсветка JSON в стиле скриншота ---
+// --- Подсветка JSON в палитре DevTerminal ---
 
 function highlightJSON(obj: any, indent = 0): string {
   const spaces = '  '.repeat(indent);
@@ -56,7 +56,7 @@ function highlightJSON(obj: any, indent = 0): string {
   return `<span class="str">"${escapeHtml(String(obj))}"</span>`;
 }
 
-// --- Подсветка CSS в том же стиле ---
+// --- Подсветка CSS в палитре DevTerminal ---
 
 function highlightCSS(data: Record<string, any>): string {
   const entries = Object.entries(data);
@@ -70,7 +70,6 @@ function highlightCSS(data: Record<string, any>): string {
 
     let val: string;
     if (Array.isArray(value)) {
-      // массив → как в JSON: строки через запятую
       val = value
         .map((v) => `<span class="str">"${escapeHtml(String(v))}"</span>`)
         .join('<span class="p">,</span> ');
@@ -96,19 +95,26 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
 <pre class="code-lcd"><code set:html={highlighted} /></pre>
 
 <style is:global>
+  /* ============================================================
+     FactsCode — палитра DevTerminal (Night Owl, dark)
+     ============================================================ */
+
   .code-lcd {
     margin: 0;
-    padding: 20px 24px;
-    font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas',
-      'Courier New', monospace;
+    padding: 15px;
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
+      "Courier New", monospace;
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.5;
     overflow-x: auto;
-    color: #d4d4d4;
-    background: #21344d;
-    border-radius: 8px;
+    color: #d6deeb;
+    background: #011627;
+    border: 1px solid #1d3b53;
+    border-radius: 10px;
     font-variant-ligatures: contextual;
     tab-size: 2;
+    scrollbar-width: thin;
+    scrollbar-color: #1d3b53 #011627;
   }
 
   .code-lcd code {
@@ -116,67 +122,68 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     white-space: pre;
   }
 
-  /* --- Токены в стиле VS Code Dark+ --- */
+  /* --- Токены строго по палитре DevTerminal --- */
 
-  /* Ключи JSON и свойства CSS — голубой */
+  /* Ключи JSON / свойства CSS — синий (.prompt-path, .dir, .git-branch-o) */
   .key {
-    color: #9cdcfe;
+    color: #82aaff;
   }
 
-  /* Строки — оранжевый */
+  /* Строки — песочный (.file-js, .file-json, .git-modified, .git-hash) */
   .str {
-    color: #ce9178;
+    color: #ecc48d;
   }
 
-  /* Числа — бледно-зелёный */
+  /* Числа — зелёный (.prompt-user, .success, .git-staged, .file-vue) */
   .num {
-    color: #b5cea8;
+    color: #addb67;
   }
 
-  /* true / false — синий */
+  /* true / false — сиреневый (.git-branch) */
   .bool {
-    color: #569cd6;
+    color: #c792ea;
   }
 
-  /* null — синий курсив */
+  /* null — сиреневый курсив */
   .null {
-    color: #569cd6;
+    color: #c792ea;
     font-style: italic;
   }
 
-  /* Скобки [ ] { } — жёлтый (как на скрине) */
+  /* Скобки [ ] { } — основной текст (.cmd-text, .git-msg) */
   .br {
-    color: #ffd700;
+    color: #d6deeb;
   }
 
-  /* Двоеточия, запятые, точки с запятой — приглушённый серый */
+  /* Двоеточия, запятые, точки с запятой — приглушённый (.info, .git-date, .file-lock) */
   .p {
-    color: #808080;
+    color: #637777;
   }
 
-  /* CSS-селектор — золотистый */
+  /* CSS-селектор — сиреневый (.git-branch) */
   .sel {
-    color: #d7ba7d;
+    color: #c792ea;
+    font-weight: 600;
   }
 
-  /* Скроллбар */
+  /* Скроллбар — как в .screen у DevTerminal */
   .code-lcd::-webkit-scrollbar {
     height: 8px;
   }
   .code-lcd::-webkit-scrollbar-track {
-    background: #1e1e1e;
+    background: #011627;
   }
   .code-lcd::-webkit-scrollbar-thumb {
-    background: #3a3a3a;
+    background: #1d3b53;
     border-radius: 4px;
   }
   .code-lcd::-webkit-scrollbar-thumb:hover {
-    background: #4a4a4a;
+    background: #2a4f6e;
   }
 
   @media (max-width: 640px) {
     .code-lcd {
-      padding: 14px 16px;
+      padding: 12px 14px;
       font-size: 12px;
     }
   }
