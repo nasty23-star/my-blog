@@ -14,210 +14,190 @@ function escapeHtml(str: string): string {
     .replace(/"/g, '&quot;');
 }
 
-// --- Подсветка JSON в палитре DevTerminal ---
-
 function highlightJSON(obj: any, indent = 0): string {
   const spaces = '  '.repeat(indent);
   const nextSpaces = '  '.repeat(indent + 1);
   const lines: string[] = [];
 
   if (Array.isArray(obj)) {
-    if (obj.length === 0) return '<span class="br">[]</span>';
-    lines.push('<span class="br">[</span>');
+    if (obj.length === 0) return '<span class="fc-br">[]</span>';
+    lines.push('<span class="fc-br">[</span>');
     obj.forEach((item, index) => {
       const isLast = index === obj.length - 1;
       const value = highlightJSON(item, indent + 1);
-      lines.push(`${nextSpaces}${value}${isLast ? '' : '<span class="p">,</span>'}`);
+      lines.push(`${nextSpaces}${value}${isLast ? '' : '<span class="fc-p">,</span>'}`);
     });
-    lines.push(`${spaces}<span class="br">]</span>`);
+    lines.push(`${spaces}<span class="fc-br">]</span>`);
     return lines.join('\n');
   }
 
   if (obj !== null && typeof obj === 'object') {
     const keys = Object.keys(obj);
-    if (keys.length === 0) return '<span class="br">{}</span>';
-    lines.push('<span class="br">{</span>');
+    if (keys.length === 0) return '<span class="fc-br">{}</span>';
+    lines.push('<span class="fc-br">{</span>');
     keys.forEach((key, index) => {
       const isLast = index === keys.length - 1;
       const value = highlightJSON(obj[key], indent + 1);
-      const coloredKey = `<span class="key">"${escapeHtml(key)}"</span>`;
+      const coloredKey = `<span class="fc-key">"${escapeHtml(key)}"</span>`;
       lines.push(
-        `${nextSpaces}${coloredKey}<span class="p">:</span> ${value}${isLast ? '' : '<span class="p">,</span>'}`
+        `${nextSpaces}${coloredKey}<span class="fc-p">:</span> ${value}${isLast ? '' : '<span class="fc-p">,</span>'}`
       );
     });
-    lines.push(`${spaces}<span class="br">}</span>`);
+    lines.push(`${spaces}<span class="fc-br">}</span>`);
     return lines.join('\n');
   }
 
-  if (typeof obj === 'string') return `<span class="str">"${escapeHtml(obj)}"</span>`;
-  if (typeof obj === 'number') return `<span class="num">${obj}</span>`;
-  if (typeof obj === 'boolean') return `<span class="bool">${obj}</span>`;
-  if (obj === null) return '<span class="null">null</span>';
-  return `<span class="str">"${escapeHtml(String(obj))}"</span>`;
+  if (typeof obj === 'string') return `<span class="fc-str">"${escapeHtml(obj)}"</span>`;
+  if (typeof obj === 'number') return `<span class="fc-num">${obj}</span>`;
+  if (typeof obj === 'boolean') return `<span class="fc-bool">${obj}</span>`;
+  if (obj === null) return '<span class="fc-null">null</span>';
+  return `<span class="fc-str">"${escapeHtml(String(obj))}"</span>`;
 }
-
-// --- Подсветка CSS в палитре DevTerminal ---
 
 function highlightCSS(data: Record<string, any>): string {
   const entries = Object.entries(data);
   const lines: string[] = [];
 
-  lines.push('<span class="sel">.facts</span> <span class="br">{</span>');
+  lines.push('<span class="fc-sel">.facts</span> <span class="fc-br">{</span>');
 
   entries.forEach(([key, value]) => {
-    const prop = `<span class="key">${escapeHtml(key)}</span>`;
-    const colon = '<span class="p">:</span>';
+    const prop = `<span class="fc-key">${escapeHtml(key)}</span>`;
+    const colon = '<span class="fc-p">:</span>';
 
     let val: string;
     if (Array.isArray(value)) {
       val = value
-        .map((v) => `<span class="str">"${escapeHtml(String(v))}"</span>`)
-        .join('<span class="p">,</span> ');
+        .map((v) => `<span class="fc-str">"${escapeHtml(String(v))}"</span>`)
+        .join('<span class="fc-p">,</span> ');
     } else if (typeof value === 'number') {
-      val = `<span class="num">${value}</span>`;
+      val = `<span class="fc-num">${value}</span>`;
     } else if (typeof value === 'boolean') {
-      val = `<span class="bool">${value}</span>`;
+      val = `<span class="fc-bool">${value}</span>`;
     } else {
-      val = `<span class="str">"${escapeHtml(String(value))}"</span>`;
+      val = `<span class="fc-str">"${escapeHtml(String(value))}"</span>`;
     }
 
-    const semi = '<span class="p">;</span>';
+    const semi = '<span class="fc-p">;</span>';
     lines.push(`  ${prop}${colon} ${val}${semi}`);
   });
 
-  lines.push('<span class="br">}</span>');
+  lines.push('<span class="fc-br">}</span>');
   return lines.join('\n');
 }
 
 const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data);
 ---
 
-<pre class="code-lcd"><code set:html={highlighted} /></pre>
+<div class="facts-wrapper">
+  <div class="facts-terminal">
+    <div class="titlebar">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="title">facts.{format === 'json' ? 'json' : 'css'} — zsh</span>
+    </div>
+    <pre class="screen"><code set:html={highlighted} /></pre>
+  </div>
+</div>
 
 <style is:global>
   /* ============================================================
-     FactsCode — две темы: Night Owl (dark) + Light Owl (light)
-     Переключение: <div data-theme="light"> … или на самом .code-lcd
+     FactsCode — стили 1-в-1 как у DevTerminal (Night Owl dark)
+     Все селекторы с префиксом .facts-terminal — не текут наружу.
+     is:global — чтобы спаны из set:html точно получали цвета.
      ============================================================ */
 
-  /* ---------- Тёмная тема (по умолчанию) ---------- */
+  .facts-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+  }
 
-  .code-lcd {
-    /* базовые переменные */
-    --fc-bg:      #011627;
-    --fc-border:  #1d3b53;
-    --fc-fg:      #d6deeb;
+  .facts-terminal {
+    width: 100%;
+    max-width: 850px;
+    background: #011627;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid #1d3b53;
+  }
 
-    --fc-key:     #82aaff;
-    --fc-str:     #d6deeb;   /* было #ecc48d — заменено на основной текст */
-    --fc-num:     #addb67;
-    --fc-bool:    #c792ea;
-    --fc-null:    #c792ea;
-    --fc-br:      #d6deeb;
-    --fc-p:       #637777;
-    --fc-sel:     #c792ea;
+  .facts-terminal .titlebar {
+    height: 32px;
+    background: #0b2942;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 8px;
+    border-bottom: 1px solid #1d3b53;
+    flex-shrink: 0;
+  }
 
-    --fc-scroll-track: #011627;
-    --fc-scroll-thumb: #1d3b53;
-    --fc-scroll-hover: #2a4f6e;
+  .facts-terminal .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .facts-terminal .dot.red    { background: #ff5f56; }
+  .facts-terminal .dot.yellow { background: #ffbd2e; }
+  .facts-terminal .dot.green  { background: #27c93f; }
 
+  .facts-terminal .title {
+    flex: 1;
+    text-align: center;
+    color: #b0b9b9;
+    font-size: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  .facts-terminal .screen {
     margin: 0;
     padding: 15px;
-    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
-      "Courier New", monospace;
     font-size: 14px;
     line-height: 1.5;
+    color: #d6deeb;
+    background: #011627;
     overflow-x: auto;
-    color: var(--fc-fg);
-    background: var(--fc-bg);
-    border: 1px solid var(--fc-border);
-    border-radius: 10px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #1d3b53 #011627;
+    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
+      "Courier New", monospace;
     font-variant-ligatures: contextual;
     tab-size: 2;
-    scrollbar-width: thin;
-    scrollbar-color: var(--fc-scroll-thumb) var(--fc-scroll-track);
   }
 
-  /* ---------- Светлая тема (Light Owl) ---------- */
-
-  .code-lcd[data-theme="light"],
-  [data-theme="light"] .code-lcd {
-    --fc-bg:      #fbfbfb;
-    --fc-border:  #d9d9d9;
-    --fc-fg:      #403f53;
-
-    --fc-key:     #4876d6;
-    --fc-str:     #3f577c;
-    --fc-num:     #2aa298;
-    --fc-bool:    #994cc3;
-    --fc-null:    #994cc3;
-    --fc-br:      #403f53;
-    --fc-p:       #989fb1;
-    --fc-sel:     #994cc3;
-
-    --fc-scroll-track: #f0f0f0;
-    --fc-scroll-thumb: #c7c7c7;
-    --fc-scroll-hover: #a9a9a9;
-  }
-
-  /* ---------- Авто-тема по системным настройкам ---------- */
-  /* Работает, если тема не задана явно ни на .code-lcd, ни на родителе */
-
-  @media (prefers-color-scheme: light) {
-    .code-lcd:not([data-theme]) {
-      --fc-bg:      #fbfbfb;
-      --fc-border:  #d9d9d9;
-      --fc-fg:      #403f53;
-
-      --fc-key:     #4876d6;
-      --fc-str:     #d6deeb;
-      --fc-num:     #2aa298;
-      --fc-bool:    #994cc3;
-      --fc-null:    #994cc3;
-      --fc-br:      #403f53;
-      --fc-p:       #989fb1;
-      --fc-sel:     #994cc3;
-
-      --fc-scroll-track: #f0f0f0;
-      --fc-scroll-thumb: #c7c7c7;
-      --fc-scroll-hover: #a9a9a9;
-    }
-  }
-
-  .code-lcd code {
+  .facts-terminal .screen code {
     font-family: inherit;
     white-space: pre;
   }
 
-  /* --- Токены (цвета берутся из переменных) --- */
-
-  .key  { color: var(--fc-key); }
-  .str  { color: var(--fc-str); }
-  .num  { color: var(--fc-num); }
-  .bool { color: var(--fc-bool); }
-  .null { color: var(--fc-null); font-style: italic; }
-  .br   { color: var(--fc-br); }
-  .p    { color: var(--fc-p); }
-  .sel  { color: var(--fc-sel); font-weight: 600; }
-
-  /* --- Скроллбар --- */
-
-  .code-lcd::-webkit-scrollbar {
-    height: 8px;
-  }
-  .code-lcd::-webkit-scrollbar-track {
-    background: var(--fc-scroll-track);
-  }
-  .code-lcd::-webkit-scrollbar-thumb {
-    background: var(--fc-scroll-thumb);
+  .facts-terminal .screen::-webkit-scrollbar { height: 8px; width: 8px; }
+  .facts-terminal .screen::-webkit-scrollbar-track { background: #011627; }
+  .facts-terminal .screen::-webkit-scrollbar-thumb {
+    background: #1d3b53;
     border-radius: 4px;
   }
-  .code-lcd::-webkit-scrollbar-thumb:hover {
-    background: var(--fc-scroll-hover);
-  }
+  .facts-terminal .screen::-webkit-scrollbar-thumb:hover { background: #2a4f6e; }
 
+  /* ============================================================
+     Токены подсветки. Классы с префиксом fc- → не конфликтуют
+     с .key/.str из других компонентов и глобальных стилей.
+     ============================================================ */
+
+  .facts-terminal .fc-key  { color: #82aaff !important; }   /* ключи / свойства */
+  .facts-terminal .fc-str  { color: #679cc8 !important; }   /* строки */
+  .facts-terminal .fc-num  { color: #addb67 !important; }   /* числа */
+  .facts-terminal .fc-bool { color: #c792ea !important; }   /* true / false */
+  .facts-terminal .fc-null { color: #c792ea !important; font-style: italic; }
+  .facts-terminal .fc-br   { color: #d6deeb !important; }   /* { } [ ] */
+  .facts-terminal .fc-p    { color: #637777 !important; }   /* : , ; */
+  .facts-terminal .fc-sel  { color: #c792ea !important; font-weight: 600; }
+
+  /* ============================================================
+     Адаптив
+     ============================================================ */
   @media (max-width: 640px) {
-    .code-lcd {
+    .facts-terminal .screen {
       padding: 12px 14px;
       font-size: 12px;
     }
