@@ -1,10 +1,10 @@
 ---
-import BaseHead from "@components/BaseHead.astro";
-import Header from "@components/Header.astro";
-import Footer from "@components/Footer.astro";
-import Sparkle from "@components/Sparkle.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
-import { Image } from "astro:assets";
+import BaseHead from '@components/BaseHead.astro';
+import Header from '@components/Header.astro';
+import Footer from '@components/Footer.astro';
+import Sparkle from '@components/Sparkle.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { Image } from 'astro:assets';
 ---
 
 <!doctype html>
@@ -32,8 +32,7 @@ import { Image } from "astro:assets";
               open-source энтузиастка
             </p>
           </div>
-          <div class="hero-image">
-          </div>
+          <div class="hero-image"></div>
         </div>
       </section>
       <section class="terminal-section">
@@ -150,31 +149,13 @@ import { Image } from "astro:assets";
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <rect
-                x="3"
-                y="4"
-                width="18"
-                height="16"
-                rx="2"
-                stroke="#60a5fa"
-                stroke-width="1.8"></rect>
-              <path
-                d="M8 2v4M16 2v4"
-                stroke="#60a5fa"
-                stroke-width="1.8"
-                stroke-linecap="round"></path>
-              <circle
-                cx="12"
-                cy="12"
-                r="2"
-                fill="#60a5fa"
-                stroke="#60a5fa"
-                stroke-width="1.5"></circle>
-              <path
-                d="M12 14v4"
-                stroke="#60a5fa"
-                stroke-width="1.8"
-                stroke-linecap="round"></path>
+              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#60a5fa" stroke-width="1.8"
+              ></rect>
+              <path d="M8 2v4M16 2v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"
+              ></path>
+              <circle cx="12" cy="12" r="2" fill="#60a5fa" stroke="#60a5fa" stroke-width="1.5"
+              ></circle>
+              <path d="M12 14v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"></path>
             </svg>
             8 MODULES LOADED
           </span>
@@ -190,26 +171,11 @@ import { Image } from "astro:assets";
                 stroke="#60a5fa"
                 stroke-width="1.8"
                 stroke-linecap="round"></path>
-              <circle
-                cx="12"
-                cy="12"
-                r="3"
-                fill="#27c93f"
-                stroke="#27c93f"
-                stroke-width="1.5"></circle>
-              <circle
-                cx="12"
-                cy="12"
-                r="3"
-                fill="#27c93f"
-                stroke="#27c93f"
-                stroke-width="1.5"
-              >
-                <animate
-                  attributeName="opacity"
-                  values="1;0.3;1"
-                  dur="2s"
-                  repeatCount="indefinite"></animate>
+              <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5"
+              ></circle>
+              <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5">
+                <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"
+                ></animate>
               </circle>
             </svg>
             SIGNAL: STABLE
@@ -231,7 +197,6 @@ import { Image } from "astro:assets";
     height: 100%;
     z-index: -2;
     overflow: hidden;
-    // background: radial-gradient(ellipse at bottom, #0a0f2a 0%, #030617 100%);
   }
 
   .stars {
@@ -285,16 +250,8 @@ import { Image } from "astro:assets";
     width: 100%;
     height: 100%;
     background:
-      radial-gradient(
-        circle at 30% 40%,
-        rgba(59, 130, 246, 0.08) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 70% 60%,
-        rgba(139, 92, 246, 0.06) 0%,
-        transparent 50%
-      );
+      radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
     animation: nebulaDrift 40s ease-in-out infinite alternate;
   }
 
@@ -333,12 +290,11 @@ import { Image } from "astro:assets";
     margin: 0.5rem auto;
     border-radius: 12px;
     overflow: hidden;
-    font-family: "Courier New", "Fira Code", monospace;
+    font-family: 'Courier New', 'Fira Code', monospace;
     border: 1px solid #1e3a5f;
   }
 
   .terminal-header {
-    // background: #0a0f1a;
     padding: 0.8rem 1rem;
     display: flex;
     gap: 1rem;
@@ -367,13 +323,11 @@ import { Image } from "astro:assets";
   }
 
   .terminal-title {
-    // color: #60a5fa;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
   }
 
   .terminal-body {
-    // background: rgba(2, 8, 20, 0.85);
     backdrop-filter: blur(4px);
     padding: 1.5rem;
     border-bottom: 1px solid #1e3a5f;
@@ -384,13 +338,8 @@ import { Image } from "astro:assets";
   }
 
   .prompt {
-    // color: #3b82f6;
     font-weight: bold;
     margin-right: 0.5rem;
-  }
-
-  .command {
-    // color: #7bc5ff;
   }
 
   .terminal-output {
@@ -421,12 +370,10 @@ import { Image } from "astro:assets";
 
   .tech-name {
     flex: 1;
-    // color: #c8e4ff;
     font-weight: 500;
   }
 
   .tech-version {
-    // color: #60a5fa;
     font-size: 0.75rem;
     font-family: monospace;
   }
@@ -455,11 +402,10 @@ import { Image } from "astro:assets";
   }
 
   .status {
-    // color: #c8e4ff;
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    font-family: "Courier New", monospace;
+    font-family: 'Courier New', monospace;
     font-weight: 500;
     letter-spacing: 0.3px;
   }
@@ -505,7 +451,6 @@ import { Image } from "astro:assets";
   .greeting {
     display: inline-block;
     font-size: 1rem;
-    // color: #60a5fa;
     margin-bottom: 1rem;
     letter-spacing: 2px;
   }
@@ -522,7 +467,6 @@ import { Image } from "astro:assets";
 
   .description {
     font-size: 1.2rem;
-    // color: #a1c2e8;
     line-height: 1.6;
     height: 94px;
   }
@@ -531,7 +475,6 @@ import { Image } from "astro:assets";
     display: inline-block;
     padding: 0.75rem 1.5rem;
     background: #3b82f6;
-    // color: white;
     text-decoration: none;
     border-radius: 8px;
     transition: all 0.2s ease;
@@ -547,7 +490,6 @@ import { Image } from "astro:assets";
   .button.secondary {
     background: transparent;
     border: 1px solid #3b82f6;
-    // color: #60a5fa;
   }
 
   .button.secondary:hover {
@@ -587,7 +529,6 @@ import { Image } from "astro:assets";
   .highlight-card h3 {
     font-size: 1.3rem;
     margin: 0 0 0.5rem 0;
-    // color: #7bc5ff;
   }
 
   .highlight-card p {
@@ -596,7 +537,7 @@ import { Image } from "astro:assets";
     font-size: 0.95rem;
   }
 
-    @media (max-width: 420px) {
+  @media (max-width: 420px) {
     .terminal-title {
       letter-spacing: 0.2px;
     }

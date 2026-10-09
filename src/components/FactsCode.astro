@@ -136,17 +136,27 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     flex-shrink: 0;
   }
 
-  .facts-terminal .dot { width: 12px; height: 12px; border-radius: 50%; }
-  .facts-terminal .dot.red    { background: #ff5f56; }
-  .facts-terminal .dot.yellow { background: #ffbd2e; }
-  .facts-terminal .dot.green  { background: #27c93f; }
+  .facts-terminal .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .facts-terminal .dot.red {
+    background: #ff5f56;
+  }
+  .facts-terminal .dot.yellow {
+    background: #ffbd2e;
+  }
+  .facts-terminal .dot.green {
+    background: #27c93f;
+  }
 
   .facts-terminal .title {
     flex: 1;
     text-align: center;
     color: #b0b9b9;
     font-size: 12px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 
   .facts-terminal .screen {
@@ -160,8 +170,8 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     overflow-y: auto;
     scrollbar-width: thin;
     scrollbar-color: #1d3b53 #011627;
-    font-family: "JetBrains Mono", "Fira Code", "SF Mono", Menlo, Consolas,
-      "Courier New", monospace;
+    font-family:
+      'JetBrains Mono', 'Fira Code', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
     font-variant-ligatures: contextual;
     tab-size: 2;
   }
@@ -171,27 +181,52 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     white-space: pre;
   }
 
-  .facts-terminal .screen::-webkit-scrollbar { height: 8px; width: 8px; }
-  .facts-terminal .screen::-webkit-scrollbar-track { background: #011627; }
+  .facts-terminal .screen::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+  .facts-terminal .screen::-webkit-scrollbar-track {
+    background: #011627;
+  }
   .facts-terminal .screen::-webkit-scrollbar-thumb {
     background: #1d3b53;
     border-radius: 4px;
   }
-  .facts-terminal .screen::-webkit-scrollbar-thumb:hover { background: #2a4f6e; }
+  .facts-terminal .screen::-webkit-scrollbar-thumb:hover {
+    background: #2a4f6e;
+  }
 
   /* ============================================================
      Токены подсветки. Классы с префиксом fc- → не конфликтуют
      с .key/.str из других компонентов и глобальных стилей.
      ============================================================ */
 
-  .facts-terminal .fc-key  { color: #82aaff !important; }   /* ключи / свойства */
-  .facts-terminal .fc-str  { color: #679cc8 !important; }   /* строки */
-  .facts-terminal .fc-num  { color: #addb67 !important; }   /* числа */
-  .facts-terminal .fc-bool { color: #c792ea !important; }   /* true / false */
-  .facts-terminal .fc-null { color: #c792ea !important; font-style: italic; }
-  .facts-terminal .fc-br   { color: #d6deeb !important; }   /* { } [ ] */
-  .facts-terminal .fc-p    { color: #637777 !important; }   /* : , ; */
-  .facts-terminal .fc-sel  { color: #c792ea !important; font-weight: 600; }
+  .facts-terminal .fc-key {
+    color: #82aaff !important;
+  } /* ключи / свойства */
+  .facts-terminal .fc-str {
+    color: #679cc8 !important;
+  } /* строки */
+  .facts-terminal .fc-num {
+    color: #addb67 !important;
+  } /* числа */
+  .facts-terminal .fc-bool {
+    color: #c792ea !important;
+  } /* true / false */
+  .facts-terminal .fc-null {
+    color: #c792ea !important;
+    font-style: italic;
+  }
+  .facts-terminal .fc-br {
+    color: #d6deeb !important;
+  } /* { } [ ] */
+  .facts-terminal .fc-p {
+    color: #637777 !important;
+  } /* : , ; */
+  .facts-terminal .fc-sel {
+    color: #c792ea !important;
+    font-weight: 600;
+  }
 
   /* ============================================================
      Адаптив

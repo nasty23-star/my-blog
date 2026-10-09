@@ -1,82 +1,63 @@
 ---
-import Layout from "@layouts/BlogPost.astro";
-import "@styles/global.css"
+import Layout from '@layouts/BlogPost.astro';
+import '@styles/global.css';
 
-const pageTitle = "About Me";
-const pageDescription = "About me page";
+const pageTitle = 'About Me';
+const pageDescription = 'About me page';
 const identity = {
-  firstName: "Nastya",
-  country: "Russia",
-  occupation: "frontend",
-  hobbies: ["photography", "cinema", "comics"],
+  firstName: 'Nastya',
+  country: 'Russia',
+  occupation: 'frontend',
+  hobbies: ['photography', 'cinema', 'comics'],
 };
-const myImage = "/photo-compressed.jpg";
+const myImage = '/photo-compressed.jpg';
 
-const skills = [
-  "HTML",
-  "CSS",
-  "JavaScript",
-  "Vue",
-  "TypeScript",
-  "Astro",
-  "Git",
-  "Vite",
-];
+const skills = ['HTML', 'CSS', 'JavaScript', 'Vue', 'TypeScript', 'Astro', 'Git', 'Vite'];
 
 const professionalInterests = [
-  "performance optimization",
-  "UX/UI",
-  "new technologies implementation",
+  'performance optimization',
+  'UX/UI',
+  'new technologies implementation',
 ];
 
-const dokaLink = "https://doka.guide/people/anastasiayarosh/";
-const vueDocsLink = "https://vuejs.org/guide/introduction.html";
-const eslintRuleLink = "https://github.com/eslint/css/issues/73";
+const dokaLink = 'https://doka.guide/people/anastasiayarosh/';
+const vueDocsLink = 'https://vuejs.org/guide/introduction.html';
+const eslintRuleLink = 'https://github.com/eslint/css/issues/73';
 
-const minskCss = "https://www.youtube.com/watch?v=6wK9z7zahPw";
-const moscowCss = "https://it-event-hub.ru/events/moscowcss-24-2024-02-15";
-const qaSisConfThree = "http://qa-sisters.com/conf-3-talks";
-const quaSisConfFour = "https://qa-sisters.com/conf-4-speakers"
-const qaSisConfPC = "https://qa-sisters.com/conf-4-pk"
-const qaSis = "https://www.youtube.com/watch?v=_zYpsPak_Qw";
-const vkInclusion =
-  "https://vkvideo.ru/playlist/-147415323_22/video-147415323_456240586?linked=1";
+const minskCss = 'https://www.youtube.com/watch?v=6wK9z7zahPw';
+const moscowCss = 'https://it-event-hub.ru/events/moscowcss-24-2024-02-15';
+const qaSisConfThree = 'http://qa-sisters.com/conf-3-talks';
+const quaSisConfFour = 'https://qa-sisters.com/conf-4-speakers';
+const qaSisConfPC = 'https://qa-sisters.com/conf-4-pk';
+const qaSis = 'https://www.youtube.com/watch?v=_zYpsPak_Qw';
+const vkInclusion = 'https://vkvideo.ru/playlist/-147415323_22/video-147415323_456240586?linked=1';
 const qaPermGuild =
-  "https://morion.digital/news/na-vstreche-soobshhestva-testirovshhikov-qa-guild-perm-vystupit-eshhe-odin-spiker/";
-const dokaDvizh = "https://www.youtube.com/watch?v=ZGfQj17utIk";
-const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
+  'https://morion.digital/news/na-vstreche-soobshhestva-testirovshhikov-qa-guild-perm-vystupit-eshhe-odin-spiker/';
+const dokaDvizh = 'https://www.youtube.com/watch?v=ZGfQj17utIk';
+const codeSisters = 'https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s';
 ---
 
 <Layout
   title={pageTitle}
   description={pageDescription}
-  pubDate={new Date("May 16 2025")}
+  pubDate={new Date('May 16 2025')}
   heroImage=""
 >
   <div class="image">
-    <img
-      src={myImage}
-      alt="A photo of me"
-      class="hero-image"
-      width="350px"
-      height="auto"
-    />
+    <img src={myImage} alt="A photo of me" class="hero-image" width="350px" height="auto" />
     <div class="facts">
       <p>My name is {identity.firstName}.</p>
       <p>I'm a {identity.occupation} developer.</p>
       {
         identity.hobbies.length >= 2 && (
           <p>
-            My hobbies: {identity.hobbies[0]}, {identity.hobbies[1]} and{" "}
-            {identity.hobbies[2]}.
+            My hobbies: {identity.hobbies[0]}, {identity.hobbies[1]} and {identity.hobbies[2]}.
           </p>
         )
       }
-      <p>My skills: <strong>{skills.join(", ")}</strong>.</p>
+      <p>My skills: <strong>{skills.join(', ')}</strong>.</p>
       <p>
-        My professional interests: <strong
-          >{professionalInterests.join(", ")}</strong
-        >.
+        My professional interests: <strong>{professionalInterests.join(', ')}</strong>.
       </p>
       <p>Contributing to Doka. Love funny socks and memes.</p>
     </div>
@@ -88,8 +69,8 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     >
   </p>
   <p>
-    Participated in translating Vue.js official documentation into Russian: <span
-      class="no-wrap"><a href={vueDocsLink} target="_blank">Vue Docs</a></span
+    Participated in translating Vue.js official documentation into Russian: <span class="no-wrap"
+      ><a href={vueDocsLink} target="_blank">Vue Docs</a></span
     >
   </p>
   <p>
@@ -98,39 +79,16 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     >
   </p>
   <h2>Participated in an international hackathon organized by VueSchool</h2>
-  <img
-    src="/vue-forge.png"
-    alt="Vue Forge"
-    class="hero-image"
-    width="350px"
-    height="auto"
-  />
+  <img src="/vue-forge.png" alt="Vue Forge" class="hero-image" width="350px" height="auto" />
+  <h2>Participated in the international mentoring program Mentor in Tech #6 as a mentor</h2>
+  <img src="/mit-ru.png" alt="Mentor in Tech Ru" class="hero-image" width="350px" height="auto" />
+  <img src="/mit-en.png" alt="Mentor in Tech En" class="hero-image" width="350px" height="auto" />
   <h2>
-    Participated in the international mentoring program Mentor in Tech #6 as a
-    mentor
-  </h2>
-  <img
-    src="/mit-ru.png"
-    alt="Mentor in Tech Ru"
-    class="hero-image"
-    width="350px"
-    height="auto"
-  />
-  <img
-    src="/mit-en.png"
-    alt="Mentor in Tech En"
-    class="hero-image"
-    width="350px"
-    height="auto"
-  />
-  <h2>
-    Was a member of the Program Committee of the online conference of the QA
-    Sisters community QA Sis Conf #3 and QA Sis Conf #4
+    Was a member of the Program Committee of the online conference of the QA Sisters community QA
+    Sis Conf #3 and QA Sis Conf #4
   </h2>
   <div class="pc">
-  <a href={qaSisConfPC} target="_blank">
-    Qa Sis Conf #4 Program Committee page
-  </a>
+    <a href={qaSisConfPC} target="_blank"> Qa Sis Conf #4 Program Committee page </a>
   </div>
   <img
     src="/qa-conf-pc2025.png"
@@ -170,7 +128,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     height: 100%;
     z-index: -2;
     overflow: hidden;
-    // background: radial-gradient(ellipse at bottom, #0a0f2a 0%, #030617 100%);
   }
 
   .stars {
@@ -224,16 +181,8 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     width: 100%;
     height: 100%;
     background:
-      radial-gradient(
-        circle at 30% 40%,
-        rgba(59, 130, 246, 0.08) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 70% 60%,
-        rgba(139, 92, 246, 0.06) 0%,
-        transparent 50%
-      );
+      radial-gradient(circle at 30% 40%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
     animation: nebulaDrift 40s ease-in-out infinite alternate;
   }
 
@@ -272,12 +221,11 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     margin: 0.5rem auto;
     border-radius: 12px;
     overflow: hidden;
-    font-family: "Courier New", "Fira Code", monospace;
+    font-family: 'Courier New', 'Fira Code', monospace;
     box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
   }
 
   .terminal-header {
-    // background: #0a0f1a;
     padding: 0.8rem 1rem;
     display: flex;
     gap: 1rem;
@@ -306,13 +254,11 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   }
 
   .terminal-title {
-    // color: #60a5fa;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
   }
 
   .terminal-body {
-    // background: rgba(2, 8, 20, 0.85);
     backdrop-filter: blur(4px);
     padding: 1.5rem;
     border-bottom: 1px solid #1e3a5f;
@@ -323,13 +269,8 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   }
 
   .prompt {
-    // color: #3b82f6;
     font-weight: bold;
     margin-right: 0.5rem;
-  }
-
-  .command {
-    // color: #7bc5ff;
   }
 
   .terminal-output {
@@ -360,12 +301,10 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 
   .tech-name {
     flex: 1;
-    // color: #c8e4ff;
     font-weight: 500;
   }
 
   .tech-version {
-    // color: #60a5fa;
     font-size: 0.75rem;
     font-family: monospace;
   }
@@ -394,11 +333,10 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   }
 
   .status {
-    // color: #c8e4ff;
     display: flex;
     align-items: center;
     gap: 0.4rem;
-    font-family: "Courier New", monospace;
+    font-family: 'Courier New', monospace;
     font-weight: 500;
     letter-spacing: 0.3px;
   }
@@ -441,7 +379,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   .greeting {
     display: inline-block;
     font-size: 1rem;
-    // color: #60a5fa;
     margin-bottom: 1rem;
     letter-spacing: 2px;
   }
@@ -458,7 +395,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
 
   .description {
     font-size: 1.2rem;
-    // color: #a1c2e8;
     line-height: 1.6;
     height: 94px;
   }
@@ -467,7 +403,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
     display: inline-block;
     padding: 0.75rem 1.5rem;
     background: #3b82f6;
-    // color: white;
     text-decoration: none;
     border-radius: 8px;
     transition: all 0.2s ease;
@@ -483,7 +418,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   .button.secondary {
     background: transparent;
     border: 1px solid #3b82f6;
-    // color: #60a5fa;
   }
 
   .button.secondary:hover {
@@ -523,7 +457,6 @@ const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
   .highlight-card h3 {
     font-size: 1.3rem;
     margin: 0 0 0.5rem 0;
-    // color: #7bc5ff;
   }
 
   .highlight-card p {
