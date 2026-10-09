@@ -1,102 +1,90 @@
 ---
-import Layout from "@layouts/BlogPost.astro";
-import FactsCode from "@components/FactsCode.astro";
-import DevTerminal from "@components/DevTerminal.astro"
-import { Image } from "astro:assets";
-import "@styles/global.css"
+import Layout from '@layouts/BlogPost.astro';
+import FactsCode from '@components/FactsCode.astro';
+import DevTerminal from '@components/DevTerminal.astro';
+import { Image } from 'astro:assets';
+import '@styles/global.css';
 
-const pageTitle = "Обо мне";
-const pageDescription = "Страница обо мне";
+const pageTitle = 'Обо мне';
+const pageDescription = 'Страница обо мне';
 const identity = {
-  firstName: "Настя",
-  country: "Россия",
-  occupation: "frontend",
-  hobbies: ["фотография", "кино", "комиксы"],
+  firstName: 'Настя',
+  country: 'Россия',
+  occupation: 'frontend',
+  hobbies: ['фотография', 'кино', 'комиксы'],
 };
-const myImage = "/photo-compressed.jpg";
+const myImage = '/photo-compressed.jpg';
 
 const skills = [
-  "Vue",
-  "React",
-  "Next",
-  "TypeScript",
-  "JavaScript",
-  "HTML",
-  "CSS",
-  "Astro",
-  "Git",
-  "Vite",
+  'Vue',
+  'React',
+  'Next',
+  'TypeScript',
+  'JavaScript',
+  'HTML',
+  'CSS',
+  'Astro',
+  'Git',
+  'Vite',
 ];
 
-const professionalInterests = [
-  "оптимизация",
-  "UX/UI",
-  "новые технологии",
-];
+const professionalInterests = ['оптимизация', 'UX/UI', 'новые технологии'];
 
-const dokaLink = "https://doka.guide/people/anastasiayarosh/";
+const dokaLink = 'https://doka.guide/people/anastasiayarosh/';
 
-const vueDocsLink =
-  "https://ru.vuejs.org/guide/introduction.html?ysclid=mnlkuyqajl710887367";
+const vueDocsLink = 'https://ru.vuejs.org/guide/introduction.html?ysclid=mnlkuyqajl710887367';
 
-const eslintRuleLink =
-  "https://github.com/eslint/css/issues/73?ysclid=mnlkx7rhyz524963373";
+const eslintRuleLink = 'https://github.com/eslint/css/issues/73?ysclid=mnlkx7rhyz524963373';
 
-const astroDocsLink = "https://docs.astro.build/en/getting-started/";
-const codeSistersPage = "https://codesisters.net";
-const minskCss = "https://www.youtube.com/watch?v=6wK9z7zahPw";
+const astroDocsLink = 'https://docs.astro.build/en/getting-started/';
+const codeSistersPage = 'https://codesisters.net';
+const minskCss = 'https://www.youtube.com/watch?v=6wK9z7zahPw';
 
-const moscowCss = "https://it-event-hub.ru/events/moscowcss-24-2024-02-15";
+const moscowCss = 'https://it-event-hub.ru/events/moscowcss-24-2024-02-15';
 
-const qaSisConfThree = "http://qa-sisters.com/conf-3-talks";
+const qaSisConfThree = 'http://qa-sisters.com/conf-3-talks';
 
-const qaSisConfFour = "https://qa-sisters.com/conf-4-speakers";
+const qaSisConfFour = 'https://qa-sisters.com/conf-4-speakers';
 
-const qaSisConfPC = "https://qa-sisters.com/conf-4-pk"
+const qaSisConfPC = 'https://qa-sisters.com/conf-4-pk';
 
-const qaSis = "https://www.youtube.com/watch?v=_zYpsPak_Qw";
+const qaSis = 'https://www.youtube.com/watch?v=_zYpsPak_Qw';
 
-const vkInclusion =
-  "https://vkvideo.ru/playlist/-147415323_22/video-147415323_456240586?linked=1";
+const vkInclusion = 'https://vkvideo.ru/playlist/-147415323_22/video-147415323_456240586?linked=1';
 
 const qaPermGuild =
-  "https://morion.digital/news/na-vstreche-soobshhestva-testirovshhikov-qa-guild-perm-vystupit-eshhe-odin-spiker/";
+  'https://morion.digital/news/na-vstreche-soobshhestva-testirovshhikov-qa-guild-perm-vystupit-eshhe-odin-spiker/';
 
-const dokaDvizh = "https://www.youtube.com/watch?v=ZGfQj17utIk";
+const dokaDvizh = 'https://www.youtube.com/watch?v=ZGfQj17utIk';
 
-const codeSisters = "https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s";
-const landingPage = "https://peak-negotiate-ai.lovable.app/";
-const simulatorLink = "https://t.me/negotiation_simulator_bot/vershina_ai";
-const webSimulatorLink = "https://proud-camel-9879.sikamor24.deno.net/arena/";
-const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
+const codeSisters = 'https://www.youtube.com/watch?v=LApfaQSxk2Q&t=5s';
+const landingPage = 'https://peak-negotiate-ai.lovable.app/';
+const simulatorLink = 'https://t.me/negotiation_simulator_bot/vershina_ai';
+const webSimulatorLink = 'https://proud-camel-9879.sikamor24.deno.net/arena/';
+const mockSimulatorLink = 'http://t.me/SummitNegotiationsBot/Summit_Vershina';
 ---
 
-<Layout
-  title={pageTitle}
-  description={pageDescription}
-  pubDate={new Date()}
-  heroImage=""
->
-<FactsCode
-  data={{
-    name: identity.firstName,
-    role: identity.occupation,
-    hobbies: identity.hobbies,
-    skills,
-    interests: professionalInterests,
-    contributions: [
-      { name: "Doka" },
-      { name: "Vue Docs" },
-      { name: "ESLint Rule" },
-      { name: "Astro Docs" },
-    ],
-  }}
-  format="json"
-/>
-<h2>Ссылки на мои контрибьюты</h2>
-<p>Контрибьюты в документацию Doka, Vue Docs, ESLint CSS Rule и Astro Docs</p>
-<p><a href={dokaLink} target="_blank">Doka</a></p>
-<p><a href={vueDocsLink} target="_blank">Vue.js Docs</a></p>
+<Layout title={pageTitle} description={pageDescription} pubDate={new Date()} heroImage="">
+  <FactsCode
+    data={{
+      name: identity.firstName,
+      role: identity.occupation,
+      hobbies: identity.hobbies,
+      skills,
+      interests: professionalInterests,
+      contributions: [
+        { name: 'Doka' },
+        { name: 'Vue Docs' },
+        { name: 'ESLint Rule' },
+        { name: 'Astro Docs' },
+      ],
+    }}
+    format="json"
+  />
+  <h2>Ссылки на мои контрибьюты</h2>
+  <p>Контрибьюты в документацию Doka, Vue Docs, ESLint CSS Rule и Astro Docs</p>
+  <p><a href={dokaLink} target="_blank">Doka</a></p>
+  <p><a href={vueDocsLink} target="_blank">Vue.js Docs</a></p>
   <p><a href={astroDocsLink} target="_blank">Astro Docs</a></p>
   <p><a href={eslintRuleLink} target="_blank">Eslint</a></p>
   <h2>Участвовала в международном хакатоне, организованном VueSchool</h2>
@@ -109,10 +97,7 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
     format="png"
     loading="eager"
   />
-  <h2>
-    Участвовала в международной менторской программе Mentor in Tech #6 как
-    ментор
-  </h2>
+  <h2>Участвовала в международной менторской программе Mentor in Tech #6 как ментор</h2>
   <Image
     src="/mit-ru.png"
     alt="Mentor in Tech Ru"
@@ -132,13 +117,11 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
     loading="eager"
   />
   <h2>
-    Была в составе Программного Комитета онлайн конференции сообщества
-    тестировщиц QA Sis Conf #4 и QA Sis Conf #3
+    Была в составе Программного Комитета онлайн конференции сообщества тестировщиц QA Sis Conf #4 и
+    QA Sis Conf #3
   </h2>
   <div class="pc">
-  <a href={qaSisConfPC} target="_blank">
-    Qa Sis Conf #4 Program Committee page
-  </a>
+    <a href={qaSisConfPC} target="_blank"> Qa Sis Conf #4 Program Committee page </a>
   </div>
   <img
     src="/qa-conf-pc2025.png"
@@ -154,13 +137,22 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
     width="350px"
     height="auto"
   />
-   <h2>Разработала и поддерживаю фронтенд-часть сайта сообщества code_sisters</h2>
+  <h2>Разработала и поддерживаю фронтенд-часть сайта сообщества code_sisters</h2>
   <p><a href={codeSistersPage} target="_blank">Сайт Code_Sisters</a></p>
-  <h2>Участвовала в хакатоне, организованном администрацией города Москва в качестве единственного frontend разработчик</h2>
+  <h2>
+    Участвовала в хакатоне, организованном администрацией города Москва в качестве единственного
+    frontend разработчик
+  </h2>
   <p><a href={landingPage} target="_blank">Лендинг о нашей команде</a></p>
-  <p><a href={simulatorLink} target="_blank">Симулятор переговоров на основе llm в Telegram mini app</a></p>
+  <p>
+    <a href={simulatorLink} target="_blank"
+      >Симулятор переговоров на основе llm в Telegram mini app</a>
+  </p>
   <p><a href={webSimulatorLink} target="_blank">Веб-версия симулятора переговоров</a></p>
-  <p><a href={mockSimulatorLink} target="_blank">Мок-версия симулятора переговоров на основе моего репозитория на GitHub</a></p>
+  <p>
+    <a href={mockSimulatorLink} target="_blank"
+      >Мок-версия симулятора переговоров на основе моего репозитория на GitHub</a>
+  </p>
   <h3>Мои выступления</h3>
   <ul>
     <li><a href={vkInclusion} target="_blank">VK Inclusion</a></li>
@@ -186,13 +178,9 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
 
   body {
     margin: 0;
-    /* padding: 2rem 1.5rem; */
     text-align: left;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    // background: radial-gradient(circle at 20% 30%, #0a0f2a, #030617);
-    /* font-family: "Courier Prime", "Fira Mono", "Courier New", monospace; */
-    // color: #a1c2e8;
     line-height: 1.5;
     min-height: 100vh;
   }
@@ -210,7 +198,6 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   h5,
   h6 {
     margin: 1.5rem 0 1rem 0;
-    // color: #7bc5ff;
     line-height: 1.3;
     font-weight: 500;
     letter-spacing: -0.3px;
@@ -233,7 +220,6 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   p {
-    // color: #c8e4ff;
     margin-bottom: 1rem;
     line-height: 1.6;
   }
@@ -243,14 +229,12 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   a {
-    // color: #60a5fa;
     text-decoration: none;
     border-bottom: 1px dashed #3b82f6;
     transition: all 0.2s ease;
   }
 
   a:hover {
-    // color: #93c5fd;
     border-bottom-color: #60a5fa;
   }
 
@@ -264,14 +248,12 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
     margin-bottom: 0.6rem;
     padding-left: 1.2rem;
     position: relative;
-    // color: #bfdbff;
   }
 
   ul li::before {
-    content: ">";
+    content: '>';
     position: absolute;
     left: 0;
-    // color: #3b82f6;
     font-weight: bold;
   }
 
@@ -288,7 +270,6 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
       0 0 15px rgba(37, 99, 235, 0.2),
       inset 0 0 10px rgba(0, 0, 0, 0.2);
     transition: all 0.2s;
-    // background: #0a0f1a;
   }
 
   img:hover {
@@ -320,9 +301,7 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
 
   strong,
   b {
-   // color: #93c5fd;
     font-weight: 700;
-    // text-shadow: 0 0 2px #2563eb;
   }
 
   /* кастомный скроллбар */
@@ -393,7 +372,7 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
 
   /* эффект "экрана" — лёгкое мерцание фона */
   body::before {
-    content: "";
+    content: '';
     position: fixed;
     top: 0;
     left: 0;
@@ -445,7 +424,6 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   .terminal-window {
-    // background: #0c0f1c;
     border-radius: 12px;
     border: 1px solid #1e3a5f;
     box-shadow:
@@ -456,7 +434,6 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   .terminal-bar {
-    // background: #0a0e1a;
     padding: 10px 16px;
     display: flex;
     align-items: center;
@@ -486,24 +463,21 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   .terminal-title {
-    // color: #7bc5ff;
-    font-family: "Courier Prime", "Fira Mono", monospace;
+    font-family: 'Courier Prime', 'Fira Mono', monospace;
     font-size: 13px;
     letter-spacing: 0.5px;
   }
 
   .terminal-status {
-    // color: #3b82f6;
     font-size: 11px;
     font-family: monospace;
-    // background: #1e293b;
     padding: 2px 8px;
     border-radius: 12px;
   }
 
   .terminal-content {
     padding: 20px;
-    font-family: "Courier Prime", "Fira Mono", "Courier New", monospace;
+    font-family: 'Courier Prime', 'Fira Mono', 'Courier New', monospace;
   }
 
   .command-line {
@@ -515,20 +489,17 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   .prompt {
-    // color: #a1c2e8;
     font-weight: bold;
     font-size: 14px;
   }
 
   .command {
-    // color: #7bc5ff;
     font-size: 14px;
   }
 
   .command-input {
     background: transparent;
     border: none;
-    // color: #c8e4ff;
     font-family: inherit;
     font-size: 14px;
     outline: none;
@@ -536,13 +507,12 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
     min-width: 200px;
   }
 
-  .command-input[contenteditable="true"]:empty:before {
+  .command-input[contenteditable='true']:empty:before {
     content: attr(data-placeholder);
     font-style: italic;
   }
 
   .blinking-cursor {
-    // color: #a1c2e8;
     animation: blink 1s step-end infinite;
     font-weight: normal;
   }
@@ -576,7 +546,6 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
     border-radius: 20px;
     padding: 4px 12px;
     font-size: 13px;
-    // color: #93c5fd;
     cursor: pointer;
     transition: all 0.2s ease;
     display: inline-flex;
@@ -591,7 +560,6 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   .skill-bullet {
-    // color: #a1c2e8;
     font-weight: bold;
   }
 
@@ -615,13 +583,11 @@ const mockSimulatorLink = "http://t.me/SummitNegotiationsBot/Summit_Vershina";
   }
 
   .detail-label {
-    // color: #7bc5ff;
     font-weight: 600;
     min-width: 140px;
   }
 
   .detail-value {
-    // color: #c8e4ff;
     font-family: monospace;
   }
 

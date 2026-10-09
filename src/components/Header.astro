@@ -1,25 +1,25 @@
 ---
-import HeaderLink from "./HeaderLink.astro";
-import { SITE_TITLE } from "../consts";
+import HeaderLink from './HeaderLink.astro';
+import { SITE_TITLE } from '../consts';
 
 const currentPath = Astro.url.pathname;
-const isEnglish = currentPath.startsWith("/en/") || currentPath === "/en";
+const isEnglish = currentPath.startsWith('/en/') || currentPath === '/en';
 
-const getLocalizedPath = (targetLang: "ru" | "en"): string => {
+const getLocalizedPath = (targetLang: 'ru' | 'en'): string => {
   let pathWithoutLang = currentPath;
-  if (currentPath === "/en") {
-    pathWithoutLang = "/";
-  } else if (currentPath.startsWith("/en/")) {
-    pathWithoutLang = currentPath.replace("/en", "");
+  if (currentPath === '/en') {
+    pathWithoutLang = '/';
+  } else if (currentPath.startsWith('/en/')) {
+    pathWithoutLang = currentPath.replace('/en', '');
   }
-  if (pathWithoutLang === "") {
-    pathWithoutLang = "/";
+  if (pathWithoutLang === '') {
+    pathWithoutLang = '/';
   }
-  if (targetLang === "ru") {
+  if (targetLang === 'ru') {
     return pathWithoutLang;
   } else {
-    if (pathWithoutLang === "/") {
-      return "/en";
+    if (pathWithoutLang === '/') {
+      return '/en';
     }
     return `/en${pathWithoutLang}`;
   }
@@ -27,9 +27,7 @@ const getLocalizedPath = (targetLang: "ru" | "en"): string => {
 
 const isNavActive = (path: string): boolean => {
   if (isEnglish) {
-    return (
-      currentPath === `/en${path}` || (path === "/" && currentPath === "/en")
-    );
+    return currentPath === `/en${path}` || (path === '/' && currentPath === '/en');
   }
   return currentPath === path;
 };
@@ -37,33 +35,49 @@ const isNavActive = (path: string): boolean => {
 
 <header>
   <nav>
-  <div class="left-side">
-    <h2><a href={isEnglish ? "/en" : "/"}>{SITE_TITLE}</a></h2>
-      <HeaderLink href={isEnglish ? "/en/about" : "/about"}>
-        {isEnglish ? "About me" : "Обо мне"}
+    <div class="left-side">
+      <h2><a href={isEnglish ? '/en' : '/'}>{SITE_TITLE}</a></h2>
+      <HeaderLink href={isEnglish ? '/en/about' : '/about'}>
+        {isEnglish ? 'About me' : 'Обо мне'}
       </HeaderLink>
     </div>
 
     <div class="header-actions">
-  <!-- Кнопка настроек (видна только на мобильных) -->
-  <button id="settings-toggle" class="settings-toggle" aria-label="Настройки" aria-expanded="false">
-    <!-- Иконка шестеренки (SVG) -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="3"></circle>
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-    </svg>
-  </button>
+      <!-- Кнопка настроек (видна только на мобильных) -->
+      <button
+        id="settings-toggle"
+        class="settings-toggle"
+        aria-label="Настройки"
+        aria-expanded="false"
+      >
+        <!-- Иконка шестеренки (SVG) -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="3"></circle>
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+          ></path>
+        </svg>
+      </button>
 
-  <!-- Блок настроек -->
-  <div class="switcher" id="settings-menu">
-    <a href={getLocalizedPath("ru")} class={`lang-link ${!isEnglish ? "active" : ""}`}>RU</a>
-    <a href={getLocalizedPath("en")} class={`lang-link ${isEnglish ? "active" : ""}`}>EN</a>
-    <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
-      <span id="theme-icon" class="theme-icon" aria-hidden="true"></span>
-    </button>
-  </div>
-</div>
-
+      <!-- Блок настроек -->
+      <div class="switcher" id="settings-menu">
+        <a href={getLocalizedPath('ru')} class={`lang-link ${!isEnglish ? 'active' : ''}`}>RU</a>
+        <a href={getLocalizedPath('en')} class={`lang-link ${isEnglish ? 'active' : ''}`}>EN</a>
+        <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">
+          <span id="theme-icon" class="theme-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
   </nav>
 </header>
 
@@ -88,7 +102,6 @@ const isNavActive = (path: string): boolean => {
 </script>
 
 <script>
-
   function setTheme(theme: string) {
     const html = document.documentElement;
     if (theme === 'dark') {
@@ -122,36 +135,36 @@ const isNavActive = (path: string): boolean => {
   });
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const settingsToggle = document.getElementById('settings-toggle');
-  const settingsMenu = document.getElementById('settings-menu');
+  document.addEventListener('DOMContentLoaded', () => {
+    const settingsToggle = document.getElementById('settings-toggle');
+    const settingsMenu = document.getElementById('settings-menu');
 
-  if (settingsToggle && settingsMenu) {
-    // Открытие/закрытие по клику на шестеренку
-    settingsToggle.addEventListener('click', (e) => {
-      e.stopPropagation(); // Чтобы клик не закрывал меню сразу
-      const isOpen = settingsMenu.classList.toggle('is-open');
-      settingsToggle.setAttribute('aria-expanded', isOpen.toString());
-    });
+    if (settingsToggle && settingsMenu) {
+      // Открытие/закрытие по клику на шестеренку
+      settingsToggle.addEventListener('click', (e) => {
+        e.stopPropagation(); // Чтобы клик не закрывал меню сразу
+        const isOpen = settingsMenu.classList.toggle('is-open');
+        settingsToggle.setAttribute('aria-expanded', isOpen.toString());
+      });
 
-    // Закрытие при клике вне меню
-    document.addEventListener('click', (e) => {
-      if (e.target instanceof  HTMLElement) {
-      if (!settingsMenu.contains(e.target) && !settingsToggle.contains(e.target)) {
-        settingsMenu.classList.remove('is-open');
-        settingsToggle.setAttribute('aria-expanded', 'false');
-      }
+      // Закрытие при клике вне меню
+      document.addEventListener('click', (e) => {
+        if (e.target instanceof HTMLElement) {
+          if (!settingsMenu.contains(e.target) && !settingsToggle.contains(e.target)) {
+            settingsMenu.classList.remove('is-open');
+            settingsToggle.setAttribute('aria-expanded', 'false');
+          }
+        }
+      });
+
+      // Закрытие по Escape (для доступности)
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && settingsMenu.classList.contains('is-open')) {
+          settingsMenu.classList.remove('is-open');
+          settingsToggle.setAttribute('aria-expanded', 'false');
+          settingsToggle.focus();
+        }
+      });
     }
-    });
-
-    // Закрытие по Escape (для доступности)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && settingsMenu.classList.contains('is-open')) {
-        settingsMenu.classList.remove('is-open');
-        settingsToggle.setAttribute('aria-expanded', 'false');
-        settingsToggle.focus();
-      }
-    });
-  }
-});
+  });
 </script>

@@ -2,9 +2,7 @@
 // Компонент кнопки "наверх"
 ---
 
-<button id="scroll-to-top" aria-label="Наверх" title="Наверх">
-  ↑
-</button>
+<button id="scroll-to-top" aria-label="Наверх" title="Наверх"> ↑ </button>
 
 <style>
   #scroll-to-top {
@@ -24,7 +22,11 @@
     opacity: 0;
     visibility: hidden;
     transform: translateY(20px);
-    transition: opacity 0.3s, transform 0.3s, visibility 0.3s, background 0.2s;
+    transition:
+      opacity 0.3s,
+      transform 0.3s,
+      visibility 0.3s,
+      background 0.2s;
     z-index: 1000;
   }
 

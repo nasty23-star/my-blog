@@ -1,8 +1,8 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import "../styles/global.css";
-import { SITE_TITLE } from "@consts";
+import '../styles/global.css';
+import { SITE_TITLE } from '@consts';
 
 interface Props {
   title: string;
@@ -12,7 +12,7 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
+const { title, description, image = '/blog-placeholder-1.jpg' } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -24,26 +24,17 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
   rel="alternate"
   type="application/rss+xml"
   title={SITE_TITLE}
-  href={new URL("rss.xml", Astro.site)}
+  href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
+<link rel="preload" href="/fonts/couriercyrps.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="preload" href="/fonts/couriercyrps_bold.ttf" as="font" type="font/ttf" crossorigin />
 <link
-  rel="preload"
-  href="/fonts/couriercyrps.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap"
+  rel="stylesheet"
 />
-<link
-  rel="preload"
-  href="/fonts/couriercyrps_bold.ttf"
-  as="font"
-  type="font/ttf"
-  crossorigin
-/>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
