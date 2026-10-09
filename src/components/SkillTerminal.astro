@@ -1,0 +1,562 @@
+---
+// Terminal.astro
+interface Props {
+  /** Заголовок окна терминала */
+  title?: string;
+  /** Финальный заголовок после «сканирования» */
+  finalTitle?: string;
+  /** Показывать ли Matrix-сцену (true — только при первом визите и без reduced-motion) */
+  animated?: boolean;
+  /** Уникальный ключ localStorage. Если не задан — общий для всех терминалов. */
+  storageKey?: string;
+}
+
+const {
+  title = '>_ SPACECRAFT_TECH_STACK.FRONTEND',
+  finalTitle = '>_ ANASTASIA.TECH_STACK.FRONTEND',
+  animated = true,
+  storageKey = 'terminal_animation_seen',
+} = Astro.props;
+
+// Уникальный id, чтобы на странице могло быть несколько терминалов
+const uid = Math.random().toString(36).slice(2, 8);
+const bodyId = `terminalBody-${uid}`;
+const titleId = `terminalTitle-${uid}`;
+const outputId = `techOutput-${uid}`;
+const progressId = `progressLine-${uid}`;
+
+const skills = [
+  'JavaScript',
+  'Vue.js',
+  'React',
+  'Next.js',
+  'Astro',
+  'TypeScript',
+  'CSS',
+  'Git',
+  'Vite',
+  'pnpm',
+  'npm',
+  'Tailwind',
+  'Telegram Mini Apps',
+  'Cursor',
+  'Claude',
+];
+---
+
+<section class="terminal-section" data-animated={animated ? 'true' : 'false'}>
+  <div class="terminal-header">
+    <div class="terminal-controls">
+      <span class="control red"></span>
+      <span class="control yellow"></span>
+      <span class="control green"></span>
+    </div>
+    <span class="terminal-title" id={titleId}>{title}</span>
+  </div>
+
+  <div class="terminal-body" id={bodyId}>
+    <!-- Строки Matrix вставит скрипт -->
+
+    <div class="terminal-line command-line is-hidden">
+      <span class="prompt">$</span>
+      <span class="command command-typed"></span>
+    </div>
+
+    <div class="terminal-line progress-line is-hidden" id={progressId}>
+      <span class="progress-typed matrix-typed"></span>
+    </div>
+
+    <div class="terminal-output is-hidden" id={outputId}>
+      <div class="tech-grid">
+        {skills.map((name) => (
+          <div class="tech-item"><span class="tech-name">{name}</span></div>
+        ))}
+      </div>
+    </div>
+
+    <div class="terminal-line final-line is-hidden">
+      <span class="prompt">$</span>
+      <span class="command blink">_</span>
+    </div>
+  </div>
+
+  <div class="terminal-footer">
+    <span class="status">
+      <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 6L9 17L4 12" stroke="var(--terminal-green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+        <circle cx="12" cy="12" r="10" stroke="var(--terminal-green)" stroke-width="1.5" stroke-opacity="0.3"></circle>
+      </svg>
+      SYSTEM READY
+    </span>
+    <span class="status">
+      <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="4" width="18" height="16" rx="2" stroke="var(--terminal-blue)" stroke-width="1.8"></rect>
+        <path d="M8 2v4M16 2v4" stroke="var(--terminal-blue)" stroke-width="1.8" stroke-linecap="round"></path>
+        <circle cx="12" cy="12" r="2" fill="var(--terminal-blue)" stroke="var(--terminal-blue)" stroke-width="1.5"></circle>
+        <path d="M12 14v4" stroke="var(--terminal-blue)" stroke-width="1.8" stroke-linecap="round"></path>
+      </svg>
+      8 MODULES LOADED
+    </span>
+    <span class="status">
+      <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="var(--terminal-blue)" stroke-width="1.8" stroke-linecap="round"></path>
+        <circle cx="12" cy="12" r="3" fill="var(--terminal-green)" stroke="var(--terminal-green)" stroke-width="1.5"></circle>
+        <circle cx="12" cy="12" r="3" fill="var(--terminal-green)" stroke="var(--terminal-green)" stroke-width="1.5">
+          <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"></animate>
+        </circle>
+      </svg>
+      SIGNAL: STABLE
+    </span>
+  </div>
+</section>
+
+<style is:global>
+  /* ============================================================
+     ПАЛИТРА ТЕРМИНАЛА (по умолчанию — тёмная/космическая)
+     Меняй эти переменные в global.css или на :root,
+     чтобы тема терминала менялась вместе с сайтом.
+     ============================================================ */
+  :root {
+    --terminal-green: #27c93f;
+    --terminal-blue: #60a5fa;
+    --terminal-dim: rgba(148, 163, 184, 0.8);
+    --terminal-border: #1e3a5f;
+    --terminal-panel-bg: rgba(2, 8, 20, 0.4);
+  }
+
+  /* Пример светлой темы: повесь data-theme="light" на <html> или <body> */
+  [data-theme='light'] {
+    --terminal-green: #0f9d2a;
+    --terminal-blue: #2563eb;
+    --terminal-dim: rgba(71, 85, 105, 0.8);
+    --terminal-border: #cbd5e1;
+    --terminal-panel-bg: rgba(255, 255, 255, 0.6);
+  }
+
+  /* ============================================================
+     СТИЛИ ТЕРМИНАЛА
+     ============================================================ */
+  .terminal-section {
+    max-width: 900px;
+    margin: 0.5rem auto;
+    border-radius: 12px;
+    overflow: hidden;
+    font-family: 'Courier New', 'Fira Code', monospace;
+    border: 1px solid var(--terminal-border);
+    background: var(--terminal-panel-bg);
+  }
+
+  .terminal-header {
+    padding: 0.8rem 1rem;
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid var(--terminal-border);
+    align-items: center;
+  }
+
+  .terminal-controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+  .control.red { background: #ff5f56; }
+  .control.yellow { background: #ffbd2e; }
+  .control.green { background: #27c93f; }
+
+  .terminal-title {
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+  }
+
+  .terminal-body {
+    backdrop-filter: blur(4px);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--terminal-border);
+    min-height: 240px;
+    -webkit-text-fill-color: currentColor;
+    position: relative;
+  }
+
+  .terminal-line { margin-bottom: 0.8rem; }
+
+  .prompt {
+    font-weight: bold;
+    margin-right: 0.5rem;
+  }
+
+  .terminal-output { margin: 0; }
+
+  .tech-grid {
+    display: grid;
+    gap: 0.4rem 1rem;
+  }
+
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .tech-name {
+    flex: 1;
+    font-weight: 500;
+  }
+
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* === MATRIX-ЭФФЕКТЫ === */
+  .is-hidden { display: none; }
+
+  .terminal-line.matrix-line { margin-bottom: 0.4rem; }
+
+  .terminal-line .matrix-typed,
+  .matrix-typed {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    color: var(--terminal-green) !important;
+    -webkit-text-fill-color: var(--terminal-green) !important;
+  }
+
+  .matrix-typed::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    color: inherit;
+  }
+
+  /* === SYSTEM-СТРОКИ === */
+  .terminal-line.type-system .matrix-typed {
+    color: var(--terminal-blue) !important;
+    -webkit-text-fill-color: var(--terminal-blue) !important;
+  }
+
+  /* === DIM === */
+  .terminal-line.type-dim .matrix-typed {
+    color: var(--terminal-dim) !important;
+    -webkit-text-fill-color: var(--terminal-dim) !important;
+    text-shadow: none !important;
+  }
+
+  /* === КОМАНДА === */
+  .command-typed::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    color: var(--terminal-green) !important;
+    -webkit-text-fill-color: var(--terminal-green) !important;
+  }
+  .command-line.done .command-typed::after { content: ''; }
+
+  /* === ПРОГРЕСС-БАР === */
+  .progress-line { margin-bottom: 0.8rem; }
+  .progress-typed {
+    color: var(--terminal-green) !important;
+    -webkit-text-fill-color: var(--terminal-green) !important;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  /* === ГЛИТЧ === */
+  .terminal-body.glitching,
+  .terminal-title.glitching {
+    animation: glitchShake 0.4s steps(2) 1;
+  }
+
+  .terminal-body.glitching::before,
+  .terminal-body.glitching::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .terminal-body.glitching::before {
+    background: color-mix(in srgb, var(--terminal-blue) 12%, transparent);
+    transform: translateX(-3px);
+    animation: glitchSlice 0.4s steps(3) 1;
+  }
+
+  .terminal-body.glitching::after {
+    background: color-mix(in srgb, var(--terminal-green) 12%, transparent);
+    transform: translateX(3px);
+    animation: glitchSlice 0.4s steps(3) 1 reverse;
+  }
+
+  @keyframes glitchShake {
+    0%   { transform: translate(0, 0); filter: none; }
+    20%  { transform: translate(-2px, 1px); filter: hue-rotate(-25deg) saturate(1.4); }
+    40%  { transform: translate(2px, -1px); filter: hue-rotate(25deg) saturate(1.4); }
+    60%  { transform: translate(-1px, 1px); filter: hue-rotate(-15deg); }
+    80%  { transform: translate(1px, -1px); filter: hue-rotate(15deg); }
+    100% { transform: translate(0, 0); filter: none; }
+  }
+
+  @keyframes glitchSlice {
+    0%   { clip-path: inset(10% 0 80% 0); }
+    25%  { clip-path: inset(50% 0 30% 0); }
+    50%  { clip-path: inset(20% 0 60% 0); }
+    75%  { clip-path: inset(70% 0 10% 0); }
+    100% { clip-path: inset(0 0 0 0); }
+  }
+
+  /* === ПОЯВЛЕНИЕ СЕТКИ === */
+  .terminal-output { animation: techReveal 0.5s ease-out; }
+
+  @keyframes techReveal {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .tech-item {
+    opacity: 0;
+    animation: techItemIn 0.35s ease-out forwards;
+  }
+
+  @keyframes techItemIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* === NO-ANIM === */
+  .no-anim,
+  .no-anim * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .no-anim .terminal-output,
+  .no-anim .tech-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* === СТАТУС-БАР === */
+  .terminal-footer {
+    padding: 0.6rem 1rem;
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.7rem;
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Courier New', monospace;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  .status-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+
+  /* === АДАПТИВ === */
+  @media (max-width: 420px) {
+    .terminal-title { letter-spacing: 0.2px; }
+  }
+  @media (max-width: 768px) {
+    .tech-grid { grid-template-columns: 1fr; }
+  }
+
+  /* === prefers-reduced-motion === */
+  @media (prefers-reduced-motion: reduce) {
+    .terminal-output,
+    .terminal-output.is-hidden {
+      display: block !important;
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .tech-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+    .command-line.is-hidden,
+    .progress-line.is-hidden { display: block !important; }
+
+    .command-typed::after,
+    .matrix-typed::after {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+    .blink { animation: none !important; }
+
+    .terminal-body.glitching,
+    .terminal-body.glitching::before,
+    .terminal-body.glitching::after,
+    .terminal-title.glitching {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script is:inline define:vars={{ bodyId, titleId, outputId, progressId, finalTitle, storageKey, animated }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById(bodyId);
+    if (!container) return;
+
+    const output = document.getElementById(outputId);
+    const progressLine = document.getElementById(progressId);
+    const commandLine = container.querySelector('.command-line');
+    const commandSpan = container.querySelector('.command-typed');
+    const progressSpan = container.querySelector('.progress-typed');
+    const finalLine = container.querySelector('.final-line');
+    const terminalTitle = document.getElementById(titleId);
+    const anchor = commandLine;
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function safeGet(key) { try { return window.localStorage.getItem(key); } catch { return null; } }
+    function safeSet(key, v) { try { window.localStorage.setItem(key, v); } catch {} }
+
+    function renderStatic() {
+      terminalTitle.textContent = finalTitle;
+      commandLine.classList.remove('is-hidden');
+      commandSpan.textContent = 'pnpm list --skills --depth=0';
+      commandLine.classList.add('done');
+      progressLine.classList.remove('is-hidden');
+      progressSpan.textContent = '[████████████████████] 100% ✓';
+      output.classList.remove('is-hidden');
+      output.querySelectorAll('.tech-item').forEach((item) => {
+        item.style.opacity = '1';
+        item.style.transform = 'none';
+        item.style.animation = 'none';
+      });
+      finalLine.classList.remove('is-hidden');
+      container.classList.add('no-anim');
+    }
+
+    // Отключаем анимацию пропом animated={false}
+    if (!animated) {
+      renderStatic();
+      return;
+    }
+
+    const alreadySeen = safeGet(storageKey) === '1';
+    if (prefersReduced || alreadySeen) {
+      renderStatic();
+      return;
+    }
+
+    const phraseLines = [
+      { text: 'Wake up, Neo...',          pauseAfter: 800,  type: 'matrix' },
+      { text: 'Matrix has you.',          pauseAfter: 800,  type: 'matrix' },
+      { text: 'Follow the white rabbit.', pauseAfter: 1000, type: 'matrix' },
+      { text: '...',                      pauseAfter: 1200, type: 'dim' },
+      {
+        text: '> Operator identified: NOT NEO',
+        pauseAfter: 400, type: 'system', glitch: true,
+        newTitle: '>_ NEO_PROFILE.SCAN — FAILED',
+      },
+      { text: '> Scanning alternate profile...', pauseAfter: 700, type: 'system' },
+      {
+        text: '> Candidate: ANASTASIA',
+        pauseAfter: 900, type: 'system',
+        newTitle: finalTitle,
+      },
+    ];
+
+    const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    async function typeInto(span, text, speed = 60) {
+      span.textContent = '';
+      for (const char of text) {
+        span.textContent += char;
+        await sleep(speed);
+      }
+    }
+
+    async function typeNewLine(text, speed = 60, type = 'matrix') {
+      const line = document.createElement('div');
+      line.className = `terminal-line matrix-line type-${type}`;
+      const span = document.createElement('span');
+      span.className = 'matrix-typed';
+      line.appendChild(span);
+      container.insertBefore(line, anchor);
+      await typeInto(span, text, speed);
+      await sleep(300);
+    }
+
+    function glitchTerminal(duration = 400) {
+      container.classList.add('glitching');
+      terminalTitle.classList.add('glitching');
+      setTimeout(() => {
+        container.classList.remove('glitching');
+        terminalTitle.classList.remove('glitching');
+      }, duration);
+    }
+
+    async function runProgressBar() {
+      const total = 20;
+      const stepDelay = 60;
+      for (let i = 0; i <= total; i++) {
+        const filled = '█'.repeat(i);
+        const empty = '░'.repeat(total - i);
+        const pct = Math.round((i / total) * 100);
+        progressSpan.textContent = `[${filled}${empty}] ${pct}%`;
+        await sleep(stepDelay);
+      }
+      progressSpan.textContent = '[████████████████████] 100% ✓';
+      await sleep(400);
+    }
+
+    function revealTechGrid() {
+      output.classList.remove('is-hidden');
+      output.querySelectorAll('.tech-item').forEach((item, i) => {
+        item.style.animationDelay = `${i * 70}ms`;
+      });
+    }
+
+    async function run() {
+      safeSet(storageKey, '1');
+
+      for (const phrase of phraseLines) {
+        await sleep(phrase.pauseAfter);
+        if (phrase.glitch) {
+          glitchTerminal(400);
+          await sleep(200);
+        }
+        if (phrase.newTitle) terminalTitle.textContent = phrase.newTitle;
+        const speed = phrase.type === 'matrix' ? 55 : 40;
+        await typeNewLine(phrase.text, speed, phrase.type);
+      }
+
+      await sleep(600);
+      commandLine.classList.remove('is-hidden');
+      await typeInto(commandSpan, 'pnpm list --skills --depth=0', 45);
+
+      await sleep(500);
+      commandLine.classList.add('done');
+
+      progressLine.classList.remove('is-hidden');
+      await runProgressBar();
+
+      revealTechGrid();
+
+      await sleep(900);
+      finalLine.classList.remove('is-hidden');
+    }
+
+    run();
+  });
+</script>
