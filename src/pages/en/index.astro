@@ -36,6 +36,7 @@ import '@styles/global.css';
           <div class="hero-image"></div>
         </div>
       </section>
+
       <section class="terminal-section">
         <div class="terminal-header">
           <div class="terminal-controls">
@@ -43,82 +44,51 @@ import '@styles/global.css';
             <span class="control yellow"></span>
             <span class="control green"></span>
           </div>
-          <span class="terminal-title">>_ SPACECRAFT_TECH_STACK.FRONTEND</span>
+          <span class="terminal-title" id="terminalTitle">>_ SPACECRAFT_TECH_STACK.FRONTEND</span>
         </div>
-        <div class="terminal-body">
-          <div class="terminal-line">
+
+        <div class="terminal-body" id="terminalBody">
+          <!-- Строки Matrix вставит скрипт -->
+
+          <!-- Команда: изначально скрыта -->
+          <div class="terminal-line command-line is-hidden">
             <span class="prompt">$</span>
-            <span class="command">npm list --skills --depth=0</span>
+            <span class="command command-typed"></span>
           </div>
-          <div class="terminal-output">
+
+          <!-- Прогресс-бар: изначально скрыт -->
+          <div class="terminal-line progress-line is-hidden" id="progressLine">
+            <span class="progress-typed matrix-typed"></span>
+          </div>
+
+          <!-- Сетка технологий: изначально скрыта -->
+          <div class="terminal-output is-hidden" id="techOutput">
             <div class="tech-grid">
-              <!-- JavaScript -->
-              <div class="tech-item">
-                <span class="tech-name">JavaScript</span>
-              </div>
-              <!-- Vue.js -->
-              <div class="tech-item">
-                <span class="tech-name">Vue.js</span>
-              </div>
-              <!-- React -->
-              <div class="tech-item">
-                <span class="tech-name">React</span>
-              </div>
-              <!-- Next.js -->
-              <div class="tech-item">
-                <span class="tech-name">Next.js</span>
-              </div>
-              <!-- Astro -->
-              <div class="tech-item">
-                <span class="tech-name">Astro</span>
-              </div>
-              <!-- TypeScript -->
-              <div class="tech-item">
-                <span class="tech-name">TypeScript</span>
-              </div>
-              <!-- HTML -->
-              <div class="tech-item">
-                <span class="tech-name">CSS</span>
-              </div>
-              <!-- Git -->
-              <div class="tech-item">
-                <span class="tech-name">Git</span>
-              </div>
-              <!-- Vite -->
-              <div class="tech-item">
-                <span class="tech-name">Vite</span>
-              </div>
-              <!-- pnpm -->
-              <div class="tech-item">
-                <span class="tech-name">pnpm</span>
-              </div>
-              <!-- npm -->
-              <div class="tech-item">
-                <span class="tech-name">npm</span>
-              </div>
-              <!-- Tailwind -->
-              <div class="tech-item">
-                <span class="tech-name">Tailwind</span>
-              </div>
-              <!-- Telegram Mini Apps -->
-              <div class="tech-item">
-                <span class="tech-name">Telegram Mini Apps</span>
-              </div>
-              <!-- Cursor -->
-              <div class="tech-item">
-                <span class="tech-name">Cursor</span>
-              </div>
-              <!-- Claude -->
-              <div class="tech-item">
-                <span class="tech-name">Claude</span>
-              </div>
+              <div class="tech-item"><span class="tech-name">JavaScript</span></div>
+              <div class="tech-item"><span class="tech-name">Vue.js</span></div>
+              <div class="tech-item"><span class="tech-name">React</span></div>
+              <div class="tech-item"><span class="tech-name">Next.js</span></div>
+              <div class="tech-item"><span class="tech-name">Astro</span></div>
+              <div class="tech-item"><span class="tech-name">TypeScript</span></div>
+              <div class="tech-item"><span class="tech-name">CSS</span></div>
+              <div class="tech-item"><span class="tech-name">Git</span></div>
+              <div class="tech-item"><span class="tech-name">Vite</span></div>
+              <div class="tech-item"><span class="tech-name">pnpm</span></div>
+              <div class="tech-item"><span class="tech-name">npm</span></div>
+              <div class="tech-item"><span class="tech-name">Tailwind</span></div>
+              <div class="tech-item"><span class="tech-name">Telegram Mini Apps</span></div>
+              <div class="tech-item"><span class="tech-name">Cursor</span></div>
+              <div class="tech-item"><span class="tech-name">Claude</span></div>
             </div>
           </div>
-          <div class="terminal-line">
+
+          <!-- Финальный курсор: изначально скрыт -->
+          <div class="terminal-line final-line is-hidden">
             <span class="prompt">$</span>
             <span class="command blink">_</span>
           </div>
         </div>
+
         <div class="terminal-footer">
           <span class="status">
             <svg
@@ -185,6 +155,204 @@ import '@styles/global.css';
       </section>
     </main>
     <Footer />
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('terminalBody');
+        if (!container) return;
+
+        const output = document.getElementById('techOutput');
+        const commandLine = container.querySelector('.command-line');
+        const commandSpan = container.querySelector('.command-typed');
+        const progressLine = document.getElementById('progressLine');
+        const progressSpan = container.querySelector('.progress-typed');
+        const finalLine = container.querySelector('.final-line');
+        const terminalTitle = document.getElementById('terminalTitle');
+        const anchor = commandLine;
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ==== Ключ localStorage ====
+        const STORAGE_KEY = 'terminal_animation_seen';
+
+        // Безопасные обёртки (в приватном режиме localStorage может падать)
+        function safeGet(key) {
+          try {
+            return window.localStorage.getItem(key);
+          } catch {
+            return null;
+          }
+        }
+        function safeSet(key, value) {
+          try {
+            window.localStorage.setItem(key, value);
+          } catch {
+            /* ignore */
+          }
+        }
+
+        const alreadySeen = safeGet(STORAGE_KEY) === '1';
+
+        // ==== Статичный рендер (для reduced-motion или повторного визита) ====
+        function renderStatic() {
+          // Заголовок финальный
+          terminalTitle.textContent = '>_ ANASTASIA.TECH_STACK.FRONTEND';
+
+          // Команда
+          commandLine.classList.remove('is-hidden');
+          commandSpan.textContent = 'pnpm list --skills --depth=0';
+          commandLine.classList.add('done');
+
+          // Прогресс 100%
+          progressLine.classList.remove('is-hidden');
+          progressSpan.textContent = '[████████████████████] 100% ✓';
+
+          // Скиллы сразу
+          output.classList.remove('is-hidden');
+          const items = output.querySelectorAll('.tech-item');
+          items.forEach((item) => {
+            item.style.opacity = '1';
+            item.style.transform = 'none';
+            item.style.animation = 'none';
+          });
+
+          // Финальный курсор
+          finalLine.classList.remove('is-hidden');
+
+          // Отключаем анимации у самого терминала, чтобы ничего не «моргало»
+          container.classList.add('no-anim');
+        }
+
+        // ==== REDUCED MOTION или ПОВТОРНЫЙ ВИЗИТ: всё сразу ====
+        if (prefersReduced || alreadySeen) {
+          renderStatic();
+          return;
+        }
+
+        // ==== ПЕРВЫЙ ВИЗИТ: полный сценарий ====
+        const phraseLines = [
+          { text: 'Wake up, Neo...', pauseAfter: 800, type: 'matrix' },
+          { text: 'Matrix has you.', pauseAfter: 800, type: 'matrix' },
+          { text: 'Follow the white rabbit.', pauseAfter: 1000, type: 'matrix' },
+
+          { text: '...', pauseAfter: 1200, type: 'dim' },
+
+          {
+            text: '> Operator identified: NOT NEO',
+            pauseAfter: 400,
+            type: 'system',
+            glitch: true,
+            newTitle: '>_ NEO_PROFILE.SCAN — FAILED',
+          },
+
+          { text: '> Scanning alternate profile...', pauseAfter: 700, type: 'system' },
+
+          {
+            text: '> Candidate: ANASTASIA',
+            pauseAfter: 900,
+            type: 'system',
+            newTitle: '>_ ANASTASIA.TECH_STACK.FRONTEND',
+          },
+        ];
+
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+        async function typeInto(span, text, speed = 60) {
+          span.textContent = '';
+          for (const char of text) {
+            span.textContent += char;
+            await sleep(speed);
+          }
+        }
+
+        async function typeNewLine(text, speed = 60, type = 'matrix') {
+          const line = document.createElement('div');
+          line.className = `terminal-line matrix-line type-${type}`;
+
+          const span = document.createElement('span');
+          span.className = 'matrix-typed';
+          line.appendChild(span);
+          container.insertBefore(line, anchor);
+
+          await typeInto(span, text, speed);
+          await sleep(300);
+        }
+
+        function glitchTerminal(duration = 400) {
+          container.classList.add('glitching');
+          terminalTitle.classList.add('glitching');
+          setTimeout(() => {
+            container.classList.remove('glitching');
+            terminalTitle.classList.remove('glitching');
+          }, duration);
+        }
+
+        async function runProgressBar() {
+          const total = 20;
+          const stepDelay = 60;
+
+          for (let i = 0; i <= total; i++) {
+            const filled = '█'.repeat(i);
+            const empty = '░'.repeat(total - i);
+            const pct = Math.round((i / total) * 100);
+            progressSpan.textContent = `[${filled}${empty}] ${pct}%`;
+            await sleep(stepDelay);
+          }
+
+          progressSpan.textContent = '[████████████████████] 100% ✓';
+          await sleep(400);
+        }
+
+        function revealTechGrid() {
+          output.classList.remove('is-hidden');
+          const items = output.querySelectorAll('.tech-item');
+          items.forEach((item, i) => {
+            item.style.animationDelay = `${i * 70}ms`;
+          });
+        }
+
+        async function run() {
+          // Флаг «поставь галочку после завершения» — на случай,
+          // если пользователь закроет страницу в середине.
+          // Ставим ДО запуска, чтобы не перезапускать при быстром reload.
+          // (Если хочешь ставить в самом конце — перенеси в конец run().)
+          safeSet(STORAGE_KEY, '1');
+
+          for (const phrase of phraseLines) {
+            await sleep(phrase.pauseAfter);
+
+            if (phrase.glitch) {
+              glitchTerminal(400);
+              await sleep(200);
+            }
+
+            if (phrase.newTitle) {
+              terminalTitle.textContent = phrase.newTitle;
+            }
+
+            const speed = phrase.type === 'matrix' ? 55 : 40;
+            await typeNewLine(phrase.text, speed, phrase.type);
+          }
+
+          await sleep(600);
+          commandLine.classList.remove('is-hidden');
+          await typeInto(commandSpan, 'pnpm list --skills --depth=0', 45);
+
+          await sleep(500);
+          commandLine.classList.add('done');
+
+          progressLine.classList.remove('is-hidden');
+          await runProgressBar();
+
+          revealTechGrid();
+
+          await sleep(900);
+          finalLine.classList.remove('is-hidden');
+        }
+
+        run();
+      });
+    </script>
   </body>
 </html>
 
@@ -285,7 +453,7 @@ import '@styles/global.css';
     }
   }
 
-  /* === СТИЛИ ТЕРМИНАЛА === */
+  /* === ТЕРМИНАЛ === */
   .terminal-section {
     max-width: 900px;
     margin: 0.5rem auto;
@@ -300,6 +468,7 @@ import '@styles/global.css';
     display: flex;
     gap: 1rem;
     border-bottom: 1px solid #1e3a5f;
+    align-items: center;
   }
 
   .terminal-controls {
@@ -324,15 +493,18 @@ import '@styles/global.css';
   }
 
   .terminal-title {
-    //color: #60a5fa;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
+    transition: color 0.3s ease;
   }
 
   .terminal-body {
     backdrop-filter: blur(4px);
     padding: 1.5rem;
     border-bottom: 1px solid #1e3a5f;
+    min-height: 240px;
+    -webkit-text-fill-color: currentColor;
+    position: relative;
   }
 
   .terminal-line {
@@ -340,21 +512,17 @@ import '@styles/global.css';
   }
 
   .prompt {
-    //color: #3b82f6;
     font-weight: bold;
     margin-right: 0.5rem;
   }
 
-  .command {
-    //color: #3b82f6;
-  }
-
   .terminal-output {
-    margin: 0 0 0 0;
+    margin: 0;
   }
 
   .tech-grid {
     display: grid;
+    gap: 0.4rem 1rem;
   }
 
   .tech-item {
@@ -364,26 +532,10 @@ import '@styles/global.css';
     border-radius: 8px;
     transition: all 0.2s ease;
   }
-  /* .tech-item:hover {
-    border-color: #3b82f6;
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateX(5px);
-  } */
-
-  .tech-icon {
-    font-size: 1.2rem;
-  }
 
   .tech-name {
     flex: 1;
-    //color: #3b82f6;
     font-weight: 500;
-  }
-
-  .tech-version {
-    //color: #3b82f6;
-    font-size: 0.75rem;
-    font-family: monospace;
   }
 
   .blink {
@@ -400,6 +552,197 @@ import '@styles/global.css';
     }
   }
 
+  /* === MATRIX-ЭФФЕКТЫ === */
+  .is-hidden {
+    display: none;
+  }
+
+  .terminal-line.matrix-line {
+    margin-bottom: 0.4rem;
+  }
+
+  .terminal-line .matrix-typed,
+  .matrix-typed {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    color: #27c93f !important;
+    -webkit-text-fill-color: #27c93f !important;
+    text-shadow:
+      0 0 8px rgba(39, 201, 63, 0.9),
+      0 0 2px rgba(39, 201, 63, 0.6) !important;
+  }
+
+  .matrix-typed::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    color: inherit;
+  }
+
+  /* === SYSTEM-СТРОКИ (голубые) === */
+  .terminal-line.type-system .matrix-typed {
+    color: #60a5fa !important;
+    -webkit-text-fill-color: #60a5fa !important;
+    text-shadow:
+      0 0 8px rgba(96, 165, 250, 0.9),
+      0 0 2px rgba(96, 165, 250, 0.6) !important;
+  }
+
+  /* === DIM (многоточие-пауза) === */
+  .terminal-line.type-dim .matrix-typed {
+    color: rgba(148, 163, 184, 0.8) !important;
+    -webkit-text-fill-color: rgba(148, 163, 184, 0.8) !important;
+    text-shadow: none !important;
+  }
+
+  /* === КОМАНДА === */
+  .command-typed::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    color: #27c93f !important;
+    -webkit-text-fill-color: #27c93f !important;
+  }
+
+  .command-line.done .command-typed::after {
+    content: '';
+  }
+
+  /* === ПРОГРЕСС-БАР === */
+  .progress-line {
+    margin-bottom: 0.8rem;
+  }
+
+  .progress-typed {
+    color: #27c93f !important;
+    -webkit-text-fill-color: #27c93f !important;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 8px rgba(39, 201, 63, 0.9) !important;
+  }
+
+  /* === ГЛИТЧ === */
+  .terminal-body.glitching,
+  .terminal-title.glitching {
+    animation: glitchShake 0.4s steps(2) 1;
+  }
+
+  .terminal-body.glitching::before,
+  .terminal-body.glitching::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .terminal-body.glitching::before {
+    background: rgba(96, 165, 250, 0.12);
+    transform: translateX(-3px);
+    animation: glitchSlice 0.4s steps(3) 1;
+  }
+
+  .terminal-body.glitching::after {
+    background: rgba(39, 201, 63, 0.12);
+    transform: translateX(3px);
+    animation: glitchSlice 0.4s steps(3) 1 reverse;
+  }
+
+  @keyframes glitchShake {
+    0% {
+      transform: translate(0, 0);
+      filter: none;
+    }
+    20% {
+      transform: translate(-2px, 1px);
+      filter: hue-rotate(-25deg) saturate(1.4);
+    }
+    40% {
+      transform: translate(2px, -1px);
+      filter: hue-rotate(25deg) saturate(1.4);
+    }
+    60% {
+      transform: translate(-1px, 1px);
+      filter: hue-rotate(-15deg);
+    }
+    80% {
+      transform: translate(1px, -1px);
+      filter: hue-rotate(15deg);
+    }
+    100% {
+      transform: translate(0, 0);
+      filter: none;
+    }
+  }
+
+  @keyframes glitchSlice {
+    0% {
+      clip-path: inset(10% 0 80% 0);
+    }
+    25% {
+      clip-path: inset(50% 0 30% 0);
+    }
+    50% {
+      clip-path: inset(20% 0 60% 0);
+    }
+    75% {
+      clip-path: inset(70% 0 10% 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  /* Появление сетки */
+  .terminal-output {
+    animation: techReveal 0.5s ease-out;
+  }
+
+  @keyframes techReveal {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .tech-item {
+    opacity: 0;
+    animation: techItemIn 0.35s ease-out forwards;
+  }
+
+  @keyframes techItemIn {
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* === NO-ANIM: полностью отключает анимации терминала для повторного визита === */
+  .no-anim,
+  .no-anim * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .no-anim .terminal-output {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .no-anim .tech-item {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* === СТАТУС-БАР === */
   .terminal-footer {
     padding: 0.6rem 1rem;
     display: flex;
@@ -409,7 +752,6 @@ import '@styles/global.css';
   }
 
   .status {
-    //color: #3b82f6;
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -424,13 +766,11 @@ import '@styles/global.css';
     flex-shrink: 0;
   }
 
+  /* === HERO === */
   .hero {
     padding: 1rem 1rem;
     max-width: 1200px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    margin-top: 60px;
+    margin: 60px auto 0;
   }
 
   .hero-content {
@@ -459,7 +799,6 @@ import '@styles/global.css';
   .greeting {
     display: inline-block;
     font-size: 1rem;
-    //color: #60a5fa;
     margin-bottom: 1rem;
     letter-spacing: 2px;
   }
@@ -467,89 +806,18 @@ import '@styles/global.css';
   h1 {
     font-size: 4rem;
     margin: 0 0 0.5rem 0;
-    //background: linear-gradient(135deg, #7bc5ff, #3b82f6);
     background-clip: text;
     -webkit-background-clip: text;
-    //color: transparent;
     line-height: 1.2;
   }
 
   .description {
     font-size: 1.2rem;
-    //color: #3b82f6;
     line-height: 1.6;
     height: 94px;
   }
 
-  .button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    //background: #3b82f6;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    font-weight: 500;
-  }
-
-  .button:hover {
-    //background: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
-  }
-
-  .button.secondary {
-    background: transparent;
-    border: 1px solid #3b82f6;
-    //color: #60a5fa;
-  }
-
-  .button.secondary:hover {
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateY(-2px);
-  }
-
-  .highlights {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 3rem auto;
-    padding: 0 1rem;
-  }
-
-  .highlight-card {
-    text-align: center;
-    padding: 2rem;
-    background: rgba(2, 8, 20, 0.5);
-    border: 1px solid #1e3a5f;
-    border-radius: 20px;
-    transition: all 0.2s ease;
-  }
-
-  .highlight-card:hover {
-    border-color: #3b82f6;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  }
-
-  .emoji {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  .highlight-card h3 {
-    font-size: 1.3rem;
-    margin: 0 0 0.5rem 0;
-    //color: #7bc5ff;
-  }
-
-  .highlight-card p {
-    color: #a1c2e8;
-    margin: 0;
-    font-size: 0.95rem;
-  }
-
+  /* === АДАПТИВ === */
   @media (max-width: 420px) {
     .terminal-title {
       letter-spacing: 0.2px;
@@ -558,41 +826,69 @@ import '@styles/global.css';
 
   @media (max-width: 768px) {
     .hero {
-      padding: 1rem 1rem;
+      padding: 1rem;
     }
-
     .hero-content {
       flex-direction: column-reverse;
       text-align: center;
     }
-
     h1 {
       font-size: 2.5rem;
     }
-
     .description {
       font-size: 1rem;
     }
-
-    .cta {
-      justify-content: center;
-    }
-
     .hero-image img {
       width: 200px;
       height: 200px;
     }
-
-    .highlights {
-      gap: 1rem;
-    }
-
-    .highlight-card {
-      padding: 1.5rem;
-    }
-
     .tech-grid {
       grid-template-columns: 1fr;
+    }
+  }
+
+  /* === FALLBACK: prefers-reduced-motion === */
+  @media (prefers-reduced-motion: reduce) {
+    .stars,
+    .twinkling-stars,
+    .nebula {
+      animation: none !important;
+    }
+
+    .terminal-output,
+    .terminal-output.is-hidden {
+      display: block !important;
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .tech-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+
+    .command-line.is-hidden,
+    .progress-line.is-hidden {
+      display: block !important;
+    }
+
+    .command-typed::after,
+    .matrix-typed::after {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+
+    .blink {
+      animation: none !important;
+    }
+
+    .terminal-body.glitching,
+    .terminal-body.glitching::before,
+    .terminal-body.glitching::after,
+    .terminal-title.glitching {
+      animation: none !important;
     }
   }
 </style>
