@@ -102,9 +102,8 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
 
 <style is:global>
   /* ============================================================
-     FactsCode — стили 1-в-1 как у DevTerminal (Night Owl dark)
-     Все селекторы с префиксом .facts-terminal — не текут наружу.
-     is:global — чтобы спаны из set:html точно получали цвета.
+     FactsCode — Night Owl (dark по умолчанию) + Night Owl Light
+     Переключение: класс .theme-light на <html> или родителе.
      ============================================================ */
 
   .facts-wrapper {
@@ -115,25 +114,74 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
   }
 
   .facts-terminal {
+    /* ---- Dark (Night Owl) — значения по умолчанию ---- */
+    --fc-bg: #011627;
+    --fc-titlebar: #0b2942;
+    --fc-border: #1d3b53;
+    --fc-border-strong: #2a4f6e;
+    --fc-fg: #d6deeb;
+    --fc-title-fg: #b0b9b9;
+    --fc-dot-red: #ff5f56;
+    --fc-dot-yellow: #ffbd2e;
+    --fc-dot-green: #27c93f;
+
+    --fc-key: #82aaff;
+    --fc-str: #679cc8;
+    --fc-num: #addb67;
+    --fc-bool: #c792ea;
+    --fc-null: #c792ea;
+    --fc-br: #d6deeb;
+    --fc-p: #637777;
+    --fc-sel: #c792ea;
+
     width: 100%;
     max-width: 850px;
-    background: #011627;
+    background: var(--fc-bg);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid #1d3b53;
+    border: 1px solid var(--fc-border);
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  /* ---- Light (Night Owl Light) ---- */
+  .theme-light .facts-terminal[data-theme='light'],
+  [data-theme='light'] .facts-terminal {
+    --fc-bg: #fbfbfb;
+    --fc-titlebar: #f0f0f0;
+    --fc-border: #d9d9d9;
+    --fc-border-strong: #bcbcbc;
+    --fc-fg: #403f53;
+    --fc-title-fg: #6a6a7a;
+    --fc-dot-red: #ff5f56;
+    --fc-dot-yellow: #ffbd2e;
+    --fc-dot-green: #27c93f;
+
+    --fc-key: #994cc3;
+    --fc-str: #4876d6;
+    --fc-num: #aa0982;
+    --fc-bool: #0c969b;
+    --fc-null: #0c969b;
+    --fc-br: #403f53;
+    --fc-p: #5f5f7f;
+    --fc-sel: #994cc3;
   }
 
   .facts-terminal .titlebar {
     height: 32px;
-    background: #0b2942;
+    background: var(--fc-titlebar);
     display: flex;
     align-items: center;
     padding: 0 12px;
     gap: 8px;
-    border-bottom: 1px solid #1d3b53;
+    border-bottom: 1px solid var(--fc-border);
     flex-shrink: 0;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
   }
 
   .facts-terminal .dot {
@@ -142,19 +190,19 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     border-radius: 50%;
   }
   .facts-terminal .dot.red {
-    background: #ff5f56;
+    background: var(--fc-dot-red);
   }
   .facts-terminal .dot.yellow {
-    background: #ffbd2e;
+    background: var(--fc-dot-yellow);
   }
   .facts-terminal .dot.green {
-    background: #27c93f;
+    background: var(--fc-dot-green);
   }
 
   .facts-terminal .title {
     flex: 1;
     text-align: center;
-    color: #b0b9b9;
+    color: var(--fc-title-fg);
     font-size: 12px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
@@ -164,16 +212,19 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     padding: 15px;
     font-size: 14px;
     line-height: 1.5;
-    color: #d6deeb;
-    background: #011627;
+    color: var(--fc-fg);
+    background: var(--fc-bg);
     overflow-x: auto;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #1d3b53 #011627;
+    scrollbar-color: var(--fc-border) var(--fc-bg);
     font-family:
       'JetBrains Mono', 'Fira Code', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
     font-variant-ligatures: contextual;
     tab-size: 2;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
   }
 
   .facts-terminal .screen code {
@@ -186,45 +237,44 @@ const highlighted = format === 'json' ? highlightJSON(data) : highlightCSS(data)
     width: 8px;
   }
   .facts-terminal .screen::-webkit-scrollbar-track {
-    background: #011627;
+    background: var(--fc-bg);
   }
   .facts-terminal .screen::-webkit-scrollbar-thumb {
-    background: #1d3b53;
+    background: var(--fc-border);
     border-radius: 4px;
   }
   .facts-terminal .screen::-webkit-scrollbar-thumb:hover {
-    background: #2a4f6e;
+    background: var(--fc-border-strong);
   }
 
   /* ============================================================
-     Токены подсветки. Классы с префиксом fc- → не конфликтуют
-     с .key/.str из других компонентов и глобальных стилей.
+     Токены подсветки — читают переменные, чтобы работать в обеих темах
      ============================================================ */
 
   .facts-terminal .fc-key {
-    color: #82aaff !important;
-  } /* ключи / свойства */
+    color: var(--fc-key);
+  }
   .facts-terminal .fc-str {
-    color: #679cc8 !important;
-  } /* строки */
+    color: var(--fc-str);
+  }
   .facts-terminal .fc-num {
-    color: #addb67 !important;
-  } /* числа */
+    color: var(--fc-num);
+  }
   .facts-terminal .fc-bool {
-    color: #c792ea !important;
-  } /* true / false */
+    color: var(--fc-bool);
+  }
   .facts-terminal .fc-null {
-    color: #c792ea !important;
+    color: var(--fc-null);
     font-style: italic;
   }
   .facts-terminal .fc-br {
-    color: #d6deeb !important;
-  } /* { } [ ] */
+    color: var(--fc-br);
+  }
   .facts-terminal .fc-p {
-    color: #637777 !important;
-  } /* : , ; */
+    color: var(--fc-p);
+  }
   .facts-terminal .fc-sel {
-    color: #c792ea !important;
+    color: var(--fc-sel);
     font-weight: 600;
   }
 
