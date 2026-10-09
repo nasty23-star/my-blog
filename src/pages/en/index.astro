@@ -36,6 +36,7 @@ import '@styles/global.css';
           <div class="hero-image"></div>
         </div>
       </section>
+
       <section class="terminal-section">
         <div class="terminal-header">
           <div class="terminal-controls">
@@ -45,138 +46,67 @@ import '@styles/global.css';
           </div>
           <span class="terminal-title">>_ SPACECRAFT_TECH_STACK.FRONTEND</span>
         </div>
-        <div class="terminal-body">
-          <div class="terminal-line">
+
+        <div class="terminal-body" id="terminalBody">
+          <!-- Строки Matrix вставит скрипт -->
+
+          <!-- Команда: изначально скрыта -->
+          <div class="terminal-line command-line is-hidden">
             <span class="prompt">$</span>
-            <span class="command">npm list --skills --depth=0</span>
+            <span class="command command-typed"></span>
           </div>
-          <div class="terminal-output">
+
+          <!-- Сетка технологий: изначально скрыта -->
+          <div class="terminal-output is-hidden" id="techOutput">
             <div class="tech-grid">
-              <!-- JavaScript -->
-              <div class="tech-item">
-                <span class="tech-name">JavaScript</span>
-              </div>
-              <!-- Vue.js -->
-              <div class="tech-item">
-                <span class="tech-name">Vue.js</span>
-              </div>
-              <!-- React -->
-              <div class="tech-item">
-                <span class="tech-name">React</span>
-              </div>
-              <!-- Next.js -->
-              <div class="tech-item">
-                <span class="tech-name">Next.js</span>
-              </div>
-              <!-- Astro -->
-              <div class="tech-item">
-                <span class="tech-name">Astro</span>
-              </div>
-              <!-- TypeScript -->
-              <div class="tech-item">
-                <span class="tech-name">TypeScript</span>
-              </div>
-              <!-- HTML -->
-              <div class="tech-item">
-                <span class="tech-name">CSS</span>
-              </div>
-              <!-- Git -->
-              <div class="tech-item">
-                <span class="tech-name">Git</span>
-              </div>
-              <!-- Vite -->
-              <div class="tech-item">
-                <span class="tech-name">Vite</span>
-              </div>
-              <!-- pnpm -->
-              <div class="tech-item">
-                <span class="tech-name">pnpm</span>
-              </div>
-              <!-- npm -->
-              <div class="tech-item">
-                <span class="tech-name">npm</span>
-              </div>
-              <!-- Tailwind -->
-              <div class="tech-item">
-                <span class="tech-name">Tailwind</span>
-              </div>
-              <!-- Telegram Mini Apps -->
-              <div class="tech-item">
-                <span class="tech-name">Telegram Mini Apps</span>
-              </div>
-              <!-- Cursor -->
-              <div class="tech-item">
-                <span class="tech-name">Cursor</span>
-              </div>
-              <!-- Claude -->
-              <div class="tech-item">
-                <span class="tech-name">Claude</span>
-              </div>
+              <div class="tech-item"><span class="tech-name">JavaScript</span></div>
+              <div class="tech-item"><span class="tech-name">Vue.js</span></div>
+              <div class="tech-item"><span class="tech-name">React</span></div>
+              <div class="tech-item"><span class="tech-name">Next.js</span></div>
+              <div class="tech-item"><span class="tech-name">Astro</span></div>
+              <div class="tech-item"><span class="tech-name">TypeScript</span></div>
+              <div class="tech-item"><span class="tech-name">CSS</span></div>
+              <div class="tech-item"><span class="tech-name">Git</span></div>
+              <div class="tech-item"><span class="tech-name">Vite</span></div>
+              <div class="tech-item"><span class="tech-name">pnpm</span></div>
+              <div class="tech-item"><span class="tech-name">npm</span></div>
+              <div class="tech-item"><span class="tech-name">Tailwind</span></div>
+              <div class="tech-item"><span class="tech-name">Telegram Mini Apps</span></div>
+              <div class="tech-item"><span class="tech-name">Cursor</span></div>
+              <div class="tech-item"><span class="tech-name">Claude</span></div>
             </div>
           </div>
-          <div class="terminal-line">
+
+          <!-- Финальный курсор: изначально скрыт -->
+          <div class="terminal-line final-line is-hidden">
             <span class="prompt">$</span>
             <span class="command blink">_</span>
           </div>
         </div>
+
         <div class="terminal-footer">
           <span class="status">
-            <svg
-              class="status-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M20 6L9 17L4 12"
-                stroke="#27c93f"
-                stroke-width="2.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-              <circle
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="#27c93f"
-                stroke-width="1.5"
-                stroke-opacity="0.3"></circle>
+            <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 6L9 17L4 12" stroke="#27c93f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <circle cx="12" cy="12" r="10" stroke="#27c93f" stroke-width="1.5" stroke-opacity="0.3"></circle>
             </svg>
             SYSTEM READY
           </span>
           <span class="status">
-            <svg
-              class="status-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#60a5fa" stroke-width="1.8"
-              ></rect>
-              <path d="M8 2v4M16 2v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"
-              ></path>
-              <circle cx="12" cy="12" r="2" fill="#60a5fa" stroke="#60a5fa" stroke-width="1.5"
-              ></circle>
+            <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#60a5fa" stroke-width="1.8"></rect>
+              <path d="M8 2v4M16 2v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"></path>
+              <circle cx="12" cy="12" r="2" fill="#60a5fa" stroke="#60a5fa" stroke-width="1.5"></circle>
               <path d="M12 14v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"></path>
             </svg>
             8 MODULES LOADED
           </span>
           <span class="status">
-            <svg
-              class="status-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
-                stroke="#60a5fa"
-                stroke-width="1.8"
-                stroke-linecap="round"></path>
-              <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5"
-              ></circle>
+            <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"></path>
+              <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5"></circle>
               <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5">
-                <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"
-                ></animate>
+                <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"></animate>
               </circle>
             </svg>
             SIGNAL: STABLE
@@ -185,6 +115,94 @@ import '@styles/global.css';
       </section>
     </main>
     <Footer />
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const container = document.getElementById('terminalBody');
+        if (!container) return;
+
+        const output = document.getElementById('techOutput');
+        const commandLine = container.querySelector('.command-line');
+        const commandSpan = container.querySelector('.command-typed');
+        const finalLine = container.querySelector('.final-line');
+        const anchor = commandLine;
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // ==== REDUCED MOTION: показываем всё сразу, без анимаций ====
+        if (prefersReduced) {
+          commandLine.classList.remove('is-hidden');
+          commandSpan.textContent = 'pnpm list --skills --depth=0';
+          commandLine.classList.add('done'); // убираем курсор у команды
+          output.classList.remove('is-hidden'); // скиллы сразу
+          finalLine.classList.remove('is-hidden');
+          return;
+        }
+
+        // ==== ОБЫЧНЫЙ РЕЖИМ: полный сценарий ====
+        const phraseLines = [
+          { text: 'Wake up, Neo...', pauseAfter: 800 },
+          { text: 'Matrix has you.', pauseAfter: 800 },
+          { text: 'Follow the white rabbit.', pauseAfter: 1000 },
+        ];
+
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+        async function typeInto(span, text, speed = 60) {
+          span.textContent = '';
+          for (const char of text) {
+            span.textContent += char;
+            await sleep(speed);
+          }
+        }
+
+        async function typeNewLine(text, speed = 60) {
+          const line = document.createElement('div');
+          line.className = 'terminal-line matrix-line';
+          const span = document.createElement('span');
+          span.className = 'matrix-typed';
+          line.appendChild(span);
+          container.insertBefore(line, anchor);
+
+          await typeInto(span, text, speed);
+          await sleep(300);
+        }
+
+        function revealTechGrid() {
+          output.classList.remove('is-hidden');
+          const items = output.querySelectorAll('.tech-item');
+          items.forEach((item, i) => {
+            item.style.animationDelay = `${i * 70}ms`;
+          });
+        }
+
+        async function run() {
+          // 1. Фразы Matrix
+          for (const { text, pauseAfter } of phraseLines) {
+            await sleep(pauseAfter);
+            await typeNewLine(text, 55);
+          }
+
+          // 2. Команда
+          await sleep(600);
+          commandLine.classList.remove('is-hidden');
+          await typeInto(commandSpan, 'pnpm list --skills --depth=0', 45);
+
+          // 3. Пауза «выполнения» и убираем курсор у команды
+          await sleep(500);
+          commandLine.classList.add('done');
+
+          // 4. Только теперь — скиллы
+          revealTechGrid();
+
+          // 5. Финальный курсор
+          await sleep(900);
+          finalLine.classList.remove('is-hidden');
+        }
+
+        run();
+      });
+    </script>
   </body>
 </html>
 
@@ -257,32 +275,18 @@ import '@styles/global.css';
   }
 
   @keyframes starDrift {
-    0% {
-      transform: translateX(0) translateY(0);
-    }
-    100% {
-      transform: translateX(-50px) translateY(-30px);
-    }
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-50px) translateY(-30px); }
   }
 
   @keyframes twinkle {
-    0% {
-      opacity: 0.3;
-    }
-    100% {
-      opacity: 1;
-    }
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
   }
 
   @keyframes nebulaDrift {
-    0% {
-      transform: scale(1) translateX(0);
-      opacity: 0.5;
-    }
-    100% {
-      transform: scale(1.05) translateX(2%);
-      opacity: 0.7;
-    }
+    0% { transform: scale(1) translateX(0); opacity: 0.5; }
+    100% { transform: scale(1.05) translateX(2%); opacity: 0.7; }
   }
 
   /* === СТИЛИ ТЕРМИНАЛА === */
@@ -313,18 +317,11 @@ import '@styles/global.css';
     border-radius: 50%;
   }
 
-  .control.red {
-    background: #ff5f56;
-  }
-  .control.yellow {
-    background: #ffbd2e;
-  }
-  .control.green {
-    background: #27c93f;
-  }
+  .control.red { background: #ff5f56; }
+  .control.yellow { background: #ffbd2e; }
+  .control.green { background: #27c93f; }
 
   .terminal-title {
-    //color: #60a5fa;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
   }
@@ -333,28 +330,30 @@ import '@styles/global.css';
     backdrop-filter: blur(4px);
     padding: 1.5rem;
     border-bottom: 1px solid #1e3a5f;
+    min-height: 240px;
   }
 
   .terminal-line {
     margin-bottom: 0.8rem;
   }
 
+  .terminal-line.command-line.done {
+    /* margin-top: 1.5rem; */
+  }
+
   .prompt {
-    //color: #3b82f6;
     font-weight: bold;
     margin-right: 0.5rem;
   }
 
-  .command {
-    //color: #3b82f6;
-  }
-
   .terminal-output {
-    margin: 0 0 0 0;
+    margin: 0;
   }
 
   .tech-grid {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 0.4rem 1rem;
   }
 
   .tech-item {
@@ -364,26 +363,10 @@ import '@styles/global.css';
     border-radius: 8px;
     transition: all 0.2s ease;
   }
-  /* .tech-item:hover {
-    border-color: #3b82f6;
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateX(5px);
-  } */
-
-  .tech-icon {
-    font-size: 1.2rem;
-  }
 
   .tech-name {
     flex: 1;
-    //color: #3b82f6;
     font-weight: 500;
-  }
-
-  .tech-version {
-    //color: #3b82f6;
-    font-size: 0.75rem;
-    font-family: monospace;
   }
 
   .blink {
@@ -391,15 +374,65 @@ import '@styles/global.css';
   }
 
   @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
   }
 
+  /* === MATRIX-ЭФФЕКТЫ === */
+  .is-hidden {
+    display: none;
+  }
+
+  .terminal-line.matrix-line {
+    margin-bottom: 0.4rem;
+    color: #27c93f;
+  }
+
+  .terminal-line .matrix-typed {
+    color: #27c93f;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(39, 201, 63, 0.7);
+  }
+
+  .matrix-typed::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    color: #27c93f;
+  }
+
+  .command-typed::after {
+    content: '_';
+    animation: blink 1s step-end infinite;
+    margin-left: 2px;
+    color: inherit;
+  }
+
+  .command-line.done .command-typed::after {
+    content: '';
+  }
+
+  .terminal-output {
+    animation: techReveal 0.5s ease-out;
+  }
+
+  @keyframes techReveal {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tech-item {
+    opacity: 0;
+    animation: techItemIn 0.35s ease-out forwards;
+  }
+
+  @keyframes techItemIn {
+    from { opacity: 0; transform: translateX(-8px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* === СТАТУС-БАР === */
   .terminal-footer {
     padding: 0.6rem 1rem;
     display: flex;
@@ -409,7 +442,6 @@ import '@styles/global.css';
   }
 
   .status {
-    //color: #3b82f6;
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -424,13 +456,11 @@ import '@styles/global.css';
     flex-shrink: 0;
   }
 
+  /* === HERO === */
   .hero {
     padding: 1rem 1rem;
     max-width: 1200px;
-    margin-right: auto;
-    margin-bottom: 0px;
-    margin-left: auto;
-    margin-top: 60px;
+    margin: 60px auto 0;
   }
 
   .hero-content {
@@ -459,7 +489,6 @@ import '@styles/global.css';
   .greeting {
     display: inline-block;
     font-size: 1rem;
-    //color: #60a5fa;
     margin-bottom: 1rem;
     letter-spacing: 2px;
   }
@@ -467,132 +496,73 @@ import '@styles/global.css';
   h1 {
     font-size: 4rem;
     margin: 0 0 0.5rem 0;
-    //background: linear-gradient(135deg, #7bc5ff, #3b82f6);
     background-clip: text;
     -webkit-background-clip: text;
-    //color: transparent;
     line-height: 1.2;
   }
 
   .description {
     font-size: 1.2rem;
-    //color: #3b82f6;
     line-height: 1.6;
     height: 94px;
   }
 
-  .button {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    //background: #3b82f6;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s ease;
-    font-weight: 500;
-  }
-
-  .button:hover {
-    //background: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
-  }
-
-  .button.secondary {
-    background: transparent;
-    border: 1px solid #3b82f6;
-    //color: #60a5fa;
-  }
-
-  .button.secondary:hover {
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateY(-2px);
-  }
-
-  .highlights {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 2rem;
-    max-width: 1200px;
-    margin: 3rem auto;
-    padding: 0 1rem;
-  }
-
-  .highlight-card {
-    text-align: center;
-    padding: 2rem;
-    background: rgba(2, 8, 20, 0.5);
-    border: 1px solid #1e3a5f;
-    border-radius: 20px;
-    transition: all 0.2s ease;
-  }
-
-  .highlight-card:hover {
-    border-color: #3b82f6;
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-  }
-
-  .emoji {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  .highlight-card h3 {
-    font-size: 1.3rem;
-    margin: 0 0 0.5rem 0;
-    //color: #7bc5ff;
-  }
-
-  .highlight-card p {
-    color: #a1c2e8;
-    margin: 0;
-    font-size: 0.95rem;
-  }
-
+  /* === АДАПТИВ === */
   @media (max-width: 420px) {
-    .terminal-title {
-      letter-spacing: 0.2px;
-    }
+    .terminal-title { letter-spacing: 0.2px; }
   }
 
   @media (max-width: 768px) {
-    .hero {
-      padding: 1rem 1rem;
-    }
-
+    .hero { padding: 1rem; }
     .hero-content {
       flex-direction: column-reverse;
       text-align: center;
     }
+    h1 { font-size: 2.5rem; }
+    .description { font-size: 1rem; }
+    .hero-image img { width: 200px; height: 200px; }
+    .tech-grid { grid-template-columns: 1fr; }
+  }
 
-    h1 {
-      font-size: 2.5rem;
+  /* === FALLBACK: prefers-reduced-motion === */
+  @media (prefers-reduced-motion: reduce) {
+    /* Космический фон — без анимаций */
+    .stars,
+    .twinkling-stars,
+    .nebula {
+      animation: none !important;
     }
 
-    .description {
-      font-size: 1rem;
+    /* Скиллы видны сразу */
+    .terminal-output,
+    .terminal-output.is-hidden {
+      display: block !important;
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
     }
 
-    .cta {
-      justify-content: center;
+    /* Элементы сетки без каскада */
+    .tech-item {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
     }
 
-    .hero-image img {
-      width: 200px;
-      height: 200px;
+    /* Команда показывается статично, без курсора-печати */
+    .command-line.is-hidden {
+      display: block !important;
     }
 
-    .highlights {
-      gap: 1rem;
+    .command-typed::after,
+    .matrix-typed::after {
+      animation: none !important;
+      opacity: 1 !important;
     }
 
-    .highlight-card {
-      padding: 1.5rem;
-    }
-
-    .tech-grid {
-      grid-template-columns: 1fr;
+    /* Финальный курсор не мигает */
+    .blink {
+      animation: none !important;
     }
   }
 </style>
