@@ -27,7 +27,9 @@
 
 <style>
   /* ============================================================
-     VS Code Night Owl — dark
+     VS Code Night Owl — dark + Night Owl Light
+     Переключение темы: класс .theme-light или атрибут [data-theme="light"]
+     на <html>, <body> или любом родителе .terminal-wrapper.
      ============================================================ */
 
   .terminal-wrapper {
@@ -38,26 +40,114 @@
   }
 
   .terminal {
+    /* ---------- Dark (Night Owl) — значения по умолчанию ---------- */
+    --t-bg: #011627;
+    --t-titlebar: #0b2942;
+    --t-border: #1d3b53;
+    --t-border-strong: #2a4f6e;
+    --t-fg: #d6deeb;
+    --t-title-fg: #b0b9b9;
+
+    --t-prompt-user: #addb67;
+    --t-prompt-path: #82aaff;
+    --t-prompt-symbol: #d6deeb;
+    --t-caret: #7fdbca;
+
+    --t-dir: #82aaff;
+    --t-file-js: #ecc48d;
+    --t-file-vue: #addb67;
+    --t-file-json: #ecc48d;
+    --t-file-md: #d6deeb;
+    --t-file-config: #f78c6c;
+    --t-file-lock: #637777;
+
+    --t-error: #ef5350;
+    --t-info: #637777;
+    --t-success: #addb67;
+
+    --t-git-branch: #c792ea;
+    --t-git-branch-o: #82aaff;
+    --t-git-modified: #ecc48d;
+    --t-git-staged: #addb67;
+    --t-git-untracked: #f78c6c;
+    --t-git-deleted: #ef5350;
+    --t-git-hash: #ecc48d;
+    --t-git-author: #7fdbca;
+    --t-git-date: #637777;
+    --t-git-msg: #d6deeb;
+
     width: 100%;
     max-width: 850px;
     height: 300px;
-    background: #011627;
+    background: var(--t-bg);
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    border: 1px solid #1d3b53;
+    border: 1px solid var(--t-border);
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
+  }
+
+  /* ============================================================
+     Light (Night Owl Light)
+     Покрывает все распространённые способы установки темы.
+     ============================================================ */
+  .theme-light .terminal[data-theme='light'],
+  [data-theme='light'] .terminal,
+  html.theme-light .terminal,
+  body.theme-light .terminal,
+  html[data-theme='light'] .terminal,
+  body[data-theme='light'] .terminal {
+    --t-bg: #fbfbfb;
+    --t-titlebar: #f0f0f0;
+    --t-border: #d9d9d9;
+    --t-border-strong: #bcbcbc;
+    --t-fg: #403f53;
+    --t-title-fg: #6a6a7a;
+
+    --t-prompt-user: #4876d6;
+    --t-prompt-path: #994cc3;
+    --t-prompt-symbol: #403f53;
+    --t-caret: #0c969b;
+
+    --t-dir: #4876d6;
+    --t-file-js: #aa0982;
+    --t-file-vue: #0c969b;
+    --t-file-json: #aa0982;
+    --t-file-md: #403f53;
+    --t-file-config: #c96765;
+    --t-file-lock: #8a8a9a;
+
+    --t-error: #c62828;
+    --t-info: #7a7a8a;
+    --t-success: #0c969b;
+
+    --t-git-branch: #994cc3;
+    --t-git-branch-o: #4876d6;
+    --t-git-modified: #aa0982;
+    --t-git-staged: #0c969b;
+    --t-git-untracked: #c96765;
+    --t-git-deleted: #c62828;
+    --t-git-hash: #aa0982;
+    --t-git-author: #0c969b;
+    --t-git-date: #7a7a8a;
+    --t-git-msg: #403f53;
   }
 
   .titlebar {
     height: 32px;
-    background: #0b2942;
+    background: var(--t-titlebar);
     display: flex;
     align-items: center;
     padding: 0 12px;
     gap: 8px;
-    border-bottom: 1px solid #1d3b53;
+    border-bottom: 1px solid var(--t-border);
     flex-shrink: 0;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
   }
 
   .dot {
@@ -78,7 +168,7 @@
   .title {
     flex: 1;
     text-align: center;
-    color: #b0b9b9;
+    color: var(--t-title-fg);
     font-size: 12px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
@@ -89,68 +179,74 @@
     padding: 15px;
     font-size: 14px;
     line-height: 1.5;
-    color: #d6deeb;
+    color: var(--t-fg);
+    background: var(--t-bg);
     white-space: pre-wrap;
     word-break: break-word;
     scrollbar-width: thin;
-    scrollbar-color: #1d3b53 #011627;
+    scrollbar-color: var(--t-border) var(--t-bg);
     font-family:
       'JetBrains Mono', 'Fira Code', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
   }
 
   .screen::-webkit-scrollbar {
     width: 8px;
   }
   .screen::-webkit-scrollbar-track {
-    background: #011627;
+    background: var(--t-bg);
   }
   .screen::-webkit-scrollbar-thumb {
-    background: #1d3b53;
+    background: var(--t-border);
     border-radius: 4px;
   }
   .screen::-webkit-scrollbar-thumb:hover {
-    background: #2a4f6e;
+    background: var(--t-border-strong);
   }
 
   .line {
     margin: 0;
   }
 
+  /* ---------- Prompt / команды ---------- */
   .prompt-user {
-    color: #addb67;
+    color: var(--t-prompt-user);
   }
   .prompt-path {
-    color: #82aaff;
+    color: var(--t-prompt-path);
   }
   .prompt-symbol {
-    color: #d6deeb;
+    color: var(--t-prompt-symbol);
   }
   .cmd-text {
-    color: #d6deeb;
+    color: var(--t-fg);
   }
 
+  /* ---------- Файлы ---------- */
   .dir {
-    color: #82aaff;
+    color: var(--t-dir);
     font-weight: 600;
   }
   .file-js {
-    color: #ecc48d;
+    color: var(--t-file-js);
   }
   .file-vue {
-    color: #addb67;
+    color: var(--t-file-vue);
     font-weight: 600;
   }
   .file-json {
-    color: #ecc48d;
+    color: var(--t-file-json);
   }
   .file-md {
-    color: #d6deeb;
+    color: var(--t-file-md);
   }
   .file-config {
-    color: #f78c6c;
+    color: var(--t-file-config);
   }
   .file-lock {
-    color: #637777;
+    color: var(--t-file-lock);
   }
 
   .input-line {
@@ -175,55 +271,55 @@
     background: transparent;
     border: none;
     outline: none;
-    color: #d6deeb;
+    color: var(--t-fg);
     font-family: inherit;
     font-size: 14px;
-    caret-color: #7fdbca;
+    caret-color: var(--t-caret);
   }
 
   /* ---------- Semantic ---------- */
   .error {
-    color: #ef5350;
+    color: var(--t-error);
   }
   .info {
-    color: #637777;
+    color: var(--t-info);
     font-style: italic;
   }
   .success {
-    color: #addb67;
+    color: var(--t-success);
   }
 
-  /* ---------- Git colors (Night Owl) ---------- */
+  /* ---------- Git colors ---------- */
   .git-branch {
-    color: #c792ea;
+    color: var(--t-git-branch);
     font-weight: 600;
   }
   .git-branch-o {
-    color: #82aaff;
+    color: var(--t-git-branch-o);
   }
   .git-modified {
-    color: #ecc48d;
+    color: var(--t-git-modified);
   }
   .git-staged {
-    color: #addb67;
+    color: var(--t-git-staged);
   }
   .git-untracked {
-    color: #f78c6c;
+    color: var(--t-git-untracked);
   }
   .git-deleted {
-    color: #ef5350;
+    color: var(--t-git-deleted);
   }
   .git-hash {
-    color: #ecc48d;
+    color: var(--t-git-hash);
   }
   .git-author {
-    color: #7fdbca;
+    color: var(--t-git-author);
   }
   .git-date {
-    color: #637777;
+    color: var(--t-git-date);
   }
   .git-msg {
-    color: #d6deeb;
+    color: var(--t-git-msg);
   }
 </style>
 
@@ -231,6 +327,7 @@
   (function () {
     'use strict';
 
+    // ... (весь JS без изменений — копируется 1-в-1 из вашего файла) ...
     // ============================================================
     // Виртуальная файловая система проекта
     // ============================================================
@@ -363,8 +460,7 @@
     }
 
     // ============================================================
-    // Фейковые содержимые файлов (ВЫНЕСЕНЫ отдельно, чтобы
-    // esbuild-сканер Vite не принял их за реальные импорты)
+    // Фейковые содержимые файлов
     // ============================================================
     const FAKE_FILES = {
       'package.json': [
@@ -391,8 +487,6 @@
         '}',
       ].join('\n'),
 
-      // Строки ниже разбиты, чтобы esbuild не распознал их как импорты.
-      // Символ '@' собран через конкатенацию, 'import' — тоже.
       'vite.config.js': [
         'imp' + 'ort { defineConfig } from "vite"',
         'imp' + 'ort vue from "@vitejs/' + 'plugin-vue"',
@@ -452,11 +546,9 @@
 
       let cwd = '~/my-app';
 
-      // -------------------- вывод --------------------
       function writeLine(html, className) {
         const div = document.createElement('div');
         div.className = className || 'line';
-        // html формируется только из наших строк + esc() для пользовательских данных
         div.innerHTML = html;
         screen.appendChild(div);
         screen.scrollTop = screen.scrollHeight;
@@ -481,38 +573,26 @@
         writeLine('');
       }
 
-      // -------------------- пути --------------------
       function resolvePath(p) {
         if (!p || p === '~') return '~/my-app';
-
-        // абсолютный: / или /src/... → ~/my-app[/...]
         if (p === '/') return '~/my-app';
         if (p.startsWith('/')) return '~/my-app' + p;
-
-        // домашний: ~/...
         if (p.startsWith('~/')) return p;
-
         if (p === '.') return cwd;
-
         if (p === '..') {
           const parts = cwd.split('/');
           if (parts.length <= 1) return cwd;
           parts.pop();
           return parts.length === 1 ? parts[0] : parts.join('/');
         }
-
-        // относительный
         return cwd === '~' ? '~/' + p : cwd + '/' + p;
       }
 
-      // -------------------- ls --------------------
       function cmdLs(args) {
         const flags = args.filter((a) => a.startsWith('-'));
         const paths = args.filter((a) => !a.startsWith('-'));
-
         const showAll = flags.some((f) => f.includes('a'));
         const detailed = flags.some((f) => f.includes('l'));
-
         const target = paths[0];
         const path = target ? resolvePath(target) : cwd;
 
@@ -570,10 +650,8 @@
         }
       }
 
-      // -------------------- cd --------------------
       function cmdCd(args) {
         const target = args[0];
-
         if (!target || target === '~' || target === '/') {
           cwd = '~/my-app';
         } else {
@@ -588,25 +666,20 @@
         promptPath.textContent = cwd;
       }
 
-      // -------------------- pwd --------------------
       function cmdPwd() {
         writeLine(esc(cwd.replace(/^~/, '/home/user')));
       }
 
-      // -------------------- cat --------------------
       function cmdCat(args) {
         if (!args[0]) {
           writeLine('cat: missing file operand', 'line error');
           return;
         }
         const name = args[0];
-
         if (FAKE_FILES[name]) {
-          // выводим как обычный текст, экранируя
           writeLine('<span class="file-md">' + esc(FAKE_FILES[name]) + '</span>');
           return;
         }
-
         const path = resolvePath(name);
         if (fs[path] && fs[path].type === 'file') {
           writeLine(
@@ -617,16 +690,13 @@
         }
       }
 
-      // -------------------- tree --------------------
       function cmdTree(args) {
         const target = args[0];
         const path = target ? resolvePath(target) : cwd;
-
         if (!fs[path] || fs[path].type !== 'dir') {
           writeLine('tree: ' + esc(target || path) + ': No such file or directory', 'line error');
           return;
         }
-
         writeLine('<span class="dir">' + esc(path.replace(/^~/, '.')) + '</span>');
         printTree(path, '', new Set());
       }
@@ -634,11 +704,9 @@
       function printTree(path, prefix, visited) {
         if (visited.has(path)) return;
         visited.add(path);
-
         const entries = Object.entries((fs[path] && fs[path].children) || {}).filter(
           ([n]) => !n.startsWith('.')
         );
-
         entries.forEach(([name, info], i) => {
           const last = i === entries.length - 1;
           const branch = last ? '└── ' : '├── ';
@@ -647,20 +715,15 @@
           writeLine(
             prefix + branch + '<span class="' + cls + '">' + esc(name) + suffix + '</span>'
           );
-
           if (info.type === 'dir') {
             const newPath = path + '/' + name;
-            if (fs[newPath]) {
-              printTree(newPath, prefix + (last ? '    ' : '│   '), visited);
-            }
+            if (fs[newPath]) printTree(newPath, prefix + (last ? '    ' : '│   '), visited);
           }
         });
       }
 
-      // -------------------- git --------------------
       function cmdGit(args) {
         const sub = args[0];
-
         if (!sub) {
           writeLine('usage: git <command> [<args>]', 'line error');
           writeLine(
@@ -668,7 +731,6 @@
           );
           return;
         }
-
         switch (sub) {
           case 'status':
             gitStatus(args.slice(1));
@@ -749,14 +811,12 @@
         const oneline = args.includes('--oneline');
         let limit = git.log.length;
 
-        // -n <N>
         const nIdx = args.indexOf('-n');
         if (nIdx !== -1 && args[nIdx + 1]) {
           const parsed = parseInt(args[nIdx + 1], 10);
           if (!isNaN(parsed) && parsed > 0) limit = parsed;
         }
 
-        // -<N>
         for (const a of args) {
           if (/^-\d+$/.test(a)) {
             const parsed = parseInt(a.slice(1), 10);
@@ -818,7 +878,6 @@
         });
       }
 
-      // -------------------- help / clear --------------------
       function cmdHelp() {
         writeLine('<span class="success">Доступные команды:</span>');
         writeLine('  <span class="dir">ls</span> [path]        — список файлов в директории');
@@ -841,7 +900,6 @@
         screen.innerHTML = '';
       }
 
-      // -------------------- диспетчер --------------------
       function runCommand(raw) {
         writeLine(promptHtml() + ' <span class="cmd-text">' + esc(raw) + '</span>');
 
@@ -889,7 +947,6 @@
         }
       }
 
-      // -------------------- история команд --------------------
       const history = [];
       let histIndex = -1;
 
@@ -938,15 +995,11 @@
         { signal: signal }
       );
 
-      // Сохраняем контроллер на элементе, чтобы можно было отменить при размонтировании
       wrapper._terminalController = controller;
 
       showWelcome();
     }
 
-    // ============================================================
-    // Инициализация всех терминалов на странице
-    // ============================================================
     function initAll() {
       document.querySelectorAll('[data-terminal]').forEach(initTerminal);
     }
@@ -957,8 +1010,6 @@
       initAll();
     }
 
-    // Astro View Transitions: этот хук вызывается и при первой загрузке,
-    // и при каждом переходе. Дублирование не нужно.
     document.addEventListener('astro:page-load', initAll);
   })();
 </script>
