@@ -137,29 +137,63 @@ import '@styles/global.css';
 
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // ==== REDUCED MOTION: всё сразу, без анимаций ====
-        if (prefersReduced) {
+        // ==== Ключ localStorage ====
+        const STORAGE_KEY = 'terminal_animation_seen';
+
+        // Безопасные обёртки (в приватном режиме localStorage может падать)
+        function safeGet(key) {
+          try { return window.localStorage.getItem(key); } catch { return null; }
+        }
+        function safeSet(key, value) {
+          try { window.localStorage.setItem(key, value); } catch { /* ignore */ }
+        }
+
+        const alreadySeen = safeGet(STORAGE_KEY) === '1';
+
+        // ==== Статичный рендер (для reduced-motion или повторного визита) ====
+        function renderStatic() {
+          // Заголовок финальный
+          terminalTitle.textContent = '>_ ANASTASIA.TECH_STACK.FRONTEND';
+
+          // Команда
           commandLine.classList.remove('is-hidden');
           commandSpan.textContent = 'pnpm list --skills --depth=0';
           commandLine.classList.add('done');
+
+          // Прогресс 100%
           progressLine.classList.remove('is-hidden');
-          progressSpan.textContent = '[████████████████████] 100%';
+          progressSpan.textContent = '[████████████████████] 100% ✓';
+
+          // Скиллы сразу
           output.classList.remove('is-hidden');
+          const items = output.querySelectorAll('.tech-item');
+          items.forEach((item) => {
+            item.style.opacity = '1';
+            item.style.transform = 'none';
+            item.style.animation = 'none';
+          });
+
+          // Финальный курсор
           finalLine.classList.remove('is-hidden');
+
+          // Отключаем анимации у самого терминала, чтобы ничего не «моргало»
+          container.classList.add('no-anim');
+        }
+
+        // ==== REDUCED MOTION или ПОВТОРНЫЙ ВИЗИТ: всё сразу ====
+        if (prefersReduced || alreadySeen) {
+          renderStatic();
           return;
         }
 
-        // ==== СЦЕНАРИЙ ====
-        // type: 'matrix' — зелёный, 'system' — голубой, 'flash' — приглушённый (для «проверки»)
+        // ==== ПЕРВЫЙ ВИЗИТ: полный сценарий ====
         const phraseLines = [
           { text: 'Wake up, Neo...',           pauseAfter: 800,  type: 'matrix' },
           { text: 'Matrix has you.',           pauseAfter: 800,  type: 'matrix' },
           { text: 'Follow the white rabbit.',  pauseAfter: 1000, type: 'matrix' },
 
-          // Пауза-осознание перед твистом
           { text: '...',                       pauseAfter: 1200, type: 'dim' },
 
-          // Момент узнавания — глитч + смена заголовка
           {
             text: '> Operator identified: NOT NEO',
             pauseAfter: 400,
@@ -170,7 +204,6 @@ import '@styles/global.css';
 
           { text: '> Scanning alternate profile...', pauseAfter: 700, type: 'system' },
 
-          // Имя — уже цветом системы
           {
             text: '> Candidate: ANASTASIA',
             pauseAfter: 900,
@@ -202,7 +235,6 @@ import '@styles/global.css';
           await sleep(300);
         }
 
-        // Пробегаемся по всей сетке скиллов и вешаем короткий глитч
         function glitchTerminal(duration = 400) {
           container.classList.add('glitching');
           terminalTitle.classList.add('glitching');
@@ -212,7 +244,6 @@ import '@styles/global.css';
           }, duration);
         }
 
-        // Прогресс-бар
         async function runProgressBar() {
           const total = 20;
           const stepDelay = 60;
@@ -238,7 +269,12 @@ import '@styles/global.css';
         }
 
         async function run() {
-          // 1. Фразы Matrix + system-строки
+          // Флаг «поставь галочку после завершения» — на случай,
+          // если пользователь закроет страницу в середине.
+          // Ставим ДО запуска, чтобы не перезапускать при быстром reload.
+          // (Если хочешь ставить в самом конце — перенеси в конец run().)
+          safeSet(STORAGE_KEY, '1');
+
           for (const phrase of phraseLines) {
             await sleep(phrase.pauseAfter);
 
@@ -255,23 +291,18 @@ import '@styles/global.css';
             await typeNewLine(phrase.text, speed, phrase.type);
           }
 
-          // 2. Команда
           await sleep(600);
           commandLine.classList.remove('is-hidden');
           await typeInto(commandSpan, 'pnpm list --skills --depth=0', 45);
 
-          // 3. Пауза «выполнения»
           await sleep(500);
           commandLine.classList.add('done');
 
-          // 4. Прогресс-бар
           progressLine.classList.remove('is-hidden');
           await runProgressBar();
 
-          // 5. Скиллы
           revealTechGrid();
 
-          // 6. Финальный курсор
           await sleep(900);
           finalLine.classList.remove('is-hidden');
         }
@@ -428,7 +459,6 @@ import '@styles/global.css';
 
   .tech-grid {
     display: grid;
-   // grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 0.4rem 1rem;
   }
 
@@ -494,12 +524,6 @@ import '@styles/global.css';
   }
 
   /* === КОМАНДА === */
-  /* .command-line .prompt,
-  .command-line .command-typed {
-    color: #27c93f !important;
-    -webkit-text-fill-color: #27c93f !important;
-  } */
-
   .command-typed::after {
     content: '_';
     animation: blink 1s step-end infinite;
@@ -587,6 +611,23 @@ import '@styles/global.css';
   @keyframes techItemIn {
     from { opacity: 0; transform: translateX(-8px); }
     to { opacity: 1; transform: translateX(0); }
+  }
+
+  /* === NO-ANIM: полностью отключает анимации терминала для повторного визита === */
+  .no-anim,
+  .no-anim * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .no-anim .terminal-output {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .no-anim .tech-item {
+    opacity: 1 !important;
+    transform: none !important;
   }
 
   /* === СТАТУС-БАР === */
