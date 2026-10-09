@@ -91,27 +91,62 @@ import '@styles/global.css';
 
         <div class="terminal-footer">
           <span class="status">
-            <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M20 6L9 17L4 12" stroke="#27c93f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-              <circle cx="12" cy="12" r="10" stroke="#27c93f" stroke-width="1.5" stroke-opacity="0.3"></circle>
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M20 6L9 17L4 12"
+                stroke="#27c93f"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="#27c93f"
+                stroke-width="1.5"
+                stroke-opacity="0.3"></circle>
             </svg>
             SYSTEM READY
           </span>
           <span class="status">
-            <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#60a5fa" stroke-width="1.8"></rect>
-              <path d="M8 2v4M16 2v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"></path>
-              <circle cx="12" cy="12" r="2" fill="#60a5fa" stroke="#60a5fa" stroke-width="1.5"></circle>
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="3" y="4" width="18" height="16" rx="2" stroke="#60a5fa" stroke-width="1.8"
+              ></rect>
+              <path d="M8 2v4M16 2v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"
+              ></path>
+              <circle cx="12" cy="12" r="2" fill="#60a5fa" stroke="#60a5fa" stroke-width="1.5"
+              ></circle>
               <path d="M12 14v4" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"></path>
             </svg>
             8 MODULES LOADED
           </span>
           <span class="status">
-            <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="#60a5fa" stroke-width="1.8" stroke-linecap="round"></path>
-              <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5"></circle>
+            <svg
+              class="status-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+                stroke="#60a5fa"
+                stroke-width="1.8"
+                stroke-linecap="round"></path>
+              <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5"
+              ></circle>
               <circle cx="12" cy="12" r="3" fill="#27c93f" stroke="#27c93f" stroke-width="1.5">
-                <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"></animate>
+                <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"
+                ></animate>
               </circle>
             </svg>
             SIGNAL: STABLE
@@ -142,10 +177,18 @@ import '@styles/global.css';
 
         // Безопасные обёртки (в приватном режиме localStorage может падать)
         function safeGet(key) {
-          try { return window.localStorage.getItem(key); } catch { return null; }
+          try {
+            return window.localStorage.getItem(key);
+          } catch {
+            return null;
+          }
         }
         function safeSet(key, value) {
-          try { window.localStorage.setItem(key, value); } catch { /* ignore */ }
+          try {
+            window.localStorage.setItem(key, value);
+          } catch {
+            /* ignore */
+          }
         }
 
         const alreadySeen = safeGet(STORAGE_KEY) === '1';
@@ -188,11 +231,11 @@ import '@styles/global.css';
 
         // ==== ПЕРВЫЙ ВИЗИТ: полный сценарий ====
         const phraseLines = [
-          { text: 'Wake up, Neo...',           pauseAfter: 800,  type: 'matrix' },
-          { text: 'Matrix has you.',           pauseAfter: 800,  type: 'matrix' },
-          { text: 'Follow the white rabbit.',  pauseAfter: 1000, type: 'matrix' },
+          { text: 'Wake up, Neo...', pauseAfter: 800, type: 'matrix' },
+          { text: 'Matrix has you.', pauseAfter: 800, type: 'matrix' },
+          { text: 'Follow the white rabbit.', pauseAfter: 1000, type: 'matrix' },
 
-          { text: '...',                       pauseAfter: 1200, type: 'dim' },
+          { text: '...', pauseAfter: 1200, type: 'dim' },
 
           {
             text: '> Operator identified: NOT NEO',
@@ -382,18 +425,32 @@ import '@styles/global.css';
   }
 
   @keyframes starDrift {
-    0% { transform: translateX(0) translateY(0); }
-    100% { transform: translateX(-50px) translateY(-30px); }
+    0% {
+      transform: translateX(0) translateY(0);
+    }
+    100% {
+      transform: translateX(-50px) translateY(-30px);
+    }
   }
 
   @keyframes twinkle {
-    0% { opacity: 0.3; }
-    100% { opacity: 1; }
+    0% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 
   @keyframes nebulaDrift {
-    0% { transform: scale(1) translateX(0); opacity: 0.5; }
-    100% { transform: scale(1.05) translateX(2%); opacity: 0.7; }
+    0% {
+      transform: scale(1) translateX(0);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1.05) translateX(2%);
+      opacity: 0.7;
+    }
   }
 
   /* === ТЕРМИНАЛ === */
@@ -425,9 +482,15 @@ import '@styles/global.css';
     border-radius: 50%;
   }
 
-  .control.red { background: #ff5f56; }
-  .control.yellow { background: #ffbd2e; }
-  .control.green { background: #27c93f; }
+  .control.red {
+    background: #ff5f56;
+  }
+  .control.yellow {
+    background: #ffbd2e;
+  }
+  .control.green {
+    background: #27c93f;
+  }
 
   .terminal-title {
     font-size: 0.85rem;
@@ -480,8 +543,13 @@ import '@styles/global.css';
   }
 
   @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
 
   /* === MATRIX-ЭФФЕКТЫ === */
@@ -499,7 +567,9 @@ import '@styles/global.css';
     letter-spacing: 1px;
     color: #27c93f !important;
     -webkit-text-fill-color: #27c93f !important;
-    text-shadow: 0 0 8px rgba(39, 201, 63, 0.9), 0 0 2px rgba(39, 201, 63, 0.6) !important;
+    text-shadow:
+      0 0 8px rgba(39, 201, 63, 0.9),
+      0 0 2px rgba(39, 201, 63, 0.6) !important;
   }
 
   .matrix-typed::after {
@@ -513,7 +583,9 @@ import '@styles/global.css';
   .terminal-line.type-system .matrix-typed {
     color: #60a5fa !important;
     -webkit-text-fill-color: #60a5fa !important;
-    text-shadow: 0 0 8px rgba(96, 165, 250, 0.9), 0 0 2px rgba(96, 165, 250, 0.6) !important;
+    text-shadow:
+      0 0 8px rgba(96, 165, 250, 0.9),
+      0 0 2px rgba(96, 165, 250, 0.6) !important;
   }
 
   /* === DIM (многоточие-пауза) === */
@@ -577,20 +649,48 @@ import '@styles/global.css';
   }
 
   @keyframes glitchShake {
-    0%   { transform: translate(0, 0); filter: none; }
-    20%  { transform: translate(-2px, 1px); filter: hue-rotate(-25deg) saturate(1.4); }
-    40%  { transform: translate(2px, -1px); filter: hue-rotate(25deg) saturate(1.4); }
-    60%  { transform: translate(-1px, 1px); filter: hue-rotate(-15deg); }
-    80%  { transform: translate(1px, -1px); filter: hue-rotate(15deg); }
-    100% { transform: translate(0, 0); filter: none; }
+    0% {
+      transform: translate(0, 0);
+      filter: none;
+    }
+    20% {
+      transform: translate(-2px, 1px);
+      filter: hue-rotate(-25deg) saturate(1.4);
+    }
+    40% {
+      transform: translate(2px, -1px);
+      filter: hue-rotate(25deg) saturate(1.4);
+    }
+    60% {
+      transform: translate(-1px, 1px);
+      filter: hue-rotate(-15deg);
+    }
+    80% {
+      transform: translate(1px, -1px);
+      filter: hue-rotate(15deg);
+    }
+    100% {
+      transform: translate(0, 0);
+      filter: none;
+    }
   }
 
   @keyframes glitchSlice {
-    0%   { clip-path: inset(10% 0 80% 0); }
-    25%  { clip-path: inset(50% 0 30% 0); }
-    50%  { clip-path: inset(20% 0 60% 0); }
-    75%  { clip-path: inset(70% 0 10% 0); }
-    100% { clip-path: inset(0 0 0 0); }
+    0% {
+      clip-path: inset(10% 0 80% 0);
+    }
+    25% {
+      clip-path: inset(50% 0 30% 0);
+    }
+    50% {
+      clip-path: inset(20% 0 60% 0);
+    }
+    75% {
+      clip-path: inset(70% 0 10% 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
   }
 
   /* Появление сетки */
@@ -599,8 +699,14 @@ import '@styles/global.css';
   }
 
   @keyframes techReveal {
-    from { opacity: 0; transform: translateY(-6px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .tech-item {
@@ -609,8 +715,14 @@ import '@styles/global.css';
   }
 
   @keyframes techItemIn {
-    from { opacity: 0; transform: translateX(-8px); }
-    to { opacity: 1; transform: translateX(0); }
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   /* === NO-ANIM: полностью отключает анимации терминала для повторного визита === */
@@ -707,19 +819,32 @@ import '@styles/global.css';
 
   /* === АДАПТИВ === */
   @media (max-width: 420px) {
-    .terminal-title { letter-spacing: 0.2px; }
+    .terminal-title {
+      letter-spacing: 0.2px;
+    }
   }
 
   @media (max-width: 768px) {
-    .hero { padding: 1rem; }
+    .hero {
+      padding: 1rem;
+    }
     .hero-content {
       flex-direction: column-reverse;
       text-align: center;
     }
-    h1 { font-size: 2.5rem; }
-    .description { font-size: 1rem; }
-    .hero-image img { width: 200px; height: 200px; }
-    .tech-grid { grid-template-columns: 1fr; }
+    h1 {
+      font-size: 2.5rem;
+    }
+    .description {
+      font-size: 1rem;
+    }
+    .hero-image img {
+      width: 200px;
+      height: 200px;
+    }
+    .tech-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* === FALLBACK: prefers-reduced-motion === */
