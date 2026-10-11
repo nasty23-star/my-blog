@@ -68,9 +68,13 @@ const skills = [
 
     <div class="terminal-output is-hidden" id={outputId}>
       <div class="tech-grid">
-        {skills.map((name) => (
-          <div class="tech-item"><span class="tech-name">{name}</span></div>
-        ))}
+        {
+          skills.map((name) => (
+            <div class="tech-item">
+              <span class="tech-name">{name}</span>
+            </div>
+          ))
+        }
       </div>
     </div>
 
@@ -83,26 +87,73 @@ const skills = [
   <div class="terminal-footer">
     <span class="status">
       <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M20 6L9 17L4 12" stroke="var(--terminal-green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
-        <circle cx="12" cy="12" r="10" stroke="var(--terminal-green)" stroke-width="1.5" stroke-opacity="0.3"></circle>
+        <path
+          d="M20 6L9 17L4 12"
+          stroke="var(--terminal-green)"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+        <circle
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="var(--terminal-green)"
+          stroke-width="1.5"
+          stroke-opacity="0.3"></circle>
       </svg>
       SYSTEM READY
     </span>
     <span class="status">
       <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="3" y="4" width="18" height="16" rx="2" stroke="var(--terminal-blue)" stroke-width="1.8"></rect>
-        <path d="M8 2v4M16 2v4" stroke="var(--terminal-blue)" stroke-width="1.8" stroke-linecap="round"></path>
-        <circle cx="12" cy="12" r="2" fill="var(--terminal-blue)" stroke="var(--terminal-blue)" stroke-width="1.5"></circle>
-        <path d="M12 14v4" stroke="var(--terminal-blue)" stroke-width="1.8" stroke-linecap="round"></path>
+        <rect
+          x="3"
+          y="4"
+          width="18"
+          height="16"
+          rx="2"
+          stroke="var(--terminal-blue)"
+          stroke-width="1.8"></rect>
+        <path
+          d="M8 2v4M16 2v4"
+          stroke="var(--terminal-blue)"
+          stroke-width="1.8"
+          stroke-linecap="round"></path>
+        <circle
+          cx="12"
+          cy="12"
+          r="2"
+          fill="var(--terminal-blue)"
+          stroke="var(--terminal-blue)"
+          stroke-width="1.5"></circle>
+        <path d="M12 14v4" stroke="var(--terminal-blue)" stroke-width="1.8" stroke-linecap="round"
+        ></path>
       </svg>
       8 MODULES LOADED
     </span>
     <span class="status">
       <svg class="status-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="var(--terminal-blue)" stroke-width="1.8" stroke-linecap="round"></path>
-        <circle cx="12" cy="12" r="3" fill="var(--terminal-green)" stroke="var(--terminal-green)" stroke-width="1.5"></circle>
-        <circle cx="12" cy="12" r="3" fill="var(--terminal-green)" stroke="var(--terminal-green)" stroke-width="1.5">
-          <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"></animate>
+        <path
+          d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+          stroke="var(--terminal-blue)"
+          stroke-width="1.8"
+          stroke-linecap="round"></path>
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
+          fill="var(--terminal-green)"
+          stroke="var(--terminal-green)"
+          stroke-width="1.5"></circle>
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
+          fill="var(--terminal-green)"
+          stroke="var(--terminal-green)"
+          stroke-width="1.5"
+        >
+          <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"
+          ></animate>
         </circle>
       </svg>
       SIGNAL: STABLE
@@ -164,9 +215,15 @@ const skills = [
     height: 12px;
     border-radius: 50%;
   }
-  .control.red { background: #ff5f56; }
-  .control.yellow { background: #ffbd2e; }
-  .control.green { background: #27c93f; }
+  .control.red {
+    background: #ff5f56;
+  }
+  .control.yellow {
+    background: #ffbd2e;
+  }
+  .control.green {
+    background: #27c93f;
+  }
 
   .terminal-title {
     font-size: 0.85rem;
@@ -183,14 +240,18 @@ const skills = [
     position: relative;
   }
 
-  .terminal-line { margin-bottom: 0.8rem; }
+  .terminal-line {
+    margin-bottom: 0.8rem;
+  }
 
   .prompt {
     font-weight: bold;
     margin-right: 0.5rem;
   }
 
-  .terminal-output { margin: 0; }
+  .terminal-output {
+    margin: 0;
+  }
 
   .tech-grid {
     display: grid;
@@ -215,14 +276,23 @@ const skills = [
   }
 
   @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
 
   /* === MATRIX-ЭФФЕКТЫ === */
-  .is-hidden { display: none; }
+  .is-hidden {
+    display: none;
+  }
 
-  .terminal-line.matrix-line { margin-bottom: 0.4rem; }
+  .terminal-line.matrix-line {
+    margin-bottom: 0.4rem;
+  }
 
   .terminal-line .matrix-typed,
   .matrix-typed {
@@ -260,10 +330,14 @@ const skills = [
     color: var(--terminal-green) !important;
     -webkit-text-fill-color: var(--terminal-green) !important;
   }
-  .command-line.done .command-typed::after { content: ''; }
+  .command-line.done .command-typed::after {
+    content: '';
+  }
 
   /* === ПРОГРЕСС-БАР === */
-  .progress-line { margin-bottom: 0.8rem; }
+  .progress-line {
+    margin-bottom: 0.8rem;
+  }
   .progress-typed {
     color: var(--terminal-green) !important;
     -webkit-text-fill-color: var(--terminal-green) !important;
@@ -299,28 +373,64 @@ const skills = [
   }
 
   @keyframes glitchShake {
-    0%   { transform: translate(0, 0); filter: none; }
-    20%  { transform: translate(-2px, 1px); filter: hue-rotate(-25deg) saturate(1.4); }
-    40%  { transform: translate(2px, -1px); filter: hue-rotate(25deg) saturate(1.4); }
-    60%  { transform: translate(-1px, 1px); filter: hue-rotate(-15deg); }
-    80%  { transform: translate(1px, -1px); filter: hue-rotate(15deg); }
-    100% { transform: translate(0, 0); filter: none; }
+    0% {
+      transform: translate(0, 0);
+      filter: none;
+    }
+    20% {
+      transform: translate(-2px, 1px);
+      filter: hue-rotate(-25deg) saturate(1.4);
+    }
+    40% {
+      transform: translate(2px, -1px);
+      filter: hue-rotate(25deg) saturate(1.4);
+    }
+    60% {
+      transform: translate(-1px, 1px);
+      filter: hue-rotate(-15deg);
+    }
+    80% {
+      transform: translate(1px, -1px);
+      filter: hue-rotate(15deg);
+    }
+    100% {
+      transform: translate(0, 0);
+      filter: none;
+    }
   }
 
   @keyframes glitchSlice {
-    0%   { clip-path: inset(10% 0 80% 0); }
-    25%  { clip-path: inset(50% 0 30% 0); }
-    50%  { clip-path: inset(20% 0 60% 0); }
-    75%  { clip-path: inset(70% 0 10% 0); }
-    100% { clip-path: inset(0 0 0 0); }
+    0% {
+      clip-path: inset(10% 0 80% 0);
+    }
+    25% {
+      clip-path: inset(50% 0 30% 0);
+    }
+    50% {
+      clip-path: inset(20% 0 60% 0);
+    }
+    75% {
+      clip-path: inset(70% 0 10% 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
   }
 
   /* === ПОЯВЛЕНИЕ СЕТКИ === */
-  .terminal-output { animation: techReveal 0.5s ease-out; }
+  .terminal-output {
+    animation: techReveal 0.5s ease-out;
+  }
 
   @keyframes techReveal {
-    from { opacity: 0; transform: translateY(-6px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .tech-item {
@@ -329,8 +439,14 @@ const skills = [
   }
 
   @keyframes techItemIn {
-    from { opacity: 0; transform: translateX(-8px); }
-    to   { opacity: 1; transform: translateX(0); }
+    from {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
 
   /* === NO-ANIM === */
@@ -371,10 +487,14 @@ const skills = [
 
   /* === АДАПТИВ === */
   @media (max-width: 420px) {
-    .terminal-title { letter-spacing: 0.2px; }
+    .terminal-title {
+      letter-spacing: 0.2px;
+    }
   }
   @media (max-width: 768px) {
-    .tech-grid { grid-template-columns: 1fr; }
+    .tech-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   /* === prefers-reduced-motion === */
@@ -392,14 +512,18 @@ const skills = [
       animation: none !important;
     }
     .command-line.is-hidden,
-    .progress-line.is-hidden { display: block !important; }
+    .progress-line.is-hidden {
+      display: block !important;
+    }
 
     .command-typed::after,
     .matrix-typed::after {
       animation: none !important;
       opacity: 1 !important;
     }
-    .blink { animation: none !important; }
+    .blink {
+      animation: none !important;
+    }
 
     .terminal-body.glitching,
     .terminal-body.glitching::before,
@@ -410,7 +534,10 @@ const skills = [
   }
 </style>
 
-<script is:inline define:vars={{ bodyId, titleId, outputId, progressId, finalTitle, storageKey, animated }}>
+<script
+  is:inline
+  define:vars={{ bodyId, titleId, outputId, progressId, finalTitle, storageKey, animated }}
+>
   document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById(bodyId);
     if (!container) return;
@@ -426,8 +553,18 @@ const skills = [
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function safeGet(key) { try { return window.localStorage.getItem(key); } catch { return null; } }
-    function safeSet(key, v) { try { window.localStorage.setItem(key, v); } catch {} }
+    function safeGet(key) {
+      try {
+        return window.localStorage.getItem(key);
+      } catch {
+        return null;
+      }
+    }
+    function safeSet(key, v) {
+      try {
+        window.localStorage.setItem(key, v);
+      } catch {}
+    }
 
     function renderStatic() {
       terminalTitle.textContent = finalTitle;
@@ -459,19 +596,22 @@ const skills = [
     }
 
     const phraseLines = [
-      { text: 'Wake up, Neo...',          pauseAfter: 800,  type: 'matrix' },
-      { text: 'Matrix has you.',          pauseAfter: 800,  type: 'matrix' },
+      { text: 'Wake up, Neo...', pauseAfter: 800, type: 'matrix' },
+      { text: 'Matrix has you.', pauseAfter: 800, type: 'matrix' },
       { text: 'Follow the white rabbit.', pauseAfter: 1000, type: 'matrix' },
-      { text: '...',                      pauseAfter: 1200, type: 'dim' },
+      { text: '...', pauseAfter: 1200, type: 'dim' },
       {
         text: '> Operator identified: NOT NEO',
-        pauseAfter: 400, type: 'system', glitch: true,
+        pauseAfter: 400,
+        type: 'system',
+        glitch: true,
         newTitle: '>_ NEO_PROFILE.SCAN — FAILED',
       },
       { text: '> Scanning alternate profile...', pauseAfter: 700, type: 'system' },
       {
         text: '> Candidate: ANASTASIA',
-        pauseAfter: 900, type: 'system',
+        pauseAfter: 900,
+        type: 'system',
         newTitle: finalTitle,
       },
     ];

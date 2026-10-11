@@ -36,7 +36,23 @@ const isNavActive = (path: string): boolean => {
 <header>
   <nav>
     <div class="left-side">
-      <h2><a href={isEnglish ? '/en' : '/'}>{SITE_TITLE}</a></h2>
+      <h2 class="logo">{SITE_TITLE}</h2>
+      <HeaderLink href={isEnglish ? '/en/' : '/'}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"></path>
+          <path d="M9 21V12h6v9"></path>
+        </svg>
+      </HeaderLink>
       <HeaderLink href={isEnglish ? '/en/about' : '/about'}>
         {isEnglish ? 'About me' : 'Обо мне'}
       </HeaderLink>
